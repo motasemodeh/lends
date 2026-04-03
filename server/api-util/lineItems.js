@@ -107,6 +107,52 @@ const getDateRangeQuantityAndLineItems = (orderData, code) => {
 };
 
 /**
+ * Add line-items for selected add-ons and security deposit
+ */
+const getAddOnAndDepositLineItems = (orderData, publicData, currency) => {
+  const { addOns: selectedAddOnIds } = orderData || {};
+  const { addOnsConfiguration, securityDepositAmount } = publicData || {};
+
+  let addOnLineItems = [];
+  if (selectedAddOnIds && selectedAddOnIds.length > 0 && addOnsConfiguration) {
+    try {
+      const availableAddOns = JSON.parse(addOnsConfiguration);
+      addOnLineItems = selectedAddOnIds
+        .map(id => {
+          const addOn = Array.isArray(availableAddOns)
+            ? availableAddOns.find(a => a.id === id)
+            : null;
+          if (addOn) {
+            return {
+              code: `line-item/addon-${id}`,
+              unitPrice: new Money(addOn.price, currency),
+              quantity: 1,
+              includeFor: ['customer', 'provider'],
+            };
+          }
+          return null;
+        })
+        .filter(Boolean);
+    } catch (e) {
+      console.error('Failed to parse addOnsConfiguration in backend:', e);
+    }
+  }
+
+  const depositLineItem = securityDepositAmount
+    ? [
+        {
+          code: 'line-item/security-deposit',
+          unitPrice: new Money(securityDepositAmount, currency),
+          quantity: 1,
+          includeFor: ['customer', 'provider'],
+        },
+      ]
+    : [];
+
+  return [...addOnLineItems, ...depositLineItem];
+};
+
+/**
  * Returns collection of lineItems (max 50)
  *
  * All the line-items dedicated to _customer_ define the "payin total".
@@ -232,6 +278,7 @@ exports.transactionLineItems = (listing, orderData, providerCommission, customer
   const lineItems = [
     order,
     ...extraLineItems,
+    ...getAddOnAndDepositLineItems(orderData, publicData, currency),
     ...getProviderCommissionMaybe(providerCommission, order, currency),
     ...getCustomerCommissionMaybe(customerCommission, order, currency),
   ];

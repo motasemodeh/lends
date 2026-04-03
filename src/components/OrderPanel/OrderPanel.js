@@ -305,6 +305,8 @@ const OrderPanel = props => {
     fetchLineItemsError,
     payoutDetailsWarning,
     showListingImage,
+    addOns,
+    securityDepositAmount,
   } = props;
 
   const publicData = listing?.attributes?.publicData || {};
@@ -413,6 +415,8 @@ const OrderPanel = props => {
     fetchLineItemsInProgress,
     fetchLineItemsError,
     payoutDetailsWarning,
+    addOns,
+    securityDepositAmount,
   };
 
   const showClosedListingHelpText = listing.id && isClosed;

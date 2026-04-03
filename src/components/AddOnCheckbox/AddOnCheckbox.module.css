@@ -1,0 +1,19 @@
+@import '../../styles/customMediaQueries.css';
+
+.root {
+  margin-top: 24px;
+}
+
+.title {
+  composes: h6 from global;
+  margin-bottom: 8px;
+}
+
+.addOnsList {
+  display: flex;
+  flex-direction: column;
+}
+
+.addOnItem {
+  margin-bottom: 8px;
+}

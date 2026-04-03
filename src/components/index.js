@@ -43,6 +43,9 @@ export { default as IconSuccess } from './IconSuccess/IconSuccess';
 export { Heading, H1, H2, H3, H4, H5, H6  } from './Heading/Heading';
 
 // Other independent components
+export { default as AddOnCheckbox } from './AddOnCheckbox/AddOnCheckbox';
+export { default as AddOnSelector } from './AddOnSelector/AddOnSelector';
+
 export { default as AspectRatioWrapper } from './AspectRatioWrapper/AspectRatioWrapper';
 export { default as ExternalLink } from './ExternalLink/ExternalLink';
 export { default as ExpandingTextarea } from './ExpandingTextarea/ExpandingTextarea';

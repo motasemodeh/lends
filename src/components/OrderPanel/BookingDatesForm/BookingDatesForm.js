@@ -21,7 +21,7 @@ import { LINE_ITEM_DAY, propTypes } from '../../../util/types';
 import { timeSlotsPerDate } from '../../../util/generators';
 import { BOOKING_PROCESS_NAME } from '../../../transactions/transaction';
 
-import { Form, PrimaryButton, FieldDateRangePicker, FieldSelect, H6 } from '../../../components';
+import { Form, PrimaryButton, FieldDateRangePicker, FieldSelect, H6, AddOnSelector } from '../../../components';
 
 import EstimatedCustomerBreakdownMaybe from '../EstimatedCustomerBreakdownMaybe';
 
@@ -345,8 +345,7 @@ const calculateLineItems = (
   onFetchTransactionLineItems,
   seatsEnabled
 ) => formValues => {
-  const { startDate, endDate, priceVariantName, seats } = formValues?.values || {};
-
+  const { startDate, endDate, priceVariantName, seats, addOns } = formValues?.values || {};
   const priceVariantMaybe = priceVariantName ? { priceVariantName } : {};
   const seatCount = seats ? parseInt(seats, 10) : 1;
 
@@ -354,6 +353,7 @@ const calculateLineItems = (
     bookingStart: startDate,
     bookingEnd: endDate,
     ...priceVariantMaybe,
+    addOns,
     ...(seatsEnabled && { seats: seatCount }),
   };
 
@@ -537,6 +537,8 @@ export const BookingDatesForm = props => {
     priceVariantFieldComponent: PriceVariantFieldComponent,
     preselectedPriceVariant,
     isPublishedListing,
+    addOns,
+    securityDepositAmount,
     ...rest
   } = props;
   const intl = useIntl();
@@ -622,6 +624,7 @@ export const BookingDatesForm = props => {
         } = formRenderProps;
         const { startDate, endDate } = values?.bookingDates ? values.bookingDates : {};
         const priceVariantName = values?.priceVariantName || null;
+        const selectedAddOns = values?.addOns || [];
 
         const startDateErrorMessage = intl.formatMessage({
           id: 'FieldDateRangeInput.invalidStartDate',
@@ -788,10 +791,18 @@ export const BookingDatesForm = props => {
                     priceVariantName,
                     startDate,
                     endDate,
+                    addOns: selectedAddOns,
                     seats: seatsEnabled ? 1 : undefined,
                   },
                 });
               }}
+            />
+
+            <AddOnSelector
+              addOns={addOns}
+              intl={intl}
+              currency={unitPrice.currency}
+              onChange={() => setTimeout(() => onHandleFetchLineItems(formApi.getState()), 0)}
             />
 
             {seatsEnabled ? (

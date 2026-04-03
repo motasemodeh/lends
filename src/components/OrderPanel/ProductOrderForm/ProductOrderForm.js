@@ -12,8 +12,8 @@ import {
   FieldTextInput,
   InlineTextButton,
   PrimaryButton,
-  H3,
   H6,
+  AddOnCheckbox,
 } from '../../../components';
 
 import EstimatedCustomerBreakdownMaybe from '../EstimatedCustomerBreakdownMaybe';
@@ -35,6 +35,7 @@ const handleFetchLineItems = ({
   isOwnListing,
   fetchLineItemsInProgress,
   onFetchTransactionLineItems,
+  addOns,
 }) => {
   const stockReservationQuantity = Number.parseInt(quantity, 10);
   const deliveryMethodMaybe = deliveryMethod ? { deliveryMethod } : {};
@@ -46,7 +47,7 @@ const handleFetchLineItems = ({
     !fetchLineItemsInProgress
   ) {
     onFetchTransactionLineItems({
-      orderData: { stockReservationQuantity, ...deliveryMethodMaybe },
+      orderData: { stockReservationQuantity, addOns, ...deliveryMethodMaybe },
       listingId,
       isOwnListing,
     });
@@ -131,9 +132,10 @@ const renderForm = formRenderProps => {
     fetchLineItemsInProgress,
     fetchLineItemsError,
     price,
-    payoutDetailsWarning,
     marketplaceName,
     values,
+    addOns,
+    securityDepositAmount,
   } = formRenderProps;
 
   // Note: don't add custom logic before useEffect
@@ -157,7 +159,7 @@ const renderForm = formRenderProps => {
 
   // If form values change, update line-items for the order breakdown
   const handleOnChange = formValues => {
-    const { quantity, deliveryMethod } = formValues.values;
+    const { quantity, deliveryMethod, addOns: selectedAddOns } = formValues.values;
     if (mounted) {
       handleFetchLineItems({
         quantity,
@@ -166,6 +168,7 @@ const renderForm = formRenderProps => {
         isOwnListing,
         fetchLineItemsInProgress,
         onFetchTransactionLineItems,
+        addOns: selectedAddOns,
       });
     }
   };
@@ -258,6 +261,7 @@ const renderForm = formRenderProps => {
         formId={formId}
         intl={intl}
       />
+      <AddOnCheckbox addOns={addOns} intl={intl} currency={price.currency} />
 
       {showBreakdown ? (
         <div className={css.breakdownWrapper}>

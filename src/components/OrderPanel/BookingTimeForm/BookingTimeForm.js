@@ -7,7 +7,7 @@ import { timestampToDate } from '../../../util/dates';
 import { propTypes } from '../../../util/types';
 import { BOOKING_PROCESS_NAME } from '../../../transactions/transaction';
 
-import { Form, H6, PrimaryButton, FieldSelect } from '../../../components';
+import { Form, H6, PrimaryButton, FieldSelect, AddOnSelector } from '../../../components';
 
 import EstimatedCustomerBreakdownMaybe from '../EstimatedCustomerBreakdownMaybe';
 import FieldDateAndTimeInput from './FieldDateAndTimeInput';
@@ -28,7 +28,7 @@ const handleFetchLineItems = props => formValues => {
     onFetchTransactionLineItems,
     seatsEnabled,
   } = props;
-  const { bookingStartTime, bookingEndTime, seats, priceVariantName } = formValues.values;
+  const { bookingStartTime, bookingEndTime, seats, priceVariantName, addOns } = formValues.values;
   const startDate = bookingStartTime ? timestampToDate(bookingStartTime) : null;
   const endDate = bookingEndTime ? timestampToDate(bookingEndTime) : null;
 
@@ -45,6 +45,7 @@ const handleFetchLineItems = props => formValues => {
       bookingEnd: endDate,
       ...seatsMaybe,
       ...priceVariantMaybe,
+      addOns,
     };
     onFetchTransactionLineItems({
       orderData,
@@ -102,11 +103,13 @@ export const BookingTimeForm = props => {
     dayCountAvailableForBooking,
     marketplaceName,
     seatsEnabled,
-    isPriceVariationsInUse,
     priceVariants = [],
     priceVariantFieldComponent: PriceVariantFieldComponent,
     preselectedPriceVariant,
     isPublishedListing,
+    isPriceVariationsInUse,
+    addOns,
+    securityDepositAmount,
     ...rest
   } = props;
 
@@ -207,6 +210,12 @@ export const BookingTimeForm = props => {
                 handleFetchLineItems={onHandleFetchLineItems}
               />
             ) : null}
+            <AddOnSelector
+              addOns={addOns}
+              intl={intl}
+              currency={unitPrice.currency}
+              onChange={() => setTimeout(() => onHandleFetchLineItems(formRenderProps), 0)}
+            />
             {seatsEnabled ? (
               <FieldSelect
                 name="seats"

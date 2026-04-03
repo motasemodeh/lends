@@ -1,0 +1,22 @@
+@import '../../styles/customMediaQueries.css';
+
+.root {
+  margin-top: 24px;
+}
+
+.title {
+  composes: h4 from global;
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.addOnsList {
+  display: flex;
+  flex-direction: column;
+}
+
+.addOnItem {
+  margin-bottom: 8px;
+}

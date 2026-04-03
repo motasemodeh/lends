@@ -27,12 +27,8 @@ import {
 } from '../../util/errors.js';
 import { hasPermissionToViewData, isUserAuthorized } from '../../util/userHelpers.js';
 import { requireListingImage } from '../../util/configHelpers';
-import {
-  ensureListing,
-  ensureOwnListing,
-  ensureUser,
-  userDisplayNameAsString,
-} from '../../util/data';
+import { ensureListing, ensureOwnListing, ensureUser, userDisplayNameAsString } from '../../util/data';
+import { parseAddOnsConfig } from '../../util/addons';
 import { richText } from '../../util/richText';
 import {
   OFFER,
@@ -486,6 +482,8 @@ export const ListingPageComponent = props => {
               dayCountAvailableForBooking={config.stripe.dayCountAvailableForBooking}
               marketplaceName={config.marketplaceName}
               showListingImage={showListingImage}
+              addOns={parseAddOnsConfig(publicData.addOnsConfiguration)}
+              securityDepositAmount={publicData.securityDepositAmount}
             />
           </div>
         </div>
