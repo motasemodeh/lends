@@ -1,0 +1,338 @@
+@import '../../styles/customMediaQueries.css';
+
+.pageRoot {
+  background-color: #fff;
+}
+
+.content {
+  width: 100%;
+}
+
+/* Hero Section */
+.heroSection {
+  padding: 80px 24px;
+  background: linear-gradient(to bottom, #fcf6f2 0%, #fff 100%);
+  text-align: center;
+
+  @media (--viewportMedium) {
+    padding: 120px 24px;
+  }
+}
+
+.heroContent {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.heroOverline {
+  font-family: 'Montserrat', sans-serif;
+  color: #C65F12;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  font-weight: 700;
+  font-size: 14px;
+  display: block;
+  margin-bottom: 24px;
+}
+
+.heroTitle {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: 42px;
+  line-height: 1.1;
+  color: #1a1a1a;
+  margin-bottom: 24px;
+
+  @media (--viewportMedium) {
+    font-size: 72px;
+  }
+}
+
+.heroSubtitle {
+  font-size: 20px;
+  line-height: 1.6;
+  color: #4a4a4a;
+  margin-bottom: 48px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.heroCta {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.primaryButton {
+  background-color: #C65F12;
+  color: #fff;
+  padding: 18px 36px;
+  border-radius: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 18px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.primaryButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(198, 95, 18, 0.25);
+}
+
+.secondaryButton {
+  background-color: transparent;
+  color: #1a1a1a;
+  border: 2px solid #e0e0e0;
+  padding: 16px 36px;
+  border-radius: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 18px;
+  transition: border-color 0.2s;
+}
+
+.secondaryButton:hover {
+  border-color: #1a1a1a;
+}
+
+/* Pillar Section */
+.pillarSection {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 24px;
+}
+
+.pillarGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+
+  @media (--viewportMedium) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.pillarCard {
+  padding: 48px;
+  background: white;
+  border: 1px solid #f0f0f0;
+  border-radius: 24px;
+  transition: border-color 0.3s;
+}
+
+.pillarCard:hover {
+  border-color: #C65F12;
+}
+
+.pillarIcon {
+  font-size: 40px;
+  margin-bottom: 32px;
+}
+
+.pillarCard h3 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+.pillarCard p {
+  color: #666;
+  line-height: 1.6;
+}
+
+/* Why Section */
+.whySection {
+  background-color: #1a1a1a;
+  color: #fff;
+  padding: 100px 24px;
+}
+
+.sectionHeader {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 80px;
+}
+
+.sectionTitle {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: 36px;
+  margin-bottom: 24px;
+}
+
+.sectionSubtitle {
+  font-size: 18px;
+  color: #999;
+}
+
+.whyGrid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+
+  @media (--viewportMedium) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.whyItem {
+  padding: 40px;
+  background: #262626;
+  border-radius: 16px;
+}
+
+.whyItem h4 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 16px;
+  color: #C65F12;
+}
+
+.whyItem p {
+  color: #ccc;
+  line-height: 1.6;
+}
+
+/* Steps Section */
+.stepsSection {
+  padding: 100px 24px;
+  background: #fff;
+}
+
+.stepsWrapper {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.stepsList {
+  list-style: none;
+  padding: 0;
+  margin-top: 60px;
+}
+
+.stepItem {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 60px;
+  align-items: flex-start;
+}
+
+.stepNumber {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: 48px;
+  color: #f0f0f0;
+  line-height: 1;
+  min-width: 80px;
+}
+
+.stepText h5 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  margin-bottom: 12px;
+  color: #1a1a1a;
+}
+
+.stepText p {
+  color: #666;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+/* Fees Section */
+.feesSection {
+  padding: 100px 24px;
+  background-color: #fafafa;
+  text-align: center;
+}
+
+.feesContainer {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.feeBox {
+  margin-top: 60px;
+  padding: 60px;
+  background: #fff;
+  border-radius: 32px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.03);
+}
+
+.feeValue {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+  font-size: 64px;
+  color: #C65F12;
+  line-height: 1;
+  margin-bottom: 16px;
+}
+
+.feeLabel {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 24px;
+}
+
+.feeSubtext {
+  color: #999;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Final CTA */
+.finalCta {
+  padding: 100px 24px;
+}
+
+.ctaBackground {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #C65F12 0%, #a04d0e 100%);
+  padding: 80px 40px;
+  border-radius: 40px;
+  color: #fff;
+  text-align: center;
+}
+
+.ctaBackground h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 48px;
+  font-weight: 800;
+  margin-bottom: 24px;
+
+  @media (--viewportSmall) {
+    font-size: 32px;
+  }
+}
+
+.ctaBackground p {
+  font-size: 20px;
+  margin-bottom: 40px;
+  opacity: 0.9;
+}
+
+.ultimateButton {
+  display: inline-block;
+  background-color: #fff;
+  color: #C65F12;
+  padding: 20px 48px;
+  border-radius: 16px;
+  font-weight: 800;
+  font-size: 20px;
+  text-decoration: none;
+  transition: transform 0.2s, background-color 0.22s;
+}
+
+.ultimateButton:hover {
+  transform: scale(1.05);
+  background-color: #f8f8f8;
+}

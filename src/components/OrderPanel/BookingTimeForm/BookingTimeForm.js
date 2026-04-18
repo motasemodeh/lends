@@ -7,7 +7,8 @@ import { timestampToDate } from '../../../util/dates';
 import { propTypes } from '../../../util/types';
 import { BOOKING_PROCESS_NAME } from '../../../transactions/transaction';
 
-import { Form, H6, PrimaryButton, FieldSelect, AddOnSelector } from '../../../components';
+import { Form, H6, PrimaryButton, FieldSelect } from '../../../components';
+import AddOnSelector from '../../AddOnSelector/AddOnSelector';
 
 import EstimatedCustomerBreakdownMaybe from '../EstimatedCustomerBreakdownMaybe';
 import FieldDateAndTimeInput from './FieldDateAndTimeInput';
@@ -27,8 +28,9 @@ const handleFetchLineItems = props => formValues => {
     fetchLineItemsInProgress,
     onFetchTransactionLineItems,
     seatsEnabled,
+    deliveryMethodFromProps
   } = props;
-  const { bookingStartTime, bookingEndTime, seats, priceVariantName, addOns } = formValues.values;
+  const { bookingStartTime, bookingEndTime, seats, priceVariantName, addOns, deliveryMethod } = formValues.values;
   const startDate = bookingStartTime ? timestampToDate(bookingStartTime) : null;
   const endDate = bookingEndTime ? timestampToDate(bookingEndTime) : null;
 
@@ -46,6 +48,7 @@ const handleFetchLineItems = props => formValues => {
       ...seatsMaybe,
       ...priceVariantMaybe,
       addOns,
+      deliveryMethod: deliveryMethod || deliveryMethodFromProps,
     };
     onFetchTransactionLineItems({
       orderData,
@@ -108,8 +111,10 @@ export const BookingTimeForm = props => {
     preselectedPriceVariant,
     isPublishedListing,
     isPriceVariationsInUse,
+    listing,
     addOns,
     securityDepositAmount,
+    deliveryMethod,
     ...rest
   } = props;
 
@@ -132,6 +137,7 @@ export const BookingTimeForm = props => {
         const {
           endDatePlaceholder,
           startDatePlaceholder,
+          formId,
           form,
           pristine,
           handleSubmit,
@@ -169,7 +175,7 @@ export const BookingTimeForm = props => {
         const showEstimatedBreakdown =
           breakdownData && lineItems && !fetchLineItemsInProgress && !fetchLineItemsError;
 
-        const onHandleFetchLineItems = handleFetchLineItems(props);
+        const onHandleFetchLineItems = handleFetchLineItems({ ...props, deliveryMethodFromProps: deliveryMethod });
         const submitDisabled = isPriceVariationsInUse && !isPublishedListing;
 
         return (
@@ -210,11 +216,37 @@ export const BookingTimeForm = props => {
                 handleFetchLineItems={onHandleFetchLineItems}
               />
             ) : null}
+
+            {deliveryMethod === 'both' ? (
+              <FieldSelect
+                id={`${formId}.deliveryMethod`}
+                name="deliveryMethod"
+                label={intl.formatMessage({ id: 'BookingDatesForm.deliveryMethodLabel' })}
+                className={css.deliveryMethodSelect}
+                onChange={value => {
+                  const { values } = form.getState();
+                  setTimeout(() => onHandleFetchLineItems({ values: { ...values, deliveryMethod: value } }), 0);
+                }}
+              >
+                <option value="pickup">
+                  {intl.formatMessage({ id: 'BookingDatesForm.pickupOption' })}
+                </option>
+                <option value="delivery">
+                  {intl.formatMessage({ id: 'BookingDatesForm.deliveryOption' })}
+                </option>
+              </FieldSelect>
+            ) : null}
+
             <AddOnSelector
               addOns={addOns}
               intl={intl}
               currency={unitPrice.currency}
-              onChange={() => setTimeout(() => onHandleFetchLineItems(formRenderProps), 0)}
+              onChange={() => {
+                setTimeout(() => {
+                  const { values } = form.getState();
+                  onHandleFetchLineItems({ values });
+                }, 50);
+              }}
             />
             {seatsEnabled ? (
               <FieldSelect
@@ -225,16 +257,7 @@ export const BookingTimeForm = props => {
                 label={intl.formatMessage({ id: 'BookingTimeForm.seatsTitle' })}
                 className={css.fieldSeats}
                 onChange={values => {
-                  onHandleFetchLineItems({
-                    values: {
-                      priceVariantName,
-                      bookingStartDate: startDate,
-                      bookingStartTime: startTime,
-                      bookingEndDate: endDate,
-                      bookingEndTime: endTime,
-                      seats: values,
-                    },
-                  });
+                  // FormSpy handles this
                 }}
               >
                 <option disabled value="">
@@ -261,6 +284,7 @@ export const BookingTimeForm = props => {
                   currency={unitPrice.currency}
                   marketplaceName={marketplaceName}
                   processName={BOOKING_PROCESS_NAME}
+                  listing={listing}
                 />
               </div>
             ) : null}
@@ -275,6 +299,7 @@ export const BookingTimeForm = props => {
                 <FormattedMessage id="BookingTimeForm.requestToBook" />
               </PrimaryButton>
             </div>
+
             <FinePrint payoutDetailsWarning={payoutDetailsWarning} isOwnListing={isOwnListing} />
           </Form>
         );

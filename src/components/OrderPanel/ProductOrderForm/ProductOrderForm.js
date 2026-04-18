@@ -13,8 +13,8 @@ import {
   InlineTextButton,
   PrimaryButton,
   H6,
-  AddOnCheckbox,
 } from '../../../components';
+import AddOnSelector from '../../AddOnSelector/AddOnSelector';
 
 import EstimatedCustomerBreakdownMaybe from '../EstimatedCustomerBreakdownMaybe';
 
@@ -136,6 +136,7 @@ const renderForm = formRenderProps => {
     values,
     addOns,
     securityDepositAmount,
+    payoutDetailsWarning,
   } = formRenderProps;
 
   // Note: don't add custom logic before useEffect
@@ -261,7 +262,22 @@ const renderForm = formRenderProps => {
         formId={formId}
         intl={intl}
       />
-      <AddOnCheckbox addOns={addOns} intl={intl} currency={price.currency} />
+      <AddOnSelector
+        addOns={addOns}
+        intl={intl}
+        currency={price.currency}
+        onChange={() => {
+          const { values } = formApi.getState();
+          setTimeout(() => handleFetchLineItems({ 
+            ...values, 
+            displayDeliveryMethod, 
+            listingId, 
+            isOwnListing, 
+            fetchLineItemsInProgress, 
+            onFetchTransactionLineItems 
+          }), 0);
+        }}
+      />
 
       {showBreakdown ? (
         <div className={css.breakdownWrapper}>

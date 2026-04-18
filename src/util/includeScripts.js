@@ -180,9 +180,11 @@ export const IncludeScripts = props => {
     }
   };
 
-  const fontScript = (<style>
-    {`@import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&display=swap');`}
-  </style>)
+  const fontScript = (
+    <style key="google-fonts-montserrat">
+      {`@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');`}
+    </style>
+  );
 
   const allScripts = [...analyticsLibraries, ...mapLibraries, fontScript];
   return <Helmet onChangeClientState={onChangeClientState}>{allScripts}</Helmet>;

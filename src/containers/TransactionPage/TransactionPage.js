@@ -632,6 +632,7 @@ export const TransactionPageComponent = props => {
             {...txBookingMaybe}
             currency={config.currency}
             marketplaceName={config.marketplaceName}
+            listing={listing}
           />
         ),
       }

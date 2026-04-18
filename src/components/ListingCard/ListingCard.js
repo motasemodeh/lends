@@ -109,6 +109,9 @@ export const ListingCard = props => {
     setActiveListing,
     showAuthorInfo = true,
     lazyLoadImage = true,
+    infoClassName,
+    titleClassName,
+    priceClassName,
   } = props;
 
   const translations = getListingCardTranslations(listing, config, intl);
@@ -177,15 +180,15 @@ export const ListingCard = props => {
           setActivePropsMaybe={setActivePropsMaybe}
         />
       )}
-      <div className={css.info}>
+      <div className={classNames(css.info, infoClassName)}>
         {showPrice ? (
-          <div className={css.price} title={priceTooltip}>
+          <div className={classNames(css.price, priceClassName)} title={priceTooltip}>
             {priceMessage}
           </div>
         ) : null}
         <div className={css.mainInfo}>
           {showListingImage && (
-            <div className={classNames(css.title, { [css.lightText]: darkMode })}>
+            <div className={classNames(css.title, titleClassName, { [css.lightText]: darkMode })}>
               {titleFormatted}
             </div>
           )}

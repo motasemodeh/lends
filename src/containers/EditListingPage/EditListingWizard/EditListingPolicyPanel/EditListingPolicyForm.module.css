@@ -1,0 +1,140 @@
+@import '../../../../styles/customMediaQueries.css';
+
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.input {
+  margin-top: 24px;
+}
+
+.infoText {
+  composes: marketplaceTinyFontStyles from global;
+  color: var(--colorGrey600);
+  margin: 8px 0 24px 0;
+}
+
+.addOnsSection {
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid var(--colorGrey100);
+}
+
+.addOnsTitle {
+  composes: h4 from global;
+  margin: 0 0 8px 0;
+  color: var(--colorGrey900);
+}
+
+.addOnsDescription {
+  composes: marketplaceTinyFontStyles from global;
+  color: var(--colorGrey600);
+  margin: 0 0 24px 0;
+}
+
+.addOnsList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.addOnItem {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 12px;
+  padding: 20px;
+  background-color: var(--colorGrey50);
+  border-radius: var(--borderRadiusMedium);
+  border: 1px solid var(--colorGrey100);
+  position: relative;
+  transition: all var(--transitionStyleButton);
+
+  &:hover {
+    border-color: var(--colorGrey200);
+    background-color: var(--colorWhite);
+    box-shadow: var(--boxShadowLight);
+  }
+}
+
+.addOnFields {
+  display: grid;
+  grid-template-columns: 1fr 140px;
+  gap: 16px;
+  width: 100%;
+
+  @media (--viewportMedium) {
+    grid-template-columns: 1fr 180px;
+  }
+}
+
+.addOnNameInput,
+.addOnPriceInput {
+  margin: 0;
+}
+
+.removeAddOnButton {
+  /* Layout */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  margin-bottom: 8px; /* Align with inputs */
+
+  /* Style */
+  background-color: var(--colorWhite);
+  border: 1px solid var(--colorGrey200);
+  border-radius: 50%;
+  color: var(--colorGrey600);
+  min-height: unset;
+
+  &:hover {
+    background-color: var(--colorFailSubtle);
+    border-color: var(--colorFail);
+    color: var(--colorFail);
+  }
+}
+
+.removeIcon {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+}
+
+.addAddOnButton {
+  composes: buttonSecondary from global;
+  margin-top: 8px;
+  min-height: 48px;
+  border-style: dashed;
+  color: var(--marketplaceColor);
+  border-color: var(--marketplaceColor);
+
+  &:hover {
+    background-color: var(--marketplaceColorSubtle);
+    border-style: solid;
+  }
+}
+
+.deliverySection {
+  margin-top: 32px;
+  padding: 24px;
+  background-color: var(--colorGrey50);
+  border-radius: var(--borderRadiusMedium);
+  border: 1px solid var(--colorGrey100);
+}
+
+.deliverySelect {
+  max-width: 400px;
+}
+
+.submitButton {
+  margin-top: 48px;
+}
+
+.error {
+  color: var(--colorFail);
+  margin-bottom: 24px;
+}

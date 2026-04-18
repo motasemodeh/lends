@@ -307,6 +307,7 @@ const OrderPanel = props => {
     showListingImage,
     addOns,
     securityDepositAmount,
+    deliveryMethod,
   } = props;
 
   const publicData = listing?.attributes?.publicData || {};
@@ -407,6 +408,7 @@ const OrderPanel = props => {
     onSubmit,
     price,
     marketplaceCurrency,
+    listing,
     listingId: listing.id,
     isOwnListing,
     marketplaceName,
@@ -417,6 +419,7 @@ const OrderPanel = props => {
     payoutDetailsWarning,
     addOns,
     securityDepositAmount,
+    deliveryMethod,
   };
 
   const showClosedListingHelpText = listing.id && isClosed;
@@ -462,16 +465,6 @@ const OrderPanel = props => {
           intl={intl}
           marketplaceCurrency={marketplaceCurrency}
         />
-
-        <div className={css.author}>
-          <AvatarSmall user={author} className={css.providerAvatar} />
-          <span className={css.providerNameLinked}>
-            <FormattedMessage id="OrderPanel.author" values={{ name: authorLink }} />
-          </span>
-          <span className={css.providerNamePlain}>
-            <FormattedMessage id="OrderPanel.author" values={{ name: authorDisplayName }} />
-          </span>
-        </div>
 
         {showPriceMissing ? (
           <PriceMissing />

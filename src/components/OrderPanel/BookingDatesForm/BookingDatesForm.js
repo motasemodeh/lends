@@ -21,7 +21,8 @@ import { LINE_ITEM_DAY, propTypes } from '../../../util/types';
 import { timeSlotsPerDate } from '../../../util/generators';
 import { BOOKING_PROCESS_NAME } from '../../../transactions/transaction';
 
-import { Form, PrimaryButton, FieldDateRangePicker, FieldSelect, H6, AddOnSelector } from '../../../components';
+import { Form, PrimaryButton, FieldDateRangePicker, FieldSelect, H6 } from '../../../components';
+import AddOnSelector from '../../AddOnSelector/AddOnSelector';
 
 import EstimatedCustomerBreakdownMaybe from '../EstimatedCustomerBreakdownMaybe';
 
@@ -343,9 +344,12 @@ const calculateLineItems = (
   isOwnListing,
   fetchLineItemsInProgress,
   onFetchTransactionLineItems,
-  seatsEnabled
+  seatsEnabled,
+  deliveryMethodFromProps
 ) => formValues => {
-  const { startDate, endDate, priceVariantName, seats, addOns } = formValues?.values || {};
+  const { bookingDates, priceVariantName, seats, addOns, deliveryMethod, startDate: flatStart, endDate: flatEnd } = formValues?.values || {};
+  const startDate = flatStart || bookingDates?.startDate;
+  const endDate = flatEnd || bookingDates?.endDate;
   const priceVariantMaybe = priceVariantName ? { priceVariantName } : {};
   const seatCount = seats ? parseInt(seats, 10) : 1;
 
@@ -354,6 +358,7 @@ const calculateLineItems = (
     bookingEnd: endDate,
     ...priceVariantMaybe,
     addOns,
+    deliveryMethod: deliveryMethod || deliveryMethodFromProps,
     ...(seatsEnabled && { seats: seatCount }),
   };
 
@@ -537,8 +542,10 @@ export const BookingDatesForm = props => {
     priceVariantFieldComponent: PriceVariantFieldComponent,
     preselectedPriceVariant,
     isPublishedListing,
+    listing,
     addOns,
     securityDepositAmount,
+    deliveryMethod,
     ...rest
   } = props;
   const intl = useIntl();
@@ -600,7 +607,8 @@ export const BookingDatesForm = props => {
     isOwnListing,
     fetchLineItemsInProgress,
     onFetchTransactionLineItems,
-    seatsEnabled
+    seatsEnabled,
+    deliveryMethod // This must be defined in the props destructuring above
   );
 
   return (
@@ -798,11 +806,36 @@ export const BookingDatesForm = props => {
               }}
             />
 
+            {deliveryMethod === 'both' ? (
+              <FieldSelect
+                id={`${formId}.deliveryMethod`}
+                name="deliveryMethod"
+                label={intl.formatMessage({ id: 'BookingDatesForm.deliveryMethodLabel' })}
+                className={css.deliveryMethodSelect}
+                onChange={value => {
+                  const { values } = formApi.getState();
+                  setTimeout(() => onHandleFetchLineItems({ values: { ...values, deliveryMethod: value } }), 0);
+                }}
+              >
+                <option value="pickup">
+                  {intl.formatMessage({ id: 'BookingDatesForm.pickupOption' })}
+                </option>
+                <option value="delivery">
+                  {intl.formatMessage({ id: 'BookingDatesForm.deliveryOption' })}
+                </option>
+              </FieldSelect>
+            ) : null}
+
             <AddOnSelector
               addOns={addOns}
               intl={intl}
               currency={unitPrice.currency}
-              onChange={() => setTimeout(() => onHandleFetchLineItems(formApi.getState()), 0)}
+              onChange={() => {
+                setTimeout(() => {
+                  const { values } = formApi.getState();
+                  onHandleFetchLineItems({ values });
+                }, 50);
+              }}
             />
 
             {seatsEnabled ? (
@@ -814,14 +847,7 @@ export const BookingDatesForm = props => {
                 showLabelAsDisabled={!(startDate && endDate)}
                 className={css.fieldSeats}
                 onChange={values => {
-                  onHandleFetchLineItems({
-                    values: {
-                      priceVariantName,
-                      startDate: startDate,
-                      endDate: endDate,
-                      seats: values,
-                    },
-                  });
+                  // FormSpy handles this
                 }}
               >
                 <option disabled value="">
@@ -848,6 +874,7 @@ export const BookingDatesForm = props => {
                   currency={unitPrice.currency}
                   marketplaceName={marketplaceName}
                   processName={BOOKING_PROCESS_NAME}
+                  listing={listing}
                 />
               </div>
             ) : null}
@@ -862,6 +889,7 @@ export const BookingDatesForm = props => {
                 <FormattedMessage id="BookingDatesForm.requestToBook" />
               </PrimaryButton>
             </div>
+
             <FinePrint payoutDetailsWarning={payoutDetailsWarning} isOwnListing={isOwnListing} />
           </Form>
         );

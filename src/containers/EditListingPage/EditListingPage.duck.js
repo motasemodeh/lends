@@ -446,8 +446,8 @@ const savePayoutDetailsPayloadCreator = (
     .then(response => {
       return response;
     })
-    .catch(() => {
-      return rejectWithValue();
+    .catch(e => {
+      return rejectWithValue(e);
     });
 };
 

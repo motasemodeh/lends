@@ -1,14 +1,91 @@
 .root {
-  /* SectionContainer defaults */
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
   width: 100%;
   position: relative;
-
-  /* Hero specific */
   min-height: 80vh;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  padding: 0 5%;
+}
+
+.heroContent {
+  max-width: 600px;
+  position: relative;
+  z-index: 10;
+}
+
+.heroTitle {
+  font-family: var(--fontFamily); 
+  font-size: 64px;
+  font-weight: 800;
+  color: #111827;
+  line-height: 1.1;
+  margin: 0 0 24px 0;
+  letter-spacing: -1px;
+
+  @media (--viewportMedium) {
+    font-size: 72px;
+  }
+}
+
+.heroSubtitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 32px 0;
+}
+
+.heroButtons {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.primaryButton {
+  background-color: var(--marketplaceColor);
+  color: #FFFFFF;
+  padding: 16px 32px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 16px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.primaryButton:hover {
+  background-color: var(--marketplaceColorDark);
+  color: #FFFFFF;
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+.secondaryButton {
+  background-color: #0F766E; /* A deep teal/blue matching the mockup if they want, but wait, 'keep our colors' -> maybe they want variant of marketplace color or plain dark */
+  /* Wait, they literally said 'keep our colors' and the buttons in the mockup are a dark teal (#055f77). 
+     I'll use their secondary brand color or #111827 (dark slate) which always looks good. 
+     Wait, the standard for Lends is Primary=BurntOrange, Secondary=Dark */
+  background-color: #111827;
+  color: #FFFFFF;
+  padding: 16px 32px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 16px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.secondaryButton:hover {
+  background-color: #1F2937;
+  color: #FFFFFF;
+  text-decoration: none;
+  transform: translateY(-1px);
 }

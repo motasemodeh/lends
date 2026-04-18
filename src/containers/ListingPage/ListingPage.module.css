@@ -20,6 +20,155 @@
   margin: 24px;
 }
 
+/* NEW TOP HEADER STYLES */
+.listingTopHeader {
+  margin-bottom: 24px;
+  padding: 0 24px;
+
+  @media (--viewportMedium) {
+    padding: 0;
+  }
+}
+
+.breadcrumbs {
+  font-size: 14px;
+  color: #6B7280;
+  margin-bottom: 16px;
+  font-weight: 400;
+}
+
+.breadcrumbActive {
+  color: #9CA3AF; /* Light grey text in the screenshot for the active node */
+  font-weight: 400;
+}
+
+.pillTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.pillTag {
+  padding: 4px 14px;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 500;
+  background-color: #FFFFFF;
+}
+
+.pillTagOrange {
+  border: 1px solid #FFEDD5; /* Faint orange border */
+  color: #EA580C; /* Deeper orange text */
+}
+
+.pillTagBlue {
+  border: 1px solid #BFDBFE; /* Faint blue border */
+  color: #2563EB; /* Solid blue text */
+}
+
+.mockupTitle {
+  font-family: Georgia, 'Playfair Display', serif; /* Matching the distinct serif font */
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #111827;
+  margin: 0 0 16px 0;
+  
+  @media (--viewportMedium) {
+    font-size: 32px;
+  }
+}
+
+.ratingAndShare {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--colorGrey100);
+  padding-bottom: 16px;
+}
+
+.ratingBadge {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.starsGroup {
+  display: flex;
+  gap: 2px;
+}
+
+.ratingStar {
+  display: flex;
+  align-items: center;
+  width: 16px;
+  height: 16px;
+  color: #F59E0B;
+}
+
+.ratingScore {
+  font-weight: 700;
+  color: #1E293B;
+}
+
+.reviewCount {
+  color: #4B5563; /* Removed underline */
+}
+
+.locationPin {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 8px;
+  color: #4B5563;
+  font-weight: 500;
+}
+
+.shareButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: 1px solid var(--colorGrey100);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  color: #1E293B;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: #F8FAFC;
+  }
+}
+
+.sidebarWidget {
+  background-color: var(--colorWhite);
+  border: 1px solid var(--colorGrey100);
+  border-radius: 12px;
+  margin-top: 24px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+
+  /* Target inside component padding resets */
+  & > div, & > section {
+    padding: 24px !important;
+    margin: 0 !important;
+  }
+}
+
+.sidebarWidgetTitle {
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 10px 0;
+}
+
 .sectionHero {
   position: relative;
   margin: 0 0 36px 0;

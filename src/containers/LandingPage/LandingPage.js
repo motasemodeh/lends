@@ -14,20 +14,68 @@ import { fetchFeaturedListings } from '../../ducks/featuredListings.duck';
 import { getListingsById } from '../../ducks/marketplaceData.duck';
 import { getFeaturedListingsProps } from '../../util/data';
 
+import { SectionFeaturedListings, LendsHero } from '../../components';
+import SectionWhyChoose from '../../components/SectionWhyChoose/SectionWhyChoose';
+import SectionHowItWorks from '../../components/SectionHowItWorks/SectionHowItWorks';
+
 const PageBuilder = loadable(() =>
   import(/* webpackChunkName: "PageBuilder" */ '../PageBuilder/PageBuilder')
 );
 
 export const LandingPageComponent = props => {
-  const { pageAssetsData, inProgress, error } = props;
+  const { pageAssetsData, inProgress, error, featuredListingData, getListingEntitiesById, onFetchFeaturedListings } = props;
+
+  const assetData = pageAssetsData?.[camelize(ASSET_NAME)]?.data;
+  const sections = assetData?.sections || [];
+  const heroIndex = sections.findIndex(s => s.sectionId === 'hero' || s.sectionType === 'hero');
+
+  // Inject custom professional sections
+  const updatedSections = [...sections];
+  
+  // 1. Featured Listings Section
+  const featuredSection = {
+    sectionId: 'featured-listings',
+    sectionType: 'featured-listings',
+    title: 'Latest Listings',
+    subtitle: 'PREMIUM SELECTIONS',
+    listingSelection: 'newest',
+  };
+
+  // 2. Why Choose LENDS Section
+  const whyChooseSection = {
+    sectionId: 'why-choose-lends',
+    sectionType: 'why-choose-lends',
+  };
+
+  // 3. How LENDS Works Section
+  const howItWorksSection = {
+    sectionId: 'how-lends-works',
+    sectionType: 'how-lends-works',
+  };
+
+  if (heroIndex !== -1) {
+    updatedSections.splice(heroIndex + 1, 0, featuredSection, whyChooseSection, howItWorksSection);
+  } else if (sections.length > 0) {
+    updatedSections.unshift(featuredSection, whyChooseSection, howItWorksSection);
+  }
+
+  const updatedPageAssetsData = assetData ? { ...assetData, sections: updatedSections } : null;
 
   return (
     <PageBuilder
-      pageAssetsData={pageAssetsData?.[camelize(ASSET_NAME)]?.data}
+      pageAssetsData={updatedPageAssetsData}
       inProgress={inProgress}
       error={error}
       fallbackPage={<FallbackPage error={error} />}
       featuredListings={getFeaturedListingsProps(camelize(ASSET_NAME), props)}
+      options={{
+        sectionComponents: {
+          'hero': { component: LendsHero },
+          'featured-listings': { component: SectionFeaturedListings },
+          'why-choose-lends': { component: SectionWhyChoose },
+          'how-lends-works': { component: SectionHowItWorks },
+        },
+      }}
     />
   );
 };

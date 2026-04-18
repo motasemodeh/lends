@@ -140,9 +140,12 @@ export const SectionText = loadable(() => import(/* webpackChunkName: "SectionTe
 export { default as StripeConnectAccountStatusBox } from './StripeConnectAccountStatusBox/StripeConnectAccountStatusBox';
 export { default as StripePaymentAddress } from './StripePaymentAddress/StripePaymentAddress';
 export { default as TopbarSimplified } from './TopbarSimplified/TopbarSimplified';
+export { default as SectionFeaturedListings } from './SectionFeaturedListings/SectionFeaturedListings';
 
-
-// Forms
+export { default as ListingCardRental } from './ListingCardRental/ListingCardRental';
+export { default as LendsHero } from './LendsHero/LendsHero';
+export { default as SectionWhyChoose } from './SectionWhyChoose/SectionWhyChoose';
+export { default as SectionHowItWorks } from './SectionHowItWorks/SectionHowItWorks';
 export { default as StripeConnectAccountForm } from './StripeConnectAccountForm/StripeConnectAccountForm';
 
 //////////////////////////////////////////////

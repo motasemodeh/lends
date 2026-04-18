@@ -30,6 +30,8 @@ import LineItemProviderCommissionRefundMaybe from './LineItemProviderCommissionR
 import LineItemRefundMaybe from './LineItemRefundMaybe';
 import LineItemTotalPrice from './LineItemTotalPrice';
 import LineItemUnknownItemsMaybe from './LineItemUnknownItemsMaybe';
+import LineItemAddOnsMaybe from './LineItemAddOnsMaybe';
+import LineItemSecurityDepositMaybe from './LineItemSecurityDepositMaybe';
 
 import css from './OrderBreakdown.module.css';
 
@@ -43,6 +45,7 @@ export const OrderBreakdownComponent = props => {
     timeZone,
     currency,
     marketplaceName,
+    listing,
     intl,
   } = props;
 
@@ -116,6 +119,8 @@ export const OrderBreakdownComponent = props => {
       <LineItemBasePriceMaybe lineItems={lineItems} code={lineItemUnitType} intl={intl} />
       <LineItemShippingFeeMaybe lineItems={lineItems} intl={intl} />
       <LineItemPickupFeeMaybe lineItems={lineItems} intl={intl} />
+      <LineItemAddOnsMaybe lineItems={lineItems} listing={listing} intl={intl} />
+      <LineItemSecurityDepositMaybe lineItems={lineItems} intl={intl} />
       <LineItemUnknownItemsMaybe lineItems={lineItems} isProvider={isProvider} intl={intl} />
 
       <LineItemSubTotalMaybe

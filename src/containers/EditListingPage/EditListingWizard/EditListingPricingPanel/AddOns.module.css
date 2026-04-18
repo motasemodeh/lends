@@ -1,0 +1,72 @@
+.root {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--matterColorNegative);
+}
+
+.title {
+  margin-bottom: 8px;
+}
+
+.description {
+  margin-bottom: 24px;
+  color: var(--matterColorAnti);
+}
+
+.addOnsList {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.addOn {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background-color: var(--matterColorNegative);
+  border-radius: 4px;
+}
+
+.addOnFields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@media (--viewportMedium) {
+  .addOnFields {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .labelInput {
+    flex-grow: 1;
+  }
+
+  .priceInput {
+    width: 200px;
+    flex-shrink: 0;
+  }
+}
+
+.fieldArrayDelete {
+  align-self: flex-start;
+  margin-top: 8px;
+  color: var(--matterColorAnti);
+}
+
+.deleteIcon {
+  width: 14px;
+  height: 14px;
+  margin-right: 4px;
+  fill: var(--matterColorAnti);
+}
+
+.addAddOnContainer {
+  margin-top: 24px;
+}
+
+.addAddOnButton {
+  font-weight: var(--fontWeightMedium);
+}

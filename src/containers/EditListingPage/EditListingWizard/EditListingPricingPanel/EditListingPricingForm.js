@@ -16,6 +16,7 @@ import { Button, Form, FieldCurrencyInput } from '../../../../components';
 
 import BookingPriceVariants from './BookingPriceVariants';
 import StartTimeInterval from './StartTimeInverval';
+import ListingAddOns from './ListingAddOns';
 
 // Import modules from this directory
 import css from './EditListingPricingForm.module.css';
@@ -170,6 +171,11 @@ export const EditListingPricingForm = props => (
               validate={priceValidators}
             />
           )}
+
+          <ListingAddOns
+            marketplaceCurrency={marketplaceCurrency}
+            initialLength={formInitialValues?.addOns?.length || 0}
+          />
 
           {isFixedLengthBooking ? (
             <StartTimeInterval

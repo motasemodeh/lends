@@ -23,6 +23,9 @@ import CustomExtendedDataSection from '../../components/CustomExtendedDataSectio
 const CustomListingFields = props => {
   const { publicData, metadata, listingFieldConfigs, categoryConfiguration, intl } = props;
 
+  if (!categoryConfiguration) {
+    return null;
+  }
   const { key: categoryPrefix, categories: listingCategoriesConfig } = categoryConfiguration;
   const categoriesObj = pickCategoryFields(publicData, categoryPrefix, 1, listingCategoriesConfig);
   const currentCategories = Object.values(categoriesObj);

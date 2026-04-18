@@ -26,23 +26,34 @@ const AddOnSelector = props => {
       </h3>
       <div className={css.addOnsList}>
         {addOns.map(addOn => {
-          const moneyVal = new Money(addOn.price, currency);
-          const formattedAddOnPrice = formatMoney(intl, moneyVal);
+          if (!addOn || !addOn.label || addOn.price === null || addOn.price === undefined) {
+            return null;
+          }
 
-          return (
-            <div key={addOn.id} className={css.addOnItem}>
-              <FieldCheckbox
-                id={`addon-${addOn.id}`}
-                name="addOns"
-                label={intl.formatMessage(
-                  { id: 'AddOnSelector.label', defaultMessage: '{label} (+{price})' },
-                  { label: addOn.label, price: formattedAddOnPrice }
-                ) || `${addOn.label} (+${formattedAddOnPrice})`}
-                value={addOn.id}
-                onChange={onChange}
-              />
-            </div>
-          );
+          try {
+            const moneyVal = new Money(addOn.price, currency);
+            const formattedAddOnPrice = formatMoney(intl, moneyVal);
+
+            return (
+              <div key={addOn.id} className={css.addOnItem}>
+                <FieldCheckbox
+                  id={`addon-${addOn.id}`}
+                  name="addOns"
+                  label={
+                    intl.formatMessage(
+                      { id: 'AddOnSelector.label', defaultMessage: '{label} (+{price})' },
+                      { label: addOn.label, price: formattedAddOnPrice }
+                    ) || `${addOn.label} (+${formattedAddOnPrice})`
+                  }
+                  value={addOn.id}
+                  onChange={onChange}
+                />
+              </div>
+            );
+          } catch (e) {
+            console.error('AddOnSelector: failed to render add-on', addOn, e);
+            return null;
+          }
         })}
       </div>
     </div>

@@ -1,0 +1,150 @@
+@import '../../styles/customMediaQueries.css';
+
+.root {
+  padding: 64px 24px;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FFF9F5 100%);
+}
+
+@media (--viewportMedium) {
+  .root {
+    padding: 96px 48px;
+  }
+}
+
+.container {
+  max-width: 1128px;
+  margin: 0 auto;
+}
+
+.sectionTitle {
+  font-family: 'Montserrat', var(--fontFamily);
+  font-size: 28px;
+  font-weight: 800;
+  color: #1E293B;
+  text-align: center;
+  margin: 0 0 48px 0;
+  letter-spacing: -0.5px;
+}
+
+@media (--viewportMedium) {
+  .sectionTitle {
+    font-size: 36px;
+    margin-bottom: 64px;
+  }
+}
+
+.brand {
+  color: var(--marketplaceColor);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (--viewportMedium) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+}
+
+.card {
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 36px 28px 32px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.04);
+  border: 1px solid #F1F5F9;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.cardIconWrapper {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #FFF1E6 0%, #FFE0C2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.cardIconProvider {
+  background: linear-gradient(135deg, #E6F0FF 0%, #C2D9FF 100%);
+}
+
+.cardIcon {
+  width: 26px;
+  height: 26px;
+  color: var(--marketplaceColor);
+}
+
+.cardIconProvider .cardIcon {
+  color: #2563EB;
+}
+
+.cardTitle {
+  font-family: 'Montserrat', var(--fontFamily);
+  font-size: 20px;
+  font-weight: 700;
+  color: #1E293B;
+  margin: 0 0 12px 0;
+}
+
+.cardText {
+  font-family: 'Inter', var(--fontFamily);
+  font-size: 15px;
+  line-height: 1.7;
+  color: #64748B;
+  margin: 0 0 28px 0;
+  flex-grow: 1;
+}
+
+.cardButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--marketplaceColor);
+  color: #FFFFFF;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-family: 'Montserrat', var(--fontFamily);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+  align-self: flex-start;
+}
+
+.cardButton:hover {
+  background-color: #C2410C;
+  transform: translateX(2px);
+}
+
+.cardButtonProvider {
+  composes: cardButton;
+  background-color: #1E3A5F;
+}
+
+.cardButtonProvider:hover {
+  background-color: #122A46;
+}
+
+.arrowIcon {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s ease;
+}
+
+.cardButton:hover .arrowIcon,
+.cardButtonProvider:hover .arrowIcon {
+  transform: translateX(3px);
+}

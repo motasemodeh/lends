@@ -12,7 +12,7 @@ const MAX_LISTING_COUNT = 10;
 const getSectionBySectionId = (sections, sectionId) =>
   sections.find(section => section.sectionId === sectionId);
 
-const isListingsSection = section => section.sectionType === 'listings';
+const isListingsSection = section => section.sectionType === 'listings' || section.sectionType === 'featured-listings';
 
 // Get section ids for all listing sections that match a specific selection type
 // e.g., if selectionType is "newest", returns ['section-1', 'section-3'] for sections 1 and 3 if they're both listing sections with selection type "newest"
@@ -42,43 +42,45 @@ const fetchFeaturedListingsPayloadCreator = async (arg, thunkAPI) => {
   const { aspectWidth = 1, aspectHeight = 1, variantPrefix = 'listing-card' } = listingImageConfig;
   const aspectRatio = aspectHeight / aspectWidth;
 
+  const queryParams = {
+    ...(listingSelection === 'queryString' ? currentSection?.listingSearchQuery : {}),
+    perPage: MAX_LISTING_COUNT,
+    page: 1,
+    minStock: 1,
+    stockMode: 'match-undefined',
+    include: ['images', 'author', 'author.profileImage'],
+    'fields.listing': [
+      'title',
+      'geolocation',
+      'price',
+      'deleted',
+      'state',
+      'publicData.listingType',
+      'publicData.transactionProcessAlias',
+      'publicData.unitType',
+      'publicData.cardStyle',
+      'publicData.deliveryMethod',
+      'publicData.location',
+      'publicData.address',
+      'publicData.rating',
+      'publicData.reviewCount',
+      'publicData.priceVariationsEnabled',
+      'publicData.priceVariants',
+    ],
+    'fields.user': ['profile.displayName', 'profile.abbreviatedName', 'profile.publicData'],
+    'fields.image': [
+      'variants.listing-card',
+      'variants.listing-card-2x',
+      'variants.square-small',
+      'variants.square-small2x',
+    ],
+    ...createImageVariantConfig(`${variantPrefix}`, 400, aspectRatio),
+    ...createImageVariantConfig(`${variantPrefix}-2x`, 800, aspectRatio),
+    'limit.images': 1,
+  };
+
   return sdk.listings
-    .query([
-      ...(listingSelection === 'queryString' && currentSection?.listingSearchQuery
-        ? [currentSection.listingSearchQuery]
-        : []),
-      {
-        perPage: MAX_LISTING_COUNT,
-        page: 1,
-        minStock: 1,
-        stockMode: 'match-undefined',
-        include: ['images', 'author'],
-        'fields.listing': [
-          'title',
-          'geolocation',
-          'price',
-          'deleted',
-          'state',
-          'publicData.listingType',
-          'publicData.transactionProcessAlias',
-          'publicData.unitType',
-          'publicData.cardStyle',
-          'publicData.pickupEnabled',
-          'publicData.shippingEnabled',
-          'publicData.priceVariationsEnabled',
-          'publicData.priceVariants',
-        ],
-        'fields.image': [
-          'variants.listing-card',
-          'variants.listing-card-2x',
-          'variants.scaled-small',
-          'variants.scaled-medium',
-        ],
-        ...createImageVariantConfig(`${variantPrefix}`, 400, aspectRatio),
-        ...createImageVariantConfig(`${variantPrefix}-2x`, 800, aspectRatio),
-        'limit.images': 1,
-      },
-    ])
+    .query(queryParams)
     .then(response => {
       dispatch(addMarketplaceEntities(response));
       return { apiResponse: response };

@@ -56,6 +56,7 @@ import EditListingWizardTab, {
   AVAILABILITY,
   PHOTOS,
   STYLE,
+  POLICY,
 } from './EditListingWizardTab';
 import css from './EditListingWizard.module.css';
 
@@ -96,7 +97,14 @@ const tabsForListingType = (processName, listingTypeConfig) => {
   // Note 3: The first tab creates a draft listing and title is mandatory attribute for it.
   //         Details tab asks for "title" and is therefore the first tab in the wizard flow.
   const tabs = {
-    ['default-booking']: [DETAILS, ...locationMaybe, PRICING, AVAILABILITY, ...styleOrPhotosTab],
+    ['default-booking']: [
+      DETAILS,
+      ...locationMaybe,
+      PRICING,
+      AVAILABILITY,
+      POLICY,
+      ...styleOrPhotosTab,
+    ],
     ['default-purchase']: [DETAILS, PRICING_AND_STOCK, ...deliveryMaybe, ...styleOrPhotosTab],
     ['default-negotiation']: [DETAILS, ...locationMaybe, ...pricingMaybe, ...styleOrPhotosTab],
     ['default-inquiry']: [DETAILS, ...locationMaybe, ...pricingMaybe, ...styleOrPhotosTab],
@@ -144,8 +152,10 @@ const tabLabelAndSubmit = (intl, tab, isNewListingFlow, isPriceDisabled, process
     labelKey = 'EditListingWizard.tabLabelPhotos';
     submitButtonKey = `EditListingWizard.${processNameString}${newOrEdit}.savePhotos`;
   } else if (tab === STYLE) {
-    labelKey = 'EditListingWizard.tabLabelStyle';
     submitButtonKey = `EditListingWizard.${processNameString}${newOrEdit}.saveStyle`;
+  } else if (tab === POLICY) {
+    labelKey = 'EditListingWizard.tabLabelPolicy';
+    submitButtonKey = `EditListingWizard.${processNameString}${newOrEdit}.savePolicy`;
   }
 
   return {
@@ -266,6 +276,8 @@ const tabCompleted = (tab, listing, config) => {
       return images && images.length > 0;
     case STYLE:
       return !!cardStyle;
+    case POLICY:
+      return true; // We don't require anything for now
     default:
       return false;
   }

@@ -153,18 +153,52 @@ const UserCard = props => {
 
   return (
     <div className={classes}>
-      <div className={css.content}>
+      <div className={css.ownerHeader}>
         <AvatarLarge className={css.avatar} user={user} />
-        <div className={css.info}>
-          <div className={css.headingRow}>
-            <FormattedMessage id="UserCard.heading" values={{ name: displayName }} />
-            {editProfileDesktop}
+        <div className={css.ownerInfo}>
+          <div className={css.ownerName}>{displayName}</div>
+          
+          <div className={css.verifiedBadge}>
+            <svg className={css.verifiedIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"></path></svg>
+            <span>Verified</span>
           </div>
-          {hasBio ? <ExpandableBio className={css.desktopBio} bio={bio} /> : null}
-          {links}
+          
+          <div className={css.ownerStats}>
+             <span className={css.star}>
+               <svg viewBox="0 0 24 24" fill="currentColor" className={css.starIcon}><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+             </span> 
+             <span className={css.statsText}>
+               <span className={css.statBold}>5.0</span>
+               {' (3 reviews) '}
+               <span className={css.statSeparator}>|</span>
+               {' '}
+               <span className={css.statBold}>3</span>
+               {' Listings'}
+             </span>
+          </div>
         </div>
       </div>
-      {hasBio ? <ExpandableBio className={css.mobileBio} bio={bio} /> : null}
+
+      {hasBio ? <ExpandableBio className={css.desktopBio} bio={bio} /> : null}
+      
+      {mounted && isCurrentUser ? (
+        <NamedLink className={css.messageButton} name="ProfileSettingsPage">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={css.messageIcon}><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+          Edit Profile
+        </NamedLink>
+      ) : (
+        showContact && (
+          <InlineTextButton
+            id={contactLinkId}
+            rootClassName={css.messageButton}
+            onClick={handleContactUserClick}
+            enforcePagePreloadFor="SignupPage"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={css.messageIcon}><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            Message Owner
+          </InlineTextButton>
+        )
+      )}
     </div>
   );
 };

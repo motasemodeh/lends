@@ -3,9 +3,10 @@
 .root {
   width: 100%;
 
-  /* Top Bar's drop shadow should always be visible */
+  /* Top Bar should be sticky for accessibility and premium feel */
   z-index: var(--zIndexTopbar);
-  position: relative;
+  position: sticky;
+  top: 0;
 }
 
 /* Skip to main content link - visually hidden until focused */
@@ -49,11 +50,14 @@
   justify-content: space-between;
   align-items: center;
 
-  /* fill */
-  background-color: var(--colorWhite);
+  /* fill: glassmorphism effect */
+  background-color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 
-  /* shadows */
-  box-shadow: var(--boxShadow);
+  /* border and shadows */
+  border-bottom: 1px solid var(--colorGrey100);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 
   @media (--viewportMedium) {
     height: var(--topbarHeightDesktop);

@@ -80,6 +80,7 @@ import {
   handleNavigateToRequestQuotePage,
   handleSubmit,
   priceForSchemaMaybe,
+  categoryLabel,
 } from './ListingPage.shared';
 import ActionBarMaybe from './ActionBarMaybe';
 import SectionReviews from './SectionReviews';
@@ -210,7 +211,7 @@ export const ListingPageComponent = props => {
       <ErrorPage topbar={topbar} scrollingDisabled={scrollingDisabled} intl={intl} invalidListing />
     );
   }
-  const validListingTypes = listingConfig.listingTypes;
+  const validListingTypes = listingConfig.listingTypes || [];
   const foundListingTypeConfig = validListingTypes.find(conf => conf.listingType === listingType);
   const showListingImage = requireListingImage(foundListingTypeConfig);
   const showDescription = foundListingTypeConfig?.defaultListingFields?.description;
@@ -372,25 +373,91 @@ export const ListingPageComponent = props => {
                 }}
               />
             ) : null}
+
+            {/* New Top Header Section - now Dynamic */}
+            <div className={css.listingTopHeader}>
+              <div className={css.breadcrumbs}>
+                <span>Home</span> {'>'} 
+                <span>
+                  {categoryLabel(config.categoryConfiguration?.categories || [], publicData.categoryLevel1 || publicData.category)}
+                </span> {'>'} 
+                <span className={css.breadcrumbActive}>{title}</span>
+              </div>
+              
+              <div className={css.pillTags}>
+                {publicData.condition && (
+                  <span className={classNames(css.pillTag, css.pillTagOrange)}>{publicData.condition}</span>
+                )}
+                {publicData.cancellation && (
+                  <span className={classNames(css.pillTag, css.pillTagOrange)}>{publicData.cancellation}</span>
+                )}
+                {publicData.location && publicData.location.address && (
+                  <span className={classNames(css.pillTag, css.pillTagBlue)}>Pickup available</span>
+                )}
+              </div>
+              
+              <H2 as="h1" className={css.mockupTitle}>
+                {richTitle}
+              </H2>
+              
+              <div className={css.ratingAndShare}>
+                <div className={css.ratingBadge}>
+                  <div className={css.starsGroup}>
+                    {[1, 2, 3, 4, 5].map(i => (
+                      <span key={i} className={css.ratingStar}>
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                        </svg>
+                      </span>
+                    ))}
+                  </div>
+                  <span className={css.ratingScore}>5.0</span>
+                  <span className={css.reviewCount}>({reviews.length} Reviews)</span>
+                  <div className={css.locationPin}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    <span>
+                      {publicData.location?.address 
+                        ? publicData.location.address.split(',').slice(-2).join(', ').trim() || publicData.location.address
+                        : 'Location'
+                      }
+                    </span>
+                  </div>
+                </div>
+                <button
+                  className={css.shareButton}
+                  onClick={() => {
+                    const shareData = {
+                      title: title,
+                      text: `Check out "${title}" on LENDS`,
+                      url: typeof window !== 'undefined' ? window.location.href : '',
+                    };
+                    if (typeof navigator !== 'undefined' && navigator.share) {
+                      navigator.share(shareData).catch(() => {});
+                    } else if (typeof navigator !== 'undefined' && navigator.clipboard) {
+                      navigator.clipboard.writeText(shareData.url).then(() => {
+                        const btn = document.activeElement;
+                        if (btn) {
+                          const orig = btn.textContent;
+                          btn.textContent = '✓ Copied!';
+                          setTimeout(() => { btn.textContent = orig; }, 2000);
+                        }
+                      });
+                    }
+                  }}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
+                  Share
+                </button>
+              </div>
+            </div>
+
             {showListingImage && (
               <SectionGallery
                 listing={currentListing}
                 variantPrefix={config.layout.listingImage.variantPrefix}
               />
             )}
-            <div
-              className={showListingImage ? css.mobileHeading : css.noListingImageHeadingProduct}
-            >
-              {showListingImage ? (
-                <H2 as="h1" className={css.orderPanelTitle}>
-                  <FormattedMessage id="ListingPage.orderTitle" values={{ title: richTitle }} />
-                </H2>
-              ) : (
-                <H3 as="h1" className={css.orderPanelTitle}>
-                  <FormattedMessage id="ListingPage.orderTitle" values={{ title: richTitle }} />
-                </H3>
-              )}
-            </div>
+            
             {showDescription && <SectionText text={description} showAsIngress />}
 
             <CustomListingFields
@@ -401,64 +468,64 @@ export const ListingPageComponent = props => {
               intl={intl}
             />
 
-            <SectionMapMaybe
-              geolocation={geolocation}
-              publicData={publicData}
-              listingId={currentListing.id}
-              mapsConfig={config.maps}
-            />
             <SectionReviews reviews={reviews} fetchReviewsError={fetchReviewsError} />
-            <SectionAuthorMaybe
-              title={title}
-              listing={currentListing}
-              authorDisplayName={authorDisplayName}
-              onContactUser={onContactUser}
-              isInquiryModalOpen={isAuthenticated && inquiryModalOpen}
-              onCloseInquiryModal={() => setInquiryModalOpen(false)}
-              sendInquiryError={sendInquiryError}
-              sendInquiryInProgress={sendInquiryInProgress}
-              onSubmitInquiry={onSubmitInquiry}
-              currentUser={currentUser}
-              onManageDisableScrolling={onManageDisableScrolling}
-            />
           </div>
+          
           <div className={css.orderColumnForProductLayout}>
-            <OrderPanel
-              className={classNames(css.productOrderPanel, {
-                [css.imagesEnabled]: showListingImage,
-              })}
-              listing={currentListing}
-              isOwnListing={isOwnListing}
-              onSubmit={handleOrderSubmit}
-              authorLink={
-                <NamedLink
-                  className={css.authorNameLink}
-                  name={isVariant ? 'ListingPageVariant' : 'ListingPage'}
-                  params={params}
-                  to={{ hash: '#author' }}
-                >
-                  {authorDisplayName}
-                </NamedLink>
-              }
-              title={<FormattedMessage id="ListingPage.orderTitle" values={{ title: richTitle }} />}
-              titleDesktop={
-                <H4 as="h1" className={css.orderPanelTitle}>
-                  <FormattedMessage id="ListingPage.orderTitle" values={{ title: richTitle }} />
-                </H4>
-              }
-              payoutDetailsWarning={payoutDetailsWarning}
-              author={ensuredAuthor}
-              onManageDisableScrolling={onManageDisableScrolling}
-              onContactUser={onContactUser}
-              {...restOfProps}
-              validListingTypes={config.listing.listingTypes}
-              marketplaceCurrency={config.currency}
-              dayCountAvailableForBooking={config.stripe.dayCountAvailableForBooking}
-              marketplaceName={config.marketplaceName}
-              showListingImage={showListingImage}
-              addOns={parseAddOnsConfig(publicData.addOnsConfiguration)}
-              securityDepositAmount={publicData.securityDepositAmount}
-            />
+            <div className={css.sidebarWidget}>
+              <OrderPanel
+                className={classNames(css.productOrderPanel, {
+                  [css.imagesEnabled]: showListingImage,
+                })}
+                listing={currentListing}
+                isOwnListing={isOwnListing}
+                onSubmit={handleOrderSubmit}
+                title={<span className={css.sidebarWidgetTitle}>Order Details</span>}
+                titleDesktop={
+                  <h2 className={css.sidebarWidgetTitle}>
+                    Order Details
+                  </h2>
+                }
+                payoutDetailsWarning={payoutDetailsWarning}
+                onManageDisableScrolling={onManageDisableScrolling}
+                onContactUser={onContactUser}
+                {...restOfProps}
+                validListingTypes={config.listing.listingTypes}
+                marketplaceCurrency={config.currency}
+                dayCountAvailableForBooking={config.stripe.dayCountAvailableForBooking}
+                marketplaceName={config.marketplaceName}
+                showListingImage={showListingImage}
+                addOns={parseAddOnsConfig(publicData.addOnsConfiguration)}
+                securityDepositAmount={publicData.securityDepositAmount}
+                deliveryMethod={publicData.deliveryMethod}
+              />
+            </div>
+
+            
+            <div className={css.sidebarWidget}>
+              <SectionMapMaybe
+                geolocation={geolocation}
+                publicData={publicData}
+                listingId={currentListing.id}
+                mapsConfig={config.maps}
+              />
+            </div>
+            
+            <div className={css.sidebarWidget}>
+              <SectionAuthorMaybe
+                title={title}
+                listing={currentListing}
+                authorDisplayName={authorDisplayName}
+                onContactUser={onContactUser}
+                isInquiryModalOpen={isAuthenticated && inquiryModalOpen}
+                onCloseInquiryModal={() => setInquiryModalOpen(false)}
+                sendInquiryError={sendInquiryError}
+                sendInquiryInProgress={sendInquiryInProgress}
+                onSubmitInquiry={onSubmitInquiry}
+                currentUser={currentUser}
+                onManageDisableScrolling={onManageDisableScrolling}
+              />
+            </div>
           </div>
         </div>
       </LayoutSingleColumn>

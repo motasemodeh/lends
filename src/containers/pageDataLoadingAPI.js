@@ -2,6 +2,9 @@
  * Export loadData calls from ducks modules of different containers
  */
 import { loadData as AuthenticationPageLoader } from './AuthenticationPage/AuthenticationPage.duck';
+import { loadData as AboutPageLoader } from './AboutPage/AboutPage.duck';
+import { loadData as BuildStorePageLoader } from './BuildStorePage/BuildStorePage.duck';
+import { loadData as GetOrganizedPageLoader } from './GetOrganizedPage/GetOrganizedPage.duck';
 import { loadData as LandingPageLoader } from './LandingPage/LandingPage.duck';
 import { setInitialValues as CheckoutPageInitialValues } from './CheckoutPage/CheckoutPage.duck';
 import { loadData as CMSPageLoader } from './CMSPage/CMSPage.duck';
@@ -28,6 +31,15 @@ const getPageDataLoadingAPI = () => {
   return {
     AuthenticationPage: {
       loadData: AuthenticationPageLoader,
+    },
+    AboutPage: {
+      loadData: AboutPageLoader,
+    },
+    BuildStorePage: {
+      loadData: BuildStorePageLoader,
+    },
+    GetOrganizedPage: {
+      loadData: GetOrganizedPageLoader,
     },
     LandingPage: {
       loadData: LandingPageLoader,

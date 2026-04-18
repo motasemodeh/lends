@@ -22,6 +22,10 @@ import {
   getInitialValuesForStartTimeInterval,
   handleSubmitValuesForStartTimeInterval,
 } from './StartTimeInverval';
+import {
+  getInitialValuesForAddOns,
+  handleSubmitValuesForAddOns,
+} from './ListingAddOns';
 import css from './EditListingPricingPanel.module.css';
 
 const { Money } = sdkTypes;
@@ -46,8 +50,12 @@ const getInitialValues = props => {
     ? {
         ...getInitialValuesForPriceVariants(props, isPriceVariationsInUse),
         ...getInitialValuesForStartTimeInterval(props),
+        ...getInitialValuesForAddOns(listing, props.marketplaceCurrency),
       }
-    : { price: listing?.attributes?.price };
+    : {
+        price: listing?.attributes?.price,
+        ...getInitialValuesForAddOns(listing, props.marketplaceCurrency),
+      };
 };
 
 // This is needed to show the listing's price consistently over XHR calls.
@@ -186,13 +194,18 @@ const EditListingPricingPanel = props => {
                 unitType,
                 listingTypeConfig
               );
+
+              const publicDataWithAddOns = handleSubmitValuesForAddOns(values, {
+                priceVariationsEnabled: isPriceVariationsInUse,
+                ...startTimeIntervalChanges.publicData,
+                ...priceVariantChanges.publicData,
+              });
+
               updateValues = {
                 ...priceVariantChanges,
                 ...startTimeIntervalChanges,
                 publicData: {
-                  priceVariationsEnabled: isPriceVariationsInUse,
-                  ...startTimeIntervalChanges.publicData,
-                  ...priceVariantChanges.publicData,
+                  ...publicDataWithAddOns,
                 },
               };
             } else {
@@ -203,7 +216,19 @@ const EditListingPricingPanel = props => {
                     },
                   }
                 : {};
-              updateValues = { price, ...priceVariationsEnabledMaybe };
+
+              const publicDataWithAddOns = handleSubmitValuesForAddOns(
+                values,
+                priceVariationsEnabledMaybe.publicData || publicData
+              );
+
+              updateValues = {
+                price,
+                ...priceVariationsEnabledMaybe,
+                publicData: {
+                  ...publicDataWithAddOns,
+                },
+              };
             }
 
             // Save the initialValues to state

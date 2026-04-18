@@ -484,6 +484,7 @@ export const ListingPageComponent = props => {
               showListingImage={showListingImage}
               addOns={parseAddOnsConfig(publicData.addOnsConfiguration)}
               securityDepositAmount={publicData.securityDepositAmount}
+              deliveryMethod={publicData.deliveryMethod}
             />
           </div>
         </div>

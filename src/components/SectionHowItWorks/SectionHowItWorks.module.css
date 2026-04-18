@@ -1,0 +1,157 @@
+@import '../../styles/customMediaQueries.css';
+
+.root {
+  padding: 64px 24px;
+  background: #FAFBFC;
+}
+
+@media (--viewportMedium) {
+  .root {
+    padding: 96px 48px;
+  }
+}
+
+.container {
+  max-width: 1128px;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.sectionTitle {
+  font-family: 'Montserrat', var(--fontFamily);
+  font-size: 28px;
+  font-weight: 800;
+  color: #1E293B;
+  margin: 0 0 16px 0;
+  letter-spacing: -0.5px;
+}
+
+@media (--viewportMedium) {
+  .sectionTitle {
+    font-size: 36px;
+  }
+}
+
+.brand {
+  color: var(--marketplaceColor);
+}
+
+.subtitle {
+  font-family: 'Inter', var(--fontFamily);
+  font-size: 16px;
+  color: #64748B;
+  margin: 0;
+  line-height: 1.6;
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.stepsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  position: relative;
+}
+
+@media (--viewportMedium) {
+  .stepsGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+}
+
+.stepCard {
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 32px 24px 28px;
+  position: relative;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.03);
+  border: 1px solid #F1F5F9;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.stepCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.stepNumber {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--marketplaceColor);
+  color: #FFFFFF;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-family: 'Montserrat', var(--fontFamily);
+  font-size: 13px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(194, 65, 12, 0.3);
+}
+
+.stepIconWrapper {
+  width: 60px;
+  height: 60px;
+  margin: 16px auto 20px;
+  background: linear-gradient(135deg, #FFF1E6 0%, #FFE0C2 100%);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--marketplaceColor);
+}
+
+.stepIconWrapper svg {
+  width: 28px;
+  height: 28px;
+}
+
+.stepTitle {
+  font-family: 'Montserrat', var(--fontFamily);
+  font-size: 18px;
+  font-weight: 700;
+  color: #1E293B;
+  margin: 0 0 12px 0;
+}
+
+.stepDescription {
+  font-family: 'Inter', var(--fontFamily);
+  font-size: 14px;
+  line-height: 1.7;
+  color: #64748B;
+  margin: 0;
+}
+
+.connector {
+  display: none;
+}
+
+@media (--viewportMedium) {
+  .connector {
+    display: block;
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    color: #CBD5E1;
+    z-index: 1;
+  }
+
+  .connector svg {
+    width: 20px;
+    height: 20px;
+  }
+}

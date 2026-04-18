@@ -116,7 +116,11 @@ const getAddOnAndDepositLineItems = (orderData, publicData, currency) => {
   let addOnLineItems = [];
   if (selectedAddOnIds && selectedAddOnIds.length > 0 && addOnsConfiguration) {
     try {
-      const availableAddOns = JSON.parse(addOnsConfiguration);
+      const availableAddOns =
+        typeof addOnsConfiguration === 'string'
+          ? JSON.parse(addOnsConfiguration)
+          : addOnsConfiguration;
+
       addOnLineItems = selectedAddOnIds
         .map(id => {
           const addOn = Array.isArray(availableAddOns)
@@ -150,6 +154,26 @@ const getAddOnAndDepositLineItems = (orderData, publicData, currency) => {
     : [];
 
   return [...addOnLineItems, ...depositLineItem];
+};
+
+/**
+ * Add line-items for delivery fee
+ */
+const getDeliveryLineItems = (orderData, publicData, currency) => {
+  const { deliveryMethod } = orderData || {};
+  const { deliveryFee } = publicData || {};
+
+  if (deliveryMethod === 'delivery' && deliveryFee) {
+    return [
+      {
+        code: 'line-item/delivery-fee',
+        unitPrice: new Money(deliveryFee, currency),
+        quantity: 1,
+        includeFor: ['customer', 'provider'],
+      },
+    ];
+  }
+  return [];
 };
 
 /**
@@ -279,6 +303,7 @@ exports.transactionLineItems = (listing, orderData, providerCommission, customer
     order,
     ...extraLineItems,
     ...getAddOnAndDepositLineItems(orderData, publicData, currency),
+    ...getDeliveryLineItems(orderData, publicData, currency),
     ...getProviderCommissionMaybe(providerCommission, order, currency),
     ...getCustomerCommissionMaybe(customerCommission, order, currency),
   ];

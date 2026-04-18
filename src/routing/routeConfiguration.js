@@ -42,6 +42,9 @@ const NoAccessPage = loadable(() => import(/* webpackChunkName: "NoAccessPage" *
 
 // Styleguide helps you to review current components and develop new ones
 const StyleguidePage = loadable(() => import(/* webpackChunkName: "StyleguidePage" */ '../containers/StyleguidePage/StyleguidePage'));
+const AboutPage = loadable(() => import(/* webpackChunkName: "AboutPage" */ '../containers/AboutPage/AboutPage'));
+const BuildStorePage = loadable(() => import(/* webpackChunkName: "BuildStorePage" */ '../containers/BuildStorePage/BuildStorePage'));
+const GetOrganizedPage = loadable(() => import(/* webpackChunkName: "GetOrganizedPage" */ '../containers/GetOrganizedPage/GetOrganizedPage'));
 
 export const ACCOUNT_SETTINGS_PAGES = [
   'ContactDetailsPage',
@@ -81,6 +84,24 @@ const routeConfiguration = (layoutConfig, accessControlConfig) => {
       name: 'LandingPage',
       component: LandingPage,
       loadData: pageDataLoadingAPI.LandingPage.loadData,
+    },
+    {
+      path: '/p/aboutus',
+      name: 'AboutPage',
+      component: AboutPage,
+      loadData: pageDataLoadingAPI.AboutPage.loadData,
+    },
+    {
+      path: '/p/buildastoreonlends2',
+      name: 'BuildStorePage',
+      component: BuildStorePage,
+      loadData: pageDataLoadingAPI.BuildStorePage.loadData,
+    },
+    {
+      path: '/p/needhelpgettingorganized',
+      name: 'GetOrganizedPage',
+      component: GetOrganizedPage,
+      loadData: pageDataLoadingAPI.GetOrganizedPage.loadData,
     },
     {
       path: '/p/:pageId',
