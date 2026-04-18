@@ -86,7 +86,14 @@ const GetOrganizedPage = () => {
             <div className={css.ctaBox}>
               <h3>Ready to start sorting?</h3>
               <p>Schedule a consultation with our team to discuss your storage and how we can help you go live.</p>
-              <NamedLink name="ContactDetailsPage" className={css.ctaButton}>Connect With Us</NamedLink>
+              <a 
+                href="https://docs.google.com/forms/d/1jl08_Oix-HZJwHArTzNDjtmvlBdgfQj-QNDgF3gMtHQ/edit" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className={css.ctaButton}
+              >
+                Connect With Us
+              </a>
             </div>
           </section>
 

@@ -22,14 +22,14 @@ const BuildStorePage = () => {
         footer={<FooterContainer />}
       >
         <div className={css.content}>
-          
+
           {/* Hero Section */}
           <header className={css.heroSection}>
             <div className={css.heroContent}>
               <span className={css.heroOverline}>Partner with Lends</span>
               <h1 className={css.heroTitle}>Build Your Rental Business.</h1>
               <p className={css.heroSubtitle}>
-                From specialty gear to creative assets — turn what you own into a professional storefront. 
+                From specialty gear to creative assets — turn what you own into a professional storefront.
                 Everything you need to manage, scale, and succeed.
               </p>
               <div className={css.heroCta}>
@@ -66,7 +66,7 @@ const BuildStorePage = () => {
               <h2 className={css.sectionTitle}>Why Professional Hosts Choose Lends</h2>
               <p className={css.sectionSubtitle}>We've built the infrastructure so you can focus on your inventory.</p>
             </div>
-            
+
             <div className={css.whyGrid}>
               <div className={css.whyItem}>
                 <h4>Direct Communication</h4>
@@ -130,9 +130,9 @@ const BuildStorePage = () => {
               <h2 className={css.sectionTitle}>Transparent Pricing</h2>
               <p>No hidden costs. No monthly subscriptions. No setup fees.</p>
               <div className={css.feeBox}>
-                <div className={css.feeValue}>Only 15%</div>
+                <div className={css.feeValue}>Only 9%</div>
                 <div className={css.feeLabel}>Service Fee on Completed Rentals</div>
-                <p className={css.feeSubtext}>We only earn when you earn. This fee covers payment processing, platform maintenance, and support.</p>
+                <p className={css.feeSubtext}> We only earn when you earn. This fee covers platform maintenance and support.</p>
               </div>
             </div>
           </section>
