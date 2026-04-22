@@ -97,7 +97,8 @@ const UserCard = props => {
   const ensuredCurrentUser = ensureCurrentUser(currentUser);
   const isCurrentUser =
     ensuredUser.id && ensuredCurrentUser.id && ensuredUser.id.uuid === ensuredCurrentUser.id.uuid;
-  const { displayName, bio } = ensuredUser.attributes.profile;
+  const { displayName, bio, publicData } = ensuredUser.attributes.profile;
+  const badges = publicData?.badges || [];
 
   const handleContactUserClick = () => {
     onContactUser(user);
@@ -156,26 +157,48 @@ const UserCard = props => {
       <div className={css.ownerHeader}>
         <AvatarLarge className={css.avatar} user={user} />
         <div className={css.ownerInfo}>
-          <div className={css.ownerName}>{displayName}</div>
+          <NamedLink name="ProfilePage" params={{ id: ensuredUser.id.uuid }} className={css.ownerNameLink}>
+            <div className={css.ownerName}>{displayName}</div>
+          </NamedLink>
           
-          <div className={css.verifiedBadge}>
-            <svg className={css.verifiedIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"></path></svg>
-            <span>Verified</span>
+          <div className={css.badgesContainer}>
+            <div className={css.verifiedBadge}>
+              <svg className={css.verifiedIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"></path></svg>
+              <span>Verified</span>
+            </div>
+            {badges.map((badge, idx) => (
+              <div key={idx} className={css.customBadge}>
+                {badge}
+              </div>
+            ))}
           </div>
           
-          <div className={css.ownerStats}>
-             <span className={css.star}>
-               <svg viewBox="0 0 24 24" fill="currentColor" className={css.starIcon}><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
-             </span> 
-             <span className={css.statsText}>
-               <span className={css.statBold}>5.0</span>
-               {' (3 reviews) '}
-               <span className={css.statSeparator}>|</span>
-               {' '}
-               <span className={css.statBold}>3</span>
-               {' Listings'}
-             </span>
-          </div>
+          {(publicData.rating || publicData.listingCount) ? (
+            <div className={css.ownerStats}>
+               {publicData.rating ? (
+                 <>
+                   <span className={css.star}>
+                     <svg viewBox="0 0 24 24" fill="currentColor" className={css.starIcon}><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+                   </span> 
+                   <span className={css.statsText}>
+                     <span className={css.statBold}>{publicData.rating}</span>
+                     {` (${publicData.reviewCount || 0} reviews)`}
+                   </span>
+                 </>
+               ) : null}
+
+               {publicData.rating && publicData.listingCount ? (
+                 <span className={css.statSeparator}>|</span>
+               ) : null}
+
+               {publicData.listingCount ? (
+                 <span className={css.statsText}>
+                   <span className={css.statBold}>{publicData.listingCount}</span>
+                   {publicData.listingCount === 1 ? ' Listing' : ' Listings'}
+                 </span>
+               ) : null}
+            </div>
+          ) : null}
         </div>
       </div>
 

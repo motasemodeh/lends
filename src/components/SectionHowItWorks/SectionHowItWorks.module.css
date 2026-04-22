@@ -3,6 +3,8 @@
 .root {
   padding: 64px 24px;
   background: #FAFBFC;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 @media (--viewportMedium) {
@@ -56,6 +58,8 @@
   grid-template-columns: 1fr;
   gap: 24px;
   position: relative;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 @media (--viewportMedium) {
@@ -74,6 +78,8 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.03);
   border: 1px solid #F1F5F9;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .stepCard:hover {

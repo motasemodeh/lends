@@ -31,6 +31,23 @@
   color: #1F2937;
 }
 
+.ownerNameLink {
+  text-decoration: none;
+}
+
+.ownerNameLink:hover .ownerName {
+  text-decoration: underline;
+  color: var(--marketplaceColor);
+}
+
+.badgesContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 2px;
+}
+
 .verifiedBadge {
   display: inline-flex;
   align-items: center;
@@ -44,7 +61,20 @@
   font-size: 12px;
   font-weight: 500;
   width: fit-content;
-  margin-bottom: 2px;
+}
+
+.customBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #F8FAFC;
+  color: #475569;
+  border: 1px solid #E2E8F0;
+  padding: 2px 10px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 500;
+  width: fit-content;
 }
 
 .verifiedIcon {

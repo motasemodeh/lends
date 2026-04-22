@@ -3,16 +3,19 @@
 .root {
   position: relative;
   width: 100%;
-  min-height: 600px;
+  min-height: auto;
+  padding: 80px 0;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--colorWhite);
   background-color: var(--colorBlack);
+  box-sizing: border-box;
 
   @media (--viewportMedium) {
     min-height: 700px;
+    padding: 0;
   }
 }
 
@@ -53,9 +56,10 @@
   margin: 0 auto;
   padding: 0 24px;
   width: 100%;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 60px;
+  gap: 40px;
 
   @media (--viewportMedium) {
     padding: 0 40px;
@@ -88,13 +92,21 @@
 }
 
 .mainTitle {
-  font-size: 32px;
-  line-height: 1.1;
+  font-size: 28px;
+  line-height: 1.2;
   font-weight: 900;
   color: #FFFFFF;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+
+  @media (max-width: 480px) {
+    font-size: 24px;
+  }
 
   @media (--viewportMedium) {
     font-size: 56px;
+    line-height: 1.1;
   }
 }
 
@@ -115,8 +127,13 @@
 
 .ctaGroup {
   display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
+  flex-direction: column;
+  gap: 12px;
+
+  @media (--viewportMedium) {
+    flex-direction: row;
+    gap: 16px;
+  }
 }
 
 .primaryButton {
@@ -131,7 +148,12 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 200px;
+  width: 100%;
+
+  @media (--viewportMedium) {
+    width: auto;
+    min-width: 200px;
+  }
 }
 
 .primaryButton:hover {
@@ -153,9 +175,14 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 200px;
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.2);
+  width: 100%;
+
+  @media (--viewportMedium) {
+    width: auto;
+    min-width: 200px;
+  }
 }
 
 .secondaryButton:hover {
@@ -166,18 +193,27 @@
 
 .statsGroup {
   display: flex;
+  flex-wrap: wrap;
   justify-content: flex-start;
-  gap: 32px;
-  padding: 24px;
+  gap: 16px;
+  padding: 20px;
   background-color: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(12px);
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  width: fit-content;
+  width: 100%;
+  box-sizing: border-box;
 
   @media (--viewportMedium) {
+    flex-wrap: nowrap;
     padding: 32px 48px;
     gap: 60px;
+    width: fit-content;
+  }
+
+  @media (max-width: 480px) {
+    padding: 16px;
+    gap: 12px;
   }
 }
 
@@ -206,6 +242,11 @@
 }
 
 .statDivider {
-  width: 1px;
-  background-color: rgba(255, 255, 255, 0.1);
+  display: none;
+
+  @media (--viewportMedium) {
+    display: block;
+    width: 1px;
+    background-color: rgba(255, 255, 255, 0.1);
+  }
 }

@@ -6,8 +6,10 @@
   display: grid;
   justify-content: start;
   margin: 0 auto;
-  padding: 0 32px;
+  padding: 0 24px;
   position: relative;
+  box-sizing: border-box;
+  width: 100%;
 
   & h1 + p,
   & h1 + a,

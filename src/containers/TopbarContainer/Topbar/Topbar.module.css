@@ -42,7 +42,10 @@
 .container {
   /* Size */
   width: 100%;
+  max-width: 100%;
   height: var(--topbarHeight);
+  box-sizing: border-box;
+  overflow: hidden;
 
   /* Layout for child components */
   display: flex;
@@ -102,18 +105,28 @@
 }
 
 .menu {
-  padding: 15px 24px;
+  padding: 15px 12px; /* Reduced padding on mobile */
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px; /* Fixed width for better control */
 
   @media (--viewportMedium) {
     padding: 21px 24px;
+    width: 66px;
   }
 }
 .searchMenu {
-  padding: 12px 24px;
+  padding: 12px 12px; /* Reduced padding on mobile */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
 
   @media (--viewportMedium) {
     padding: 18px 24px;
+    width: 66px;
   }
 }
 
@@ -139,9 +152,6 @@
 
   animation-name: notificationPop;
   animation-duration: 0.1s;
-  animation-delay: 0.1s;
-  animation-fill-mode: forwards;
-
   animation-timing-function: ease-in;
   opacity: 0;
   transform: scale(0);

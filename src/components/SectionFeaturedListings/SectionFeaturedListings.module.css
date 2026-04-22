@@ -4,6 +4,8 @@
   background-color: var(--colorWhite);
   padding: var(--spacingUnit) 0;
   margin-top: var(--LandingPage_sectionMarginTop);
+  overflow: hidden; /* Critical for containing horizontal overflow */
+  width: 100%;
 
   @media (--viewportMedium) {
     padding: var(--spacingUnitDesktop) 0;
@@ -17,11 +19,13 @@
 }
 
 .constraints {
-  max-width: var(--contentMaxWidth);
+  max-width: 100%;
   margin: 0 auto;
   padding: 0 24px;
+  box-sizing: border-box;
 
   @media (--viewportMedium) {
+    max-width: var(--contentMaxWidthPages);
     padding: 0 40px;
   }
 
@@ -31,155 +35,192 @@
 }
 
 .header {
-  margin-bottom: 40px;
   text-align: center;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
+  margin-bottom: 32px;
 
   @media (--viewportMedium) {
-    margin-bottom: 60px;
+    text-align: left;
+    margin-bottom: 40px;
   }
 }
 
 .title {
-  font-family: var(--fontFamily);
-  font-weight: 900;
-  font-size: 28px;
-  line-height: 1.1;
-  margin-top: 0;
-  margin-bottom: 16px;
+  font-family: 'Montserrat', var(--fontFamily);
+  font-size: 24px;
+  font-weight: 800;
   color: #1E293B;
+  margin: 0 0 8px 0;
   letter-spacing: -0.5px;
 
   @media (--viewportMedium) {
-    font-size: 40px;
+    font-size: 32px;
   }
 }
 
 .subtitle {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--marketplaceColor);
-  margin-top: 0;
-  letter-spacing: 1px;
-  text-transform: uppercase;
+  font-family: 'Inter', var(--fontFamily);
+  font-size: 14px;
+  color: #64748B;
+  margin: 0;
+
+  @media (--viewportMedium) {
+    font-size: 16px;
+  }
 }
 
 .carouselWrapper {
   position: relative;
   margin: 0 -24px;
   padding: 0 24px;
-  
-  @media (--viewportMedium) {
-    margin: 0 -40px;
-    padding: 0 40px;
-  }
-
-  @media (--viewportLarge) {
-    margin: 0 -32px;
-    padding: 0 32px;
-  }
-}
-
-.scrollButton {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.9);
-  border: 1px solid var(--colorGrey200);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 10;
-  font-size: 24px;
-  color: var(--colorGrey800);
-  transition: all 0.2s ease;
-  display: none; /* Hide by default on mobile */
+  overflow: hidden; /* Contain the scroll items and buttons */
 
   @media (--viewportMedium) {
-    display: flex;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
   }
-}
-
-.scrollButton:hover {
-  background-color: var(--colorWhite);
-  color: var(--marketplaceColor);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-}
-
-.prevButton {
-  left: 0;
-}
-
-.nextButton {
-  right: 0;
 }
 
 .carousel {
   display: flex;
-  flex-wrap: nowrap;
-  gap: 24px;
-  padding-bottom: 24px; /* Space for scrollbar and shadow */
+  gap: 0;
+  padding: 12px 0 32px;
+  scroll-behavior: smooth;
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE 10+ */
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  width: 100%;
+  box-sizing: border-box;
+
+  @media (--viewportMedium) {
+    gap: 16px;
+    width: auto;
+  }
 }
 
 .carousel::-webkit-scrollbar {
-  display: none; /* Chrome/Safari */
+  display: none;
 }
 
 .listingItem {
-  flex: 0 0 auto;
-  width: 85vw;
-  scroll-snap-align: start;
+  flex: 0 0 100%;
+  width: 100%;
+  min-width: 100%;
+  scroll-snap-align: center;
+  box-sizing: border-box;
+  padding: 0 12px;
 
   @media (--viewportMedium) {
-    width: 320px; /* Fixed width for tablet/desktop to allow overflow and maintain consistency */
+    flex: 0 0 300px;
+    width: 300px;
+    min-width: 300px;
+    scroll-snap-align: start;
+    padding: 0;
   }
 }
 
-.footer {
+.scrollButton {
+  display: flex;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  background-color: var(--colorWhite);
+  border: 1px solid #E2E8F0;
+  border-radius: 50%;
+  color: #64748B;
+  font-size: 20px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  opacity: 0.9;
+}
+
+.scrollButton:hover {
+  background-color: #F8FAFC;
+  color: var(--marketplaceColor);
+  opacity: 1;
+}
+
+.prevButton {
+  left: 32px; /* Positioned within the padding of carouselWrapper */
+}
+
+.nextButton {
+  right: 32px; /* Positioned within the padding of carouselWrapper */
+}
+
+.hidden {
+  display: none !important;
+}
+
+@media (--viewportMedium) {
+  .scrollButton {
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+  }
+  
+  .prevButton {
+    left: -20px;
+  }
+  
+  .nextButton {
+    right: -20px;
+  }
+}
+
+.dots {
   display: flex;
   justify-content: center;
-  margin-top: 16px;
-  
+  gap: 8px;
+  margin-top: -8px;
+  margin-bottom: 24px;
+
   @media (--viewportMedium) {
-    margin-top: 32px;
+    display: none;
   }
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #CBD5E1;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.activeDot {
+  background-color: var(--marketplaceColor);
+  transform: scale(1.2);
+}
+
+.footer {
+  margin-top: 32px;
+  text-align: center;
 }
 
 .seeMoreButton {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 16px 36px;
-  border-radius: 9999px;
-  border: 2px solid var(--marketplaceColor);
-  background-color: transparent;
-  color: var(--marketplaceColor);
-  font-family: var(--fontFamily);
-  font-weight: 800;
+  font-family: 'Montserrat', var(--fontFamily);
   font-size: 15px;
+  font-weight: 700;
+  color: var(--marketplaceColor);
   text-decoration: none;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  transition: all 0.2s ease;
 }
 
 .seeMoreButton:hover {
-  background-color: var(--marketplaceColor);
-  color: var(--colorWhite);
   text-decoration: none;
-  box-shadow: 0 10px 15px -3px rgba(204, 85, 0, 0.2);
-  transform: translateY(-2px);
+  transform: translateX(4px);
 }

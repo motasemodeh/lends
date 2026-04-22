@@ -1,17 +1,21 @@
 @import '../assets/sanitize.css';
 @import './customMediaQueries.css';
 
-/* ================ Custom Properties aka CSS variables ================ */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
 
-/**
- * These variables are available in global scope through ":root"
- * element (<html> tag). You can use Custom Properties to achieve
- * more dynamic theming by changing the value on the fly with JS:
- * document.documentElement.style.setProperty("--marketplaceColor", '#55AA55');
- *
- * Read more about how to use CSS Custom Properties
- * https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties
- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box !important;
+}
+
+/* ================ Custom Properties aka CSS variables ================ */
 
 :root {
   /* ================ Colors ================ */
@@ -245,11 +249,17 @@ body {
 /* In addition, let's ensure that section components have scroll-margin */
 /* Since target does not work in every situation */
 :target,
-section {
+section,
+main {
   scroll-margin-top: var(--topbarHeight);
+  max-width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  width: 100%;
 
   @media (--viewportMedium) {
     scroll-margin-top: var(--topbarHeightDesktop);
+    overflow-x: visible;
   }
 }
 
@@ -622,6 +632,25 @@ textarea {
  * Note: even though these reflect element styles, 
  * these are below element styles to allow overwrites using classes.
  */
+
+.sectionDetails {
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  padding: 0 20px;
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  overflow: hidden;
+
+  @media (--viewportMedium) {
+    max-width: var(--contentMaxWidthPages);
+    display: grid;
+    justify-content: start;
+    padding: 0 32px;
+  }
+}
 
 .a {
   /* Position and dimensions */

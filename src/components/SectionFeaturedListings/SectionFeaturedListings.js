@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { useConfiguration } from '../../context/configurationContext';
 import { FormattedMessage } from '../../util/reactIntl';
@@ -17,15 +17,9 @@ const SectionFeaturedListings = props => {
     options,
     allSections = [],
   } = props;
+  
   const carouselRef = useRef(null);
-
-  const scroll = direction => {
-    if (carouselRef.current) {
-      const { scrollLeft, clientWidth } = carouselRef.current;
-      const scrollTo = direction === 'left' ? scrollLeft - clientWidth : scrollLeft + clientWidth;
-      carouselRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
-    }
-  };
+  const [activeSlide, setActiveSlide] = useState(0);
 
   const {
     onFetchFeaturedListings,
@@ -44,8 +38,6 @@ const SectionFeaturedListings = props => {
 
   useEffect(() => {
     if (!fetched && inProgress !== true && !error && onFetchFeaturedListings) {
-      // Pass allSections so the duck can find the listingSelection for this section
-      // We also ensure there's a fallback listingSelection if it's missing in allSections
       const sectionsForFetch = allSections.length > 0 
         ? allSections 
         : [{ sectionId, sectionType: 'listings', listingSelection: 'newest' }];
@@ -54,35 +46,84 @@ const SectionFeaturedListings = props => {
     }
   }, [fetched, inProgress, error, onFetchFeaturedListings, sectionId, listingImageConfig, parentPage, allSections]);
 
+  const scroll = direction => {
+    if (carouselRef.current) {
+      const { scrollLeft, clientWidth } = carouselRef.current;
+      const scrollTo = direction === 'left' ? scrollLeft - clientWidth : scrollLeft + clientWidth;
+      carouselRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
+    }
+  };
+
+  const handleScroll = () => {
+    if (carouselRef.current) {
+      const { scrollLeft, clientWidth } = carouselRef.current;
+      const index = Math.round(scrollLeft / clientWidth);
+      if (index !== activeSlide) {
+        setActiveSlide(index);
+      }
+    }
+  };
+
+  const scrollToSlide = index => {
+    if (carouselRef.current) {
+      const { clientWidth } = carouselRef.current;
+      carouselRef.current.scrollTo({ left: index * clientWidth, behavior: 'smooth' });
+      setActiveSlide(index);
+    }
+  };
+
   if (inProgress && listingEntities.length === 0) {
-    return null; // Or a loader
+    return null;
   }
 
   return (
-    <div className={css.sectionContainer}>
+    <div className={css.sectionContainer} data-debug="my-featured-listings">
       <div className={css.constraints}>
         <div className={css.header}>
           <h1 className={css.title}>{title}</h1>
           {subtitle && <p className={css.subtitle}>{subtitle}</p>}
         </div>
         <div className={css.carouselWrapper}>
-          <button className={classNames(css.scrollButton, css.prevButton)} onClick={() => scroll('left')} aria-label="Previous">
+          <button 
+            className={classNames(css.scrollButton, css.prevButton, { [css.hidden]: activeSlide === 0 })} 
+            onClick={() => scroll('left')} 
+            aria-label="Previous"
+          >
             ‹
           </button>
-          <div className={css.carousel} ref={carouselRef}>
-            {listingEntities.map(listing => (
+          
+          <div className={css.carousel} ref={carouselRef} onScroll={handleScroll}>
+            {listingEntities.map((listing, index) => (
               <div key={listing.id.uuid} className={css.listingItem}>
                 <ListingCardRental
                   listing={listing}
-                  renderSizes="(max-width: 767px) 80vw, (max-width: 1023px) 40vw, 300px"
+                  renderSizes="(max-width: 767px) 100vw, (max-width: 1023px) 40vw, 300px"
                 />
               </div>
             ))}
           </div>
-          <button className={classNames(css.scrollButton, css.nextButton)} onClick={() => scroll('right')} aria-label="Next">
+          
+          <button 
+            className={classNames(css.scrollButton, css.nextButton, { [css.hidden]: activeSlide === listingEntities.length - 1 })} 
+            onClick={() => scroll('right')} 
+            aria-label="Next"
+          >
             ›
           </button>
         </div>
+
+        {listingEntities.length > 1 && (
+          <div className={css.dots}>
+            {listingEntities.map((_, index) => (
+              <button
+                key={index}
+                className={classNames(css.dot, { [css.activeDot]: activeSlide === index })}
+                onClick={() => scrollToSlide(index)}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
+        )}
         
         <div className={css.footer}>
           <NamedLink name="SearchPage" className={css.seeMoreButton}>

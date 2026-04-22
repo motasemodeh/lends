@@ -65,6 +65,34 @@ export const AsideContent = props => {
           <FormattedMessage id="ProfilePage.mobileHeading" values={{ name: displayName }} />
         ) : null}
       </H2>
+      
+      {(() => {
+        const publicData = user?.attributes?.profile?.publicData || {};
+        const badges = publicData?.badges || [];
+        const badgeColors = [
+          { bg: '#E0F2FE', text: '#0369A1' }, // Blue
+          { bg: '#FEF3C7', text: '#B45309' }, // Amber
+          { bg: '#DCFCE7', text: '#15803D' }, // Green
+          { bg: '#F3E8FF', text: '#7E22CE' }, // Purple
+          { bg: '#FFE4E6', text: '#BE123C' }, // Rose
+        ];
+        return badges.length > 0 ? (
+          <div className={css.badgesContainerMobile}>
+            {badges.map((badge, idx) => {
+              const color = badgeColors[idx % badgeColors.length];
+              return (
+                <span 
+                  key={idx} 
+                  className={css.customBadge} 
+                  style={{ backgroundColor: color.bg, color: color.text }}
+                >
+                  {badge}
+                </span>
+              );
+            })}
+          </div>
+        ) : null;
+      })()}
       {showLinkToProfileSettingsPage ? (
         <>
           <NamedLink className={css.editLinkMobile} name="ProfileSettingsPage">
@@ -281,6 +309,15 @@ export const MainContent = props => {
     [css.withBioMissingAbove]: !hasBio,
   });
 
+  const badges = publicData?.badges || [];
+  const badgeColors = [
+    { bg: '#E0F2FE', text: '#0369A1' }, // Blue
+    { bg: '#FEF3C7', text: '#B45309' }, // Amber
+    { bg: '#DCFCE7', text: '#15803D' }, // Green
+    { bg: '#F3E8FF', text: '#7E22CE' }, // Purple
+    { bg: '#FFE4E6', text: '#BE123C' }, // Rose
+  ];
+
   if (userShowError || queryListingsError) {
     return (
       <p className={css.error}>
@@ -293,6 +330,24 @@ export const MainContent = props => {
       <H2 as="h1" className={css.desktopHeading}>
         <FormattedMessage id="ProfilePage.desktopHeading" values={{ name: displayName }} />
       </H2>
+      
+      {badges.length > 0 && (
+        <div className={css.badgesContainer}>
+          {badges.map((badge, idx) => {
+            const color = badgeColors[idx % badgeColors.length];
+            return (
+              <span 
+                key={idx} 
+                className={css.customBadge} 
+                style={{ backgroundColor: color.bg, color: color.text }}
+              >
+                {badge}
+              </span>
+            );
+          })}
+        </div>
+      )}
+
       {hasBio ? <p className={css.bio}>{bioWithLinks}</p> : null}
 
       {displayName ? (

@@ -10,8 +10,8 @@
 
 .headerSection {
   padding: 80px 24px;
-  background-color: #fafafa;
-  border-bottom: 1px solid #f0f0f0;
+  background-color: #C65F12;
+  border-bottom: 1px solid #B0530F;
 
   @media (--viewportMedium) {
     padding: 120px 24px;
@@ -27,7 +27,7 @@
   font-family: 'Montserrat', sans-serif;
   font-weight: 800;
   font-size: 36px;
-  color: #1a1a1a;
+  color: #ffffff;
   margin-bottom: 16px;
 
   @media (--viewportMedium) {
@@ -38,7 +38,7 @@
 .subtitle {
   font-size: 20px;
   line-height: 1.5;
-  color: #666;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .mainContent {
