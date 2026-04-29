@@ -30,7 +30,20 @@ export const LandingPageComponent = props => {
   const heroIndex = sections.findIndex(s => s.sectionId === 'hero' || s.sectionType === 'hero');
 
   // Inject custom professional sections
-  const updatedSections = [...sections];
+  let updatedSections = [...sections];
+  
+  // 0. Ensure Hero Section exists
+  const heroSection = {
+    sectionId: 'hero',
+    sectionType: 'hero',
+  };
+
+  if (!updatedSections.some(s => s.sectionId === 'hero' || s.sectionType === 'hero')) {
+    updatedSections.unshift(heroSection);
+  }
+
+  // Find hero index to insert our custom sections immediately after it
+  const currentHeroIndex = updatedSections.findIndex(s => s.sectionId === 'hero' || s.sectionType === 'hero');
   
   // 1. Featured Listings Section
   const featuredSection = {
@@ -53,13 +66,20 @@ export const LandingPageComponent = props => {
     sectionType: 'how-lends-works',
   };
 
-  if (heroIndex !== -1) {
-    updatedSections.splice(heroIndex + 1, 0, featuredSection, whyChooseSection, howItWorksSection);
-  } else if (sections.length > 0) {
-    updatedSections.unshift(featuredSection, whyChooseSection, howItWorksSection);
+  // Only inject if they aren't already present
+  if (!updatedSections.some(s => s.sectionType === 'featured-listings')) {
+    updatedSections.splice(currentHeroIndex + 1, 0, featuredSection, whyChooseSection, howItWorksSection);
   }
 
-  const updatedPageAssetsData = assetData ? { ...assetData, sections: updatedSections } : null;
+  // Fallback meta data in case assetData is completely null
+  const fallbackMeta = {
+    pageTitle: { fieldType: 'metaTitle', content: 'LENDS - Marketplace' },
+    pageDescription: { fieldType: 'metaDescription', content: 'Peer-to-Peer Rental and Services Marketplace' },
+  };
+
+  const updatedPageAssetsData = assetData 
+    ? { ...assetData, sections: updatedSections } 
+    : { sections: updatedSections, meta: fallbackMeta };
 
   return (
     <PageBuilder
