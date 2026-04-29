@@ -7,8 +7,8 @@ import { useConfiguration } from '../../context/configurationContext';
 import css from './AboutPage.module.css';
 
 // Import images
-import heroImage from './about_us_hero_1776426355677.png';
-import itemsImage from './about_sharing_items_1776426555231.png';
+import heroImage from './about_us_hero_new.png';
+import itemsImage from './about_us_sharing_new.png';
 
 const AboutPage = () => {
   const config = useConfiguration();

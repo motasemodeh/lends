@@ -41,8 +41,8 @@ const LendsHero = props => {
         
         <div className={css.statsGroup}>
           <div className={css.statItem}>
-            <span className={css.statValue}>1,200+</span>
-            <span className={css.statLabel}>Items Listed</span>
+            <span className={css.statValue}>100s</span>
+            <span className={css.statLabel}>New Listings</span>
           </div>
           <div className={css.statDivider} />
           <div className={css.statItem}>
