@@ -87,6 +87,7 @@ const LocationSearchField = props => {
             predictionsClassName={isMobile ? css.mobilePredictions : css.desktopPredictions}
             predictionsAttributionClassName={isMobile ? css.mobilePredictionsAttribution : null}
             placeholder={intl.formatMessage({ id: 'TopbarSearchForm.placeholder' })}
+            useDarkText={true}
             closeOnBlur={!isMobile}
             inputRef={inputRef}
             input={{ ...restInput, onChange: searchOnChange }}
