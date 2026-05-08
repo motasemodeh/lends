@@ -154,7 +154,7 @@ const tabLabelAndSubmit = (intl, tab, isNewListingFlow, isPriceDisabled, process
   } else if (tab === STYLE) {
     submitButtonKey = `EditListingWizard.${processNameString}${newOrEdit}.saveStyle`;
   } else if (tab === POLICY) {
-    labelKey = 'EditListingWizard.tabLabelPolicy';
+    labelKey = 'EditListingWizard.tabLabelSecurity';
     submitButtonKey = `EditListingWizard.${processNameString}${newOrEdit}.savePolicy`;
   }
 

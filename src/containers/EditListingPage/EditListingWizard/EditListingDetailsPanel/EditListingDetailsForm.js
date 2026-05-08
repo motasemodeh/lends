@@ -257,9 +257,10 @@ const AddListingFields = props => {
     const isTargetListingType = isFieldForListingType(listingType, fieldConfig);
     const isTargetCategory = isFieldForCategory(targetCategoryIds, fieldConfig);
 
-    // Skip the "Security Deposit" field if it exists in the general listing fields,
-    // as we have a dedicated tab for it now.
-    const isRedundantDepositField = key === 'securityDeposit' || key === 'security_deposit';
+    // Skip any "Security Deposit" related fields if they exist in the general listing fields,
+    // as we have a dedicated tab for it now. We broaden the check to any key containing 'deposit'
+    // to catch variations like 'security_deposit_amount' or 'deposit'.
+    const isRedundantDepositField = key.toLowerCase().includes('deposit');
 
     return isKnownSchemaType &&
       isProviderScope &&
