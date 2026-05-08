@@ -15,6 +15,7 @@ const pageDataLoadingAPI = getPageDataLoadingAPI();
 const AuthenticationPage = loadable(() => import(/* webpackChunkName: "AuthenticationPage" */ '../containers/AuthenticationPage/AuthenticationPage'));
 const CheckoutPage = loadable(() => import(/* webpackChunkName: "CheckoutPage" */ '../containers/CheckoutPage/CheckoutPage'));
 const CMSPage = loadable(() => import(/* webpackChunkName: "CMSPage" */ '../containers/CMSPage/CMSPage'));
+const CheckoutSuccessPage = loadable(() => import(/* webpackChunkName: "CheckoutSuccessPage" */ '../containers/CheckoutSuccessPage/CheckoutSuccessPage'));
 const ContactDetailsPage = loadable(() => import(/* webpackChunkName: "ContactDetailsPage" */ '../containers/ContactDetailsPage/ContactDetailsPage'));
 const EditListingPage = loadable(() => import(/* webpackChunkName: "EditListingPage" */ '../containers/EditListingPage/EditListingPage'));
 const EmailVerificationPage = loadable(() => import(/* webpackChunkName: "EmailVerificationPage" */ '../containers/EmailVerificationPage/EmailVerificationPage'));
@@ -161,6 +162,12 @@ const routeConfiguration = (layoutConfig, accessControlConfig) => {
       auth: true,
       component: CheckoutPage,
       setInitialValues: pageDataLoadingAPI.CheckoutPage.setInitialValues,
+    },
+    {
+      path: '/checkout-success/:id',
+      name: 'CheckoutSuccessPage',
+      auth: true,
+      component: CheckoutSuccessPage,
     },
     {
       path: '/l/:slug/:id/:variant',

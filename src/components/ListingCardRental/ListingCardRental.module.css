@@ -83,6 +83,8 @@
   cursor: grab;
   user-select: none;
   -webkit-user-select: none;
+  height: 26px; /* Fixed height to prevent alignment shifts */
+  flex-shrink: 0; /* Prevent the container from shrinking */
 }
 
 .tags::-webkit-scrollbar {
@@ -129,6 +131,7 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  height: 42px; /* Fixed height for 2 lines to ensure alignment */
 }
 
 .priceGrid {

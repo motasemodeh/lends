@@ -221,16 +221,27 @@ body {
  */
 
 body {
+  /* Set font-family globally */
   font-family: var(--fontFamily);
 
-  /* A non-standard feature: https://developer.mozilla.org/en-US/docs/Web/CSS/font-smooth */
+  /* Font smoothing for better readability */
   -webkit-font-smoothing: antialiased;
-  font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  width: 100%;
 
   text-rendering: optimizeSpeed;
   font-optical-sizing: auto;
 
   background-color: var(--colorGrey50);
+}
+
+#root {
+  overflow-x: hidden;
+  width: 100%;
 }
 
 ::selection {

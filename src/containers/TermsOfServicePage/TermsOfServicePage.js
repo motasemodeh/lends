@@ -67,7 +67,7 @@ const TermsOfServicePageComponent = props => {
 
   return (
     <PageBuilder
-      pageAssetsData={pageAssetsData?.[camelize(ASSET_NAME)]?.data}
+      pageAssetsData={fallbackSections}
       inProgress={inProgress}
       error={error}
       fallbackPage={<FallbackPage />}

@@ -334,7 +334,7 @@ const handleSubmit = (values, process, props, stripe, submitting, setSubmitting)
       const { orderId, paymentMethodSaved } = response;
       setSubmitting(false);
 
-      const orderDetailsPath = pathByRouteName('OrderDetailsPage', routeConfiguration, {
+      const checkoutSuccessPath = pathByRouteName('CheckoutSuccessPage', routeConfiguration, {
         id: orderId.uuid,
       });
       const initialValues = {
@@ -343,7 +343,7 @@ const handleSubmit = (values, process, props, stripe, submitting, setSubmitting)
 
       setOrderPageInitialValues(initialValues, routeConfiguration, dispatch);
       onSubmitCallback();
-      history.push(orderDetailsPath);
+      history.push(checkoutSuccessPath);
     })
     .catch(err => {
       console.error(err);

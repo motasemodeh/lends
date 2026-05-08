@@ -83,10 +83,10 @@ const handleSubmit = (submitting, setSubmitting, props) => values => {
       setSubmitting(false);
       onSubmitCallback();
 
-      const orderDetailsPath = pathByRouteName('OrderDetailsPage', routeConfiguration, {
+      const checkoutSuccessPath = pathByRouteName('CheckoutSuccessPage', routeConfiguration, {
         id: transactionId.uuid,
       });
-      history.push(orderDetailsPath);
+      history.push(checkoutSuccessPath);
     })
     .catch(err => {
       console.error(err);
