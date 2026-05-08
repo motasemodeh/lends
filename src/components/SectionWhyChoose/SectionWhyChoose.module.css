@@ -21,6 +21,7 @@
 .sectionTitle {
   font-family: 'Montserrat', var(--fontFamily);
   font-size: 28px;
+  line-height: 1.3;
   font-weight: 800;
   color: #1E293B;
   text-align: center;

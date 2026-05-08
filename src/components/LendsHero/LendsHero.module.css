@@ -93,7 +93,7 @@
 
 .mainTitle {
   font-size: 28px;
-  line-height: 1.2;
+  line-height: 1.3;
   font-weight: 900;
   color: #FFFFFF;
   word-wrap: break-word;
@@ -106,7 +106,7 @@
 
   @media (--viewportMedium) {
     font-size: 56px;
-    line-height: 1.1;
+    line-height: 1.2;
   }
 }
 
