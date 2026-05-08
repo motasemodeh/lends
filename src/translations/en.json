@@ -1,6 +1,7 @@
 {
   "AddOnCheckbox.title": "Available Add-ons",
   "AddOnCheckbox.securityDepositTitle": "Security Deposit (Refundable)",
+  "OrderBreakdown.securityDepositHold": "Security deposit (hold)",
   "AddressLinkMaybe.viewOnGoogleMaps": "View on Google Maps",
   "AuthenticationPage.confirmSignupInfoText": "Please check that your information is correct.",
   "AuthenticationPage.confirmSignupWithIdpTitle": "Sign up with {idp}",

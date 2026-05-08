@@ -257,7 +257,15 @@ const AddListingFields = props => {
     const isTargetListingType = isFieldForListingType(listingType, fieldConfig);
     const isTargetCategory = isFieldForCategory(targetCategoryIds, fieldConfig);
 
-    return isKnownSchemaType && isProviderScope && isTargetListingType && isTargetCategory
+    // Skip the "Security Deposit" field if it exists in the general listing fields,
+    // as we have a dedicated tab for it now.
+    const isRedundantDepositField = key === 'securityDeposit' || key === 'security_deposit';
+
+    return isKnownSchemaType &&
+      isProviderScope &&
+      isTargetListingType &&
+      isTargetCategory &&
+      !isRedundantDepositField
       ? [
           ...pickedFields,
           <CustomExtendedDataField

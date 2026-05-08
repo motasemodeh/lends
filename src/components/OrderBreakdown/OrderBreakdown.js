@@ -120,7 +120,12 @@ export const OrderBreakdownComponent = props => {
       <LineItemShippingFeeMaybe lineItems={lineItems} intl={intl} />
       <LineItemPickupFeeMaybe lineItems={lineItems} intl={intl} />
       <LineItemAddOnsMaybe lineItems={lineItems} listing={listing} intl={intl} />
-      <LineItemSecurityDepositMaybe lineItems={allLineItems} intl={intl} />
+      <LineItemSecurityDepositMaybe
+        lineItems={allLineItems}
+        securityDepositAmount={listing?.attributes?.publicData?.securityDepositAmount}
+        currency={currency}
+        intl={intl}
+      />
       <LineItemUnknownItemsMaybe lineItems={lineItems} isProvider={isProvider} intl={intl} />
 
       <LineItemSubTotalMaybe

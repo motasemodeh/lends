@@ -142,16 +142,7 @@ const getAddOnAndDepositLineItems = (orderData, publicData, currency) => {
     }
   }
 
-  const depositLineItem = securityDepositAmount
-    ? [
-        {
-          code: 'line-item/security-deposit',
-          unitPrice: new Money(securityDepositAmount, currency),
-          quantity: 1,
-          includeFor: ['customer'],
-        },
-      ]
-    : [];
+  const depositLineItem = [];
 
   return [...addOnLineItems, ...depositLineItem];
 };
