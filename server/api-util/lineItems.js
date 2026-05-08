@@ -148,7 +148,7 @@ const getAddOnAndDepositLineItems = (orderData, publicData, currency) => {
           code: 'line-item/security-deposit',
           unitPrice: new Money(securityDepositAmount, currency),
           quantity: 1,
-          includeFor: ['customer', 'provider'],
+          includeFor: ['customer'],
         },
       ]
     : [];

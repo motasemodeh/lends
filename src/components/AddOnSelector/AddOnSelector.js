@@ -30,6 +30,13 @@ const AddOnSelector = props => {
             return null;
           }
 
+          // Filter out manual add-ons that are named "Security Deposit" or similar
+          // to avoid duplication with the dedicated security deposit field.
+          const isDepositAddOn = addOn.label.toLowerCase().includes('deposit');
+          if (isDepositAddOn) {
+            return null;
+          }
+
           try {
             const moneyVal = new Money(addOn.price, currency);
             const formattedAddOnPrice = formatMoney(intl, moneyVal);
