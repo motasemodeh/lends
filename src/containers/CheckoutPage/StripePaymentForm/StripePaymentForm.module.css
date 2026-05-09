@@ -121,6 +121,20 @@
   border-bottom-color: var(--colorGrey300);
 }
 
+.termsAndConditions {
+  margin-top: 24px;
+}
+
+.link {
+  color: var(--marketplaceColor);
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.link:hover {
+  text-decoration: none;
+}
+
 .submitContainer {
   margin-top: auto;
 

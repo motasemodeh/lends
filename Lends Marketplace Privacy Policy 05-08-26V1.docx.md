@@ -1,11 +1,4 @@
-import React from 'react';
-import loadable from '@loadable/component';
-
-const PageBuilder = loadable(() =>
-  import(/* webpackChunkName: "PageBuilder" */ '../PageBuilder/PageBuilder')
-);
-
-export const fallbackPrivacyPolicy = `**LENDS MARKETPLACE**  
+**LENDS MARKETPLACE**  
 **PRIVACY POLICY**  
 **Last Updated: \[5/8/2026\]**
 
@@ -318,41 +311,3 @@ Privacy-related requests may also be submitted through the Platform where availa
 
 11. Third-Party Links and Services. The Platform may contain links to third-party websites, applications, or services that are not operated or controlled by Lends. This Privacy Policy does not apply to third-party services, and we are not responsible for the privacy practices or content of such third parties. We encourage you to review the privacy policies of any third-party services you access. 
 
-`;
-
-export const fallbackSections = {
-  sections: [
-    {
-      sectionType: 'article',
-      sectionId: 'privacy',
-      appearance: { fieldType: 'customAppearance', backgroundColor: '#ffffff' },
-      title: { fieldType: 'heading1', content: 'Privacy Policy' },
-      blocks: [
-        {
-          blockType: 'defaultBlock',
-          blockId: 'hero-content',
-          text: {
-            fieldType: 'markdown',
-            content: fallbackPrivacyPolicy,
-          },
-        },
-      ],
-    },
-  ],
-  meta: {
-    pageTitle: {
-      fieldType: 'metaTitle',
-      content: 'Privacy Policy | Lends Marketplace',
-    },
-    pageDescription: {
-      fieldType: 'metaDescription',
-      content: 'Privacy Policy for Lends Marketplace.',
-    },
-  },
-};
-
-const FallbackPage = props => {
-  return <PageBuilder pageAssetsData={fallbackSections} {...props} />;
-};
-
-export default FallbackPage;

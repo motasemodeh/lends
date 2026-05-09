@@ -23,7 +23,10 @@ import {
   SavedCardDetails,
   StripePaymentAddress,
   CustomExtendedDataField,
+  NamedLink,
 } from '../../../components';
+
+import * as validators from '../../../util/validators';
 
 import ShippingDetails from '../ShippingDetails/ShippingDetails';
 
@@ -689,6 +692,34 @@ class StripePaymentForm extends Component {
             />
           </div>
         ) : null}
+
+        <div className={css.termsAndConditions}>
+          <FieldCheckbox
+            id="termsAndConditions"
+            name="termsAndConditions"
+            label={
+              <FormattedMessage
+                id="StripePaymentForm.termsAndConditionsLabel"
+                values={{
+                  termsOfServiceLink: (
+                    <NamedLink name="TermsOfServicePage" target="_blank" className={css.link}>
+                      <FormattedMessage id="StripePaymentForm.termsOfServiceLink" />
+                    </NamedLink>
+                  ),
+                  privacyPolicyLink: (
+                    <NamedLink name="PrivacyPolicyPage" target="_blank" className={css.link}>
+                      <FormattedMessage id="StripePaymentForm.privacyPolicyLink" />
+                    </NamedLink>
+                  ),
+                }}
+              />
+            }
+            validate={validators.required(
+              intl.formatMessage({ id: 'StripePaymentForm.termsAndConditionsRequired' })
+            )}
+          />
+        </div>
+
         <div className={css.submitContainer}>
           {hasPaymentErrors ? (
             <span className={css.errorMessage}>{paymentErrorMessage}</span>

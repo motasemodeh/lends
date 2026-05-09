@@ -1,11 +1,4 @@
-import React from 'react';
-import loadable from '@loadable/component';
-
-const PageBuilder = loadable(() =>
-  import(/* webpackChunkName: "PageBuilder" */ '../PageBuilder/PageBuilder')
-);
-
-export const fallbackTerms = `**TERMS OF SERVICE**  
+**TERMS OF SERVICE**  
 **FOR**  
 **LENDS MARKETPLACE**  
 **Last Updated: \[5/8/2026\]**
@@ -18,7 +11,7 @@ By accessing or using the Platform, you agree to be bound by these Terms and our
 
 1. **Acceptance of Terms; Eligibility.**  
      
-   1. Acceptance of Terms. By accessing or using the Platform, you agree to be bound by these Terms and all policies referenced herein, including the Privacy Policy (provided here: [/privacy-policy](/privacy-policy)) and any additional policies, guidelines, or rules posted on the Platform from time to time (collectively, the “Agreement”). If you do not agree to the Agreement, you may not access or use the Platform.
+   1. Acceptance of Terms. By accessing or using the Platform, you agree to be bound by these Terms and all policies referenced herein, including the Privacy Policy (provided here: \[URL FOR PRIVACY POLICY\]) and any additional policies, guidelines, or rules posted on the Platform from time to time (collectively, the “Agreement”). If you do not agree to the Agreement, you may not access or use the Platform.
 
    
 
@@ -767,41 +760,4 @@ By accessing or using the Platform, you agree to be bound by these Terms and our
 
     
 
-    9. No Third-Party Beneficiaries. Except as expressly provided in these Terms, nothing in these Terms is intended to confer any rights or remedies on any person other than the parties.`;
-
-export const fallbackSections = {
-  sections: [
-    {
-      sectionType: 'article',
-      sectionId: 'terms',
-      appearance: { fieldType: 'customAppearance', backgroundColor: '#ffffff' },
-      title: { fieldType: 'heading1', content: 'Terms of Service' },
-      blocks: [
-        {
-          blockType: 'defaultBlock',
-          blockId: 'hero-content',
-          text: {
-            fieldType: 'markdown',
-            content: fallbackTerms,
-          },
-        },
-      ],
-    },
-  ],
-  meta: {
-    pageTitle: {
-      fieldType: 'metaTitle',
-      content: 'Terms of Service | Lends Marketplace',
-    },
-    pageDescription: {
-      fieldType: 'metaDescription',
-      content: 'Terms of Service for Lends Marketplace.',
-    },
-  },
-};
-
-const FallbackPage = props => {
-  return <PageBuilder pageAssetsData={fallbackSections} {...props} />;
-};
-
-export default FallbackPage;
+    9. No Third-Party Beneficiaries. Except as expressly provided in these Terms, nothing in these Terms is intended to confer any rights or remedies on any person other than the parties.
