@@ -63,7 +63,7 @@ const TermsOfServiceContent = props => {
 
 // Presentational component for TermsOfServicePage
 const TermsOfServicePageComponent = props => {
-  const { pageAssetsData, inProgress, error } = props;
+  const { inProgress, error } = props;
 
   return (
     <PageBuilder

@@ -62,7 +62,7 @@ const PrivacyPolicyContent = props => {
 
 // Presentational component for PrivacyPolicyPage
 const PrivacyPolicyPageComponent = props => {
-  const { pageAssetsData, inProgress, error } = props;
+  const { inProgress, error } = props;
 
   return (
     <PageBuilder
