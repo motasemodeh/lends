@@ -46,7 +46,8 @@ export const transitions = {
   EXPIRE: 'transition/expire',
 
   // Admin can also cancel the transition.
-  CANCEL: 'transition/cancel',
+  CANCEL_BY_CUSTOMER: 'transition/cancel-by-customer',
+  CANCEL_BY_PROVIDER: 'transition/cancel-by-provider',
 
   // The backend will mark the transaction completed.
   COMPLETE: 'transition/complete',
@@ -82,7 +83,7 @@ export const states = {
   DECLINED: 'declined',
   ACCEPTED: 'accepted',
   EXPIRED: 'expired',
-  CANCELED: 'canceled',
+  CANCELED: 'cancelled',
   DELIVERED: 'delivered',
   REVIEWED: 'reviewed',
   REVIEWED_BY_CUSTOMER: 'reviewed-by-customer',
@@ -143,7 +144,8 @@ export const graph = {
     [states.EXPIRED]: {},
     [states.ACCEPTED]: {
       on: {
-        [transitions.CANCEL]: states.CANCELED,
+        [transitions.CANCEL_BY_CUSTOMER]: states.CANCELED,
+        [transitions.CANCEL_BY_PROVIDER]: states.CANCELED,
         [transitions.COMPLETE]: states.DELIVERED,
         [transitions.OPERATOR_COMPLETE]: states.DELIVERED,
       },
@@ -181,7 +183,8 @@ export const isRelevantPastTransition = transition => {
   return [
     transitions.ACCEPT,
     transitions.OPERATOR_ACCEPT,
-    transitions.CANCEL,
+    transitions.CANCEL_BY_CUSTOMER,
+    transitions.CANCEL_BY_PROVIDER,
     transitions.COMPLETE,
     transitions.OPERATOR_COMPLETE,
     transitions.CONFIRM_PAYMENT,
