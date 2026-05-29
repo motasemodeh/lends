@@ -34,7 +34,7 @@ const LendsHero = props => {
               Explore Marketplace
             </NamedLink>
             <NamedLink name="NewListingPage" className={css.secondaryButton}>
-              Become a Host
+              Create a Listing
             </NamedLink>
           </div>
         </div>

@@ -54,7 +54,10 @@
   align-items: center;
   gap: 4px;
   z-index: 1;
-  max-width: 70%;
+  max-width: calc(100% - 20px);
+}
+
+.distanceBadge span {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -120,7 +123,7 @@
 
 .title {
   font-family: 'Inter', var(--fontFamily);
-  font-size: 15px; /* Smaller font match */
+  font-size: 17px; /* Increased font size */
   font-weight: 600;
   color: #1E293B;
   margin: 0 0 16px 0;
@@ -131,12 +134,12 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  height: 42px; /* Fixed height for 2 lines to ensure alignment */
+  height: 48px; /* Adjusted height for 2 lines of larger text */
 }
 
 .priceGrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr;
   gap: 4px; /* Reduced gap on mobile */
   margin-bottom: 16px;
 

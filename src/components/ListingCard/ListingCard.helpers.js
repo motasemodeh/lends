@@ -56,15 +56,26 @@ export const getListingCardTranslations = (listing, config, intl) => {
   const listingTypeConfig = validListingTypes.find(conf => conf.listingType === listingType);
 
   const showPrice = displayPrice(listingTypeConfig);
-  const { formattedPrice, priceTooltip } = priceData(price, config.currency, intl);
-
   const isPriceVariationsInUse = isPriceVariationsEnabled(publicData, listingTypeConfig);
   const hasMultiplePriceVariants = isPriceVariationsInUse && publicData?.priceVariants?.length > 1;
   const isBookable = isBookingProcessAlias(publicData?.transactionProcessAlias);
 
-  const priceMessageId = hasMultiplePriceVariants
-    ? 'ListingCard.priceStartingFrom'
-    : 'ListingCard.price';
+  let displayPriceObject = price;
+  if (hasMultiplePriceVariants) {
+    const cheapest = publicData.priceVariants.reduce((min, curr) => {
+      const currAmt = curr.price?.amount ?? curr.price ?? Infinity;
+      const minAmt = min.price?.amount ?? min.price ?? Infinity;
+      return currAmt < minAmt ? curr : min;
+    }, publicData.priceVariants[0]);
+
+    if (cheapest && cheapest.price) {
+      displayPriceObject = cheapest.price;
+    }
+  }
+
+  const { formattedPrice, priceTooltip } = priceData(displayPriceObject, config.currency, intl);
+
+  const priceMessageId = 'ListingCard.price';
 
   const perUnitString = isBookable
     ? intl.formatMessage({ id: 'ListingCard.perUnit' }, { unitType: publicData?.unitType })

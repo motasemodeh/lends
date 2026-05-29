@@ -24,6 +24,7 @@ import {
   StripePaymentAddress,
   CustomExtendedDataField,
   NamedLink,
+  FieldPhoneNumberInput,
 } from '../../../components';
 
 import * as validators from '../../../util/validators';
@@ -590,6 +591,21 @@ class StripePaymentForm extends Component {
           locale={locale}
           intl={intl}
         />
+
+        <div style={{ marginTop: '24px', marginBottom: '24px' }}>
+          <Heading as="h3" rootClassName={css.heading}>
+            Contact Details
+          </Heading>
+          <FieldPhoneNumberInput
+            className={css.field}
+            type="text"
+            id={`${formId}.phoneNumber`}
+            name="phoneNumber"
+            label="Phone Number (Required for pickup/delivery coordination)"
+            placeholder="e.g. +1 555 123 4567"
+            validate={validators.required("A valid phone number is required.")}
+          />
+        </div>
 
         {billingDetailsNeeded && !loadingData ? (
           <React.Fragment>

@@ -270,6 +270,7 @@ const handleSubmit = (values, process, props, stripe, submitting, setSubmitting)
 
   const transactionFieldsProtectedData = {
     ...pickTransactionFieldsData(formValues, 'protected', true, transactionFieldConfigs),
+    ...(formValues.phoneNumber ? { phoneNumber: formValues.phoneNumber } : {}),
   };
 
   const saveAfterOnetimePayment =

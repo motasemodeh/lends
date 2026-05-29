@@ -19,6 +19,8 @@ import DetailCardHeadingsMaybe from './DetailCardHeadingsMaybe';
 import DetailCardImage from './DetailCardImage';
 import DeliveryInfoMaybe from './DeliveryInfoMaybe';
 import BookingLocationMaybe from './BookingLocationMaybe';
+import ChecklistMaybe from './ChecklistMaybe';
+import ContactDetailsMaybe from './ContactDetailsMaybe';
 import FeedSection from './FeedSection';
 import DiminishedActionButtonMaybe from './DiminishedActionButtonMaybe';
 import PanelHeading from './PanelHeading';
@@ -327,6 +329,18 @@ export class TransactionPanelComponent extends Component {
                   className={css.deliveryInfoSection}
                   listing={listing}
                   showBookingLocation={showBookingLocation}
+                />
+                <ContactDetailsMaybe
+                  className={css.deliveryInfoSection}
+                  transactionRole={transactionRole}
+                  protectedData={protectedData}
+                  customer={customer}
+                  provider={provider}
+                />
+                <ChecklistMaybe
+                  className={css.deliveryInfoSection}
+                  transactionRole={transactionRole}
+                  deliveryMethod={deliveryMethod}
                 />
               </div>
             ) : null}

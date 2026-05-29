@@ -68,15 +68,6 @@ const ListingCardRental = props => {
 
   const formattedPrice = price instanceof Money ? formatMoney(intl, price) : '';
 
-  const price7Days =
-    price instanceof Money
-      ? formatMoney(intl, new Money(Math.round(price.amount * 0.8 * 7), price.currency))
-      : '';
-  const price2Days =
-    price instanceof Money
-      ? formatMoney(intl, new Money(Math.round(price.amount * 1.5), price.currency))
-      : '';
-
   return (
     <div className={classes}>
       <div className={css.imageWrapper}>
@@ -125,16 +116,8 @@ const ListingCardRental = props => {
 
         <div className={css.priceGrid}>
           <div className={classNames(css.priceBox, css.priceBoxHighlighted)}>
-            <div className={css.priceValue}>{price2Days}</div>
-            <div className={css.priceLabel}>2 days</div>
-          </div>
-          <div className={css.priceBox}>
             <div className={css.priceValue}>{formattedPrice}</div>
             <div className={css.priceLabel}>Per day</div>
-          </div>
-          <div className={css.priceBox}>
-            <div className={css.priceValue}>{price7Days}</div>
-            <div className={css.priceLabel}>7 days</div>
           </div>
         </div>
       </div>
