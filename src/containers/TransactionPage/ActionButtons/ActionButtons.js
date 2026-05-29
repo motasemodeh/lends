@@ -43,6 +43,9 @@ const checkCondition = (condition, additionalInfo) => {
     // hide the button if the customer counter offer is not allowed
     return condition.action === 'hide' && !allowCustomerCounterOffer(listingTypeConfig);
   }
+  if (condition.type === 'isTrue') {
+    return condition.value === true;
+  }
   return false;
 };
 

@@ -1303,6 +1303,7 @@
   "TransactionPage.default-booking.provider.transition-decline.actionError": "Oops, declining failed. Please try again.",
   "TransactionPage.default-booking.customer.transition-cancel-by-customer.actionButton": "Cancel booking",
   "TransactionPage.default-booking.customer.transition-cancel-by-customer.actionError": "Oops, canceling failed. Please try again.",
+  "TransactionPage.cancelTooLate": "You can only cancel up to 48 hours before the rental starts. Please contact the provider.",
   "TransactionPage.default-booking.provider.transition-cancel-by-provider.actionButton": "Cancel booking",
   "TransactionPage.default-booking.provider.transition-cancel-by-provider.actionError": "Oops, canceling failed. Please try again.",
   "TransactionPage.default-inquiry.customer.free-inquiry.title": "You sent an inquiry.",

@@ -59,7 +59,24 @@ export const getStateDataForBookingProcess = (txInfo, processInfo) => {
     .cond([states.ACCEPTED, _], () => {
       const isCounterpartyBanned = isCustomer ? isProviderBanned : isCustomerBanned;
       const cancelTransition = isCustomer ? transitions.CANCEL_BY_CUSTOMER : transitions.CANCEL_BY_PROVIDER;
-      const secondary = isCounterpartyBanned ? null : actionButtonProps(cancelTransition, transactionRole);
+      
+      let cancelConditions = [];
+      if (isCustomer) {
+        const bookingStart = transaction?.booking?.attributes?.start;
+        if (bookingStart) {
+          const hoursUntilStart = (bookingStart.getTime() - new Date().getTime()) / (1000 * 60 * 60);
+          if (hoursUntilStart < 48) {
+            cancelConditions.push({
+              type: 'isTrue',
+              value: true,
+              action: 'disable',
+              disabledReason: { translationKey: 'TransactionPage.cancelTooLate' },
+            });
+          }
+        }
+      }
+
+      const secondary = isCounterpartyBanned ? null : actionButtonProps(cancelTransition, transactionRole, { conditions: cancelConditions });
       return {
         processName,
         processState,
