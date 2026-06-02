@@ -48,6 +48,7 @@ export const getStateDataForBookingProcess = (txInfo, processInfo) => {
         processState,
         showDetailCardHeadings: true,
         showExtraInfo: true,
+        showActionButtons: true,
         secondaryButtonProps: secondary,
       };
     })
