@@ -48,6 +48,7 @@ export const transitions = {
   // Admin can also cancel the transition.
   CANCEL_BY_CUSTOMER: 'transition/cancel-by-customer',
   CANCEL_BY_PROVIDER: 'transition/cancel-by-provider',
+  CANCEL_REQUEST_BY_CUSTOMER: 'transition/cancel-request-by-customer',
 
   // The backend will mark the transaction completed.
   COMPLETE: 'transition/complete',
@@ -137,6 +138,7 @@ export const graph = {
         [transitions.EXPIRE]: states.EXPIRED,
         [transitions.ACCEPT]: states.ACCEPTED,
         [transitions.OPERATOR_ACCEPT]: states.ACCEPTED,
+        [transitions.CANCEL_REQUEST_BY_CUSTOMER]: states.CANCELED,
       },
     },
 
@@ -185,6 +187,7 @@ export const isRelevantPastTransition = transition => {
     transitions.OPERATOR_ACCEPT,
     transitions.CANCEL_BY_CUSTOMER,
     transitions.CANCEL_BY_PROVIDER,
+    transitions.CANCEL_REQUEST_BY_CUSTOMER,
     transitions.COMPLETE,
     transitions.OPERATOR_COMPLETE,
     transitions.CONFIRM_PAYMENT,
@@ -244,7 +247,9 @@ export const isRefunded = transition => {
   const txRefundedTransitions = [
     transitions.EXPIRE_PAYMENT,
     transitions.EXPIRE,
-    transitions.CANCEL,
+    transitions.CANCEL_BY_CUSTOMER,
+    transitions.CANCEL_BY_PROVIDER,
+    transitions.CANCEL_REQUEST_BY_CUSTOMER,
     transitions.DECLINE,
   ];
   return txRefundedTransitions.includes(transition);
