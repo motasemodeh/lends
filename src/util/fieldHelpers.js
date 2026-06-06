@@ -15,6 +15,9 @@ import {
 } from './types';
 import appSettings from '../config/settings';
 import { addScopePrefix } from './userHelpers';
+import { formatMoney } from './currency';
+import { types as sdkTypes } from './sdkLoader';
+const { Money } = sdkTypes;
 
 const { stripeSupportedCurrencies, subUnitDivisors } = appSettings;
 
@@ -338,7 +341,8 @@ export const getDetailCustomFieldValue = (
   key,
   label,
   intl,
-  page
+  page,
+  currency
 ) => {
   const findSelectedOption = enumValue => enumOptions?.find(o => enumValue === `${o.option}`);
   const getBooleanMessage = value =>
@@ -347,12 +351,17 @@ export const getDetailCustomFieldValue = (
       : intl.formatMessage({ id: `${page}.detailNo` });
   const optionConfig = findSelectedOption(value);
 
+  let finalValue = value;
+  if (schemaType === 'long' && key === 'securityDepositAmount' && currency) {
+    finalValue = formatMoney(intl, new Money(value, currency));
+  }
+
   return schemaType === 'enum'
     ? { key, value: optionConfig?.label, label }
     : schemaType === 'boolean'
     ? { key, value: getBooleanMessage(value), label }
     : schemaType === 'long'
-    ? { key, value, label }
+    ? { key, value: finalValue, label }
     : null;
 };
 

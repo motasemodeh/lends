@@ -466,6 +466,7 @@ export const ListingPageComponent = props => {
               listingFieldConfigs={listingConfig.listingFields}
               categoryConfiguration={config.categoryConfiguration}
               intl={intl}
+              currency={config.currency}
             />
 
             <SectionReviews reviews={reviews} fetchReviewsError={fetchReviewsError} />

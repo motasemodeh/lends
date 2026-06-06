@@ -73,7 +73,8 @@ const CustomListingFields = props => {
         key,
         label,
         intl,
-        'ListingPage'
+        'ListingPage',
+        props.currency
       );
 
       return detailValue ? filteredConfigs.concat(detailValue) : filteredConfigs;
