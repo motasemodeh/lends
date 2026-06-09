@@ -132,7 +132,7 @@ const BuildStorePage = () => {
               <div className={css.feeBox}>
                 <div className={css.feeValue}>Only 9%</div>
                 <div className={css.feeLabel}>Service Fee on Completed Rentals</div>
-                <p className={css.feeSubtext}> We only earn when you earn. This fee covers platform maintenance and support.</p>
+                <p className={css.feeSubtext}> We only earn when you earn. This fee covers the Stripe transaction fee, platform maintenance and support.</p>
               </div>
             </div>
           </section>
