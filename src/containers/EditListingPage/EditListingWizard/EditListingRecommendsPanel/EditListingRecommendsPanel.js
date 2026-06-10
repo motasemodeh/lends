@@ -2,10 +2,11 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 // Utils
 import { useIntl, FormattedMessage } from '../../../../util/reactIntl';
+import { LISTING_STATE_DRAFT } from '../../../../util/types';
 import { ensureListing } from '../../../../util/data';
 
 // Shared components
-import { Button, H3, H4 } from '../../../../components';
+import { Button, H3, H4, ListingLink } from '../../../../components';
 
 import css from './EditListingRecommendsPanel.module.css';
 
@@ -29,13 +30,28 @@ const EditListingRecommendsPanel = props => {
     panelUpdated,
     updateInProgress,
     errors,
-    updatePageTitle,
+    updatePageTitle: UpdatePageTitle,
     onSearchListings,
   } = props;
 
   const intl = useIntl();
   const currentListing = ensureListing(listing);
   const { title = '', publicData = {} } = currentListing.attributes || {};
+  const isPublished =
+    currentListing.id && currentListing.attributes?.state !== LISTING_STATE_DRAFT;
+
+  // Panel heading config — plain string for Helmet, JSX for visible H3
+  const panelHeadingProps = isPublished
+    ? {
+        id: 'EditListingRecommendsPanel.title',
+        messageProps: { listingTitle: title },
+        values: { listingTitle: <ListingLink listing={currentListing} /> },
+      }
+    : {
+        id: 'EditListingRecommendsPanel.createListingTitle',
+        messageProps: {},
+        values: {},
+      };
 
   // ─── State ───────────────────────────────────────────────────────────────────
   const [searchQuery, setSearchQuery] = useState('');
@@ -128,21 +144,18 @@ const EditListingRecommendsPanel = props => {
     return `$${amount.toFixed(2)}`;
   };
 
-  const panelTitle = currentListing.id ? (
-    <FormattedMessage
-      id="EditListingRecommendsPanel.title"
-      values={{ listingTitle: <strong>{title}</strong> }}
-    />
-  ) : (
-    <FormattedMessage id="EditListingRecommendsPanel.createListingTitle" />
-  );
 
   return (
     <div className={css.root}>
-      {updatePageTitle({ panelHeading: panelTitle })}
+      <UpdatePageTitle
+        panelHeading={intl.formatMessage(
+          { id: panelHeadingProps.id },
+          { ...panelHeadingProps.messageProps }
+        )}
+      />
 
       <H3 as="h1" className={css.title}>
-        {panelTitle}
+        <FormattedMessage id={panelHeadingProps.id} values={{ ...panelHeadingProps.values }} />
       </H3>
       <p className={css.subtitle}>
         <FormattedMessage id="EditListingRecommendsPanel.subtitle" />
