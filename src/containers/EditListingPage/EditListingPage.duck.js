@@ -86,9 +86,57 @@ const sortExceptionsByStartTime = (a, b) => {
 
 // ================ Async Thunks ================ //
 
+/////////////////////
+// Search Listings //
+/////////////////////
+export const searchListingsThunk = createAsyncThunk(
+  'EditListingPage/searchListings',
+  ({ keywords, config }, { rejectWithValue, extra: sdk }) => {
+    const {
+      aspectWidth = 1,
+      aspectHeight = 1,
+      variantPrefix = 'listing-card',
+    } = config.layout.listingImage;
+    const aspectRatio = aspectHeight / aspectWidth;
+
+    return sdk.listings
+      .query({
+        keywords,
+        states: ['published'],
+        include: ['images'],
+        'fields.image': [`variants.${variantPrefix}`, `variants.${variantPrefix}-2x`],
+        ...createImageVariantConfig(`${variantPrefix}`, 400, aspectRatio),
+        per_page: 8,
+      })
+      .then(response => {
+        const listings = response.data.data || [];
+        const included = response.data.included || [];
+        return listings.map(l => {
+          const imageRef = l.relationships?.images?.data?.[0];
+          const image = imageRef
+            ? included.find(inc => inc.type === 'image' && inc.id.uuid === imageRef.uuid)
+            : null;
+          const imageUrl =
+            image?.attributes?.variants?.[variantPrefix]?.url || null;
+          return {
+            id: l.id.uuid,
+            title: l.attributes?.title || '',
+            price: l.attributes?.price || null,
+            imageUrl,
+          };
+        });
+      })
+      .catch(e => rejectWithValue(storableError(e)));
+  }
+);
+export const searchListings = (keywords, config) => (dispatch, getState, sdk) => {
+  return dispatch(searchListingsThunk({ keywords, config })).unwrap();
+};
+
 //////////////////
 // Show Listing //
 //////////////////
+
 export const showListingThunk = createAsyncThunk(
   'EditListingPage/showListing',
   ({ actionPayload, config }, { dispatch, rejectWithValue, extra: sdk }) => {

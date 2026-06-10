@@ -57,6 +57,7 @@ import EditListingWizardTab, {
   PHOTOS,
   STYLE,
   POLICY,
+  RECOMMENDS,
 } from './EditListingWizardTab';
 import css from './EditListingWizard.module.css';
 
@@ -103,11 +104,12 @@ const tabsForListingType = (processName, listingTypeConfig) => {
       PRICING,
       AVAILABILITY,
       POLICY,
+      RECOMMENDS,
       ...styleOrPhotosTab,
     ],
-    ['default-purchase']: [DETAILS, PRICING_AND_STOCK, ...deliveryMaybe, ...styleOrPhotosTab],
-    ['default-negotiation']: [DETAILS, ...locationMaybe, ...pricingMaybe, ...styleOrPhotosTab],
-    ['default-inquiry']: [DETAILS, ...locationMaybe, ...pricingMaybe, ...styleOrPhotosTab],
+    ['default-purchase']: [DETAILS, PRICING_AND_STOCK, ...deliveryMaybe, RECOMMENDS, ...styleOrPhotosTab],
+    ['default-negotiation']: [DETAILS, ...locationMaybe, ...pricingMaybe, RECOMMENDS, ...styleOrPhotosTab],
+    ['default-inquiry']: [DETAILS, ...locationMaybe, ...pricingMaybe, RECOMMENDS, ...styleOrPhotosTab],
   };
 
   return tabs[processName] || tabs['default-inquiry'];
@@ -156,6 +158,9 @@ const tabLabelAndSubmit = (intl, tab, isNewListingFlow, isPriceDisabled, process
   } else if (tab === POLICY) {
     labelKey = 'EditListingWizard.tabLabelSecurity';
     submitButtonKey = `EditListingWizard.${processNameString}${newOrEdit}.savePolicy`;
+  } else if (tab === RECOMMENDS) {
+    labelKey = 'EditListingWizard.tabLabelRecommends';
+    submitButtonKey = `EditListingWizard.${processNameString}${newOrEdit}.saveRecommends`;
   }
 
   return {
@@ -278,6 +283,8 @@ const tabCompleted = (tab, listing, config) => {
       return !!cardStyle;
     case POLICY:
       return true; // We don't require anything for now
+    case RECOMMENDS:
+      return true; // Optional tab, always complete
     default:
       return false;
   }

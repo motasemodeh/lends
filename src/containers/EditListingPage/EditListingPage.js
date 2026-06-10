@@ -44,6 +44,7 @@ import {
   requestImageUpload,
   removeListingImage,
   savePayoutDetails,
+  searchListings,
 } from './EditListingPage.duck';
 import EditListingWizard from './EditListingWizard/EditListingWizard';
 import css from './EditListingPage.module.css';
@@ -150,6 +151,7 @@ export const EditListingPageComponent = props => {
     onPayoutDetailsSubmit,
     onPayoutDetailsChange,
     onGetStripeConnectAccountLink,
+    onSearchListings,
     page,
     params,
     location,
@@ -296,6 +298,7 @@ export const EditListingPageComponent = props => {
           getAccountLinkInProgress={getAccountLinkInProgress}
           onImageUpload={onImageUpload}
           onRemoveImage={onRemoveListingImage}
+          onSearchListings={onSearchListings}
           currentUser={currentUser}
           onManageDisableScrolling={onManageDisableScrolling}
           stripeOnboardingReturnURL={params.returnURLType}
@@ -386,6 +389,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(savePayoutDetails(values, isUpdateCall)),
   onGetStripeConnectAccountLink: params => dispatch(getStripeConnectAccountLink(params)),
   onRemoveListingImage: imageId => dispatch(removeListingImage(imageId)),
+  onSearchListings: (keywords, config) => dispatch(searchListings(keywords, config)),
 });
 
 // Note: it is important that the withRouter HOC is **outside** the

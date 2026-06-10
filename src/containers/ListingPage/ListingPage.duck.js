@@ -273,6 +273,40 @@ export const sendInquiry = (listing, message) => (dispatch, getState, sdk) => {
   return dispatch(sendInquiryThunk({ listing, message })).unwrap();
 };
 
+/////////////////////////////
+// Fetch Recommended Listings
+/////////////////////////////
+export const fetchRecommendedListingsThunk = createAsyncThunk(
+  'ListingPage/fetchRecommendedListings',
+  ({ listingIds, config }, { dispatch, rejectWithValue, extra: sdk }) => {
+    const {
+      aspectWidth = 1,
+      aspectHeight = 1,
+      variantPrefix = 'listing-card',
+    } = config.layout.listingImage;
+    const aspectRatio = aspectHeight / aspectWidth;
+
+    return sdk.listings
+      .query({
+        ids: listingIds,
+        states: ['published'],
+        include: ['author', 'images'],
+        'fields.image': [`variants.${variantPrefix}`, `variants.${variantPrefix}-2x`],
+        ...createImageVariantConfig(`${variantPrefix}`, 400, aspectRatio),
+        ...createImageVariantConfig(`${variantPrefix}-2x`, 800, aspectRatio),
+      })
+      .then(response => {
+        dispatch(addMarketplaceEntities(response));
+        const ids = (response.data.data || []).map(l => l.id);
+        return ids;
+      })
+      .catch(e => rejectWithValue(storableError(e)));
+  }
+);
+export const fetchRecommendedListings = (listingIds, config) => (dispatch, getState, sdk) => {
+  return dispatch(fetchRecommendedListingsThunk({ listingIds, config })).unwrap();
+};
+
 // Helper function for loadData call.
 // Note: listing could be ownListing entity too
 const fetchMonthlyTimeSlots = (dispatch, listing) => {
@@ -373,6 +407,7 @@ const initialState = {
   showListingError: null,
   reviews: [],
   fetchReviewsError: null,
+  recommendedListingIds: [],
   monthlyTimeSlots: {
     // '2022-03': {
     //   timeSlots: [],
@@ -503,6 +538,9 @@ const listingPageSlice = createSlice({
         state.sendInquiryInProgress = false;
         state.sendInquiryError = action.payload;
       })
+      .addCase(fetchRecommendedListingsThunk.fulfilled, (state, action) => {
+        state.recommendedListingIds = action.payload || [];
+      })
       .addCase(fetchTransactionLineItemsThunk.pending, state => {
         state.fetchLineItemsInProgress = true;
         state.fetchLineItemsError = null;
@@ -561,11 +599,15 @@ export const loadData = (params, search, config) => (dispatch, getState, sdk) =>
     const listing = listingResponse?.data?.data;
     const transactionProcessAlias = listing?.attributes?.publicData?.transactionProcessAlias || '';
     if (isBookingProcessAlias(transactionProcessAlias) && !hasNoViewingRights) {
-      // Fetch timeSlots if the user has viewing rights.
-      // This can happen parallel to loadData.
-      // We are not interested to return them from loadData call.
       fetchMonthlyTimeSlots(dispatch, listing);
     }
+
+    // Fire-and-forget: fetch recommended listings if any are saved
+    const recommendedIds = listing?.attributes?.publicData?.recommendedListingIds || [];
+    if (recommendedIds.length > 0 && !hasNoViewingRights) {
+      fetchRecommendedListings(recommendedIds, config)(dispatch, getState, sdk);
+    }
+
     return response;
   });
 };

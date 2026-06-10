@@ -19,6 +19,7 @@ import EditListingPricingPanel from './EditListingPricingPanel/EditListingPricin
 import EditListingPricingAndStockPanel from './EditListingPricingAndStockPanel/EditListingPricingAndStockPanel';
 import EditListingStylePanel from './EditListingStylePanel/EditListingStylePanel';
 import EditListingPolicyPanel from './EditListingPolicyPanel/EditListingPolicyPanel';
+import EditListingRecommendsPanel from './EditListingRecommendsPanel/EditListingRecommendsPanel';
 
 import css from './EditListingWizardTab.module.css';
 
@@ -31,6 +32,7 @@ export const AVAILABILITY = 'availability';
 export const PHOTOS = 'photos';
 export const STYLE = 'style';
 export const POLICY = 'policy';
+export const RECOMMENDS = 'recommends';
 
 // EditListingWizardTab component supports these tabs
 export const SUPPORTED_TABS = [
@@ -43,6 +45,7 @@ export const SUPPORTED_TABS = [
   PHOTOS,
   STYLE,
   POLICY,
+  RECOMMENDS,
 ];
 
 const pathParamsToNextTab = (params, tab, marketplaceTabs) => {
@@ -109,6 +112,7 @@ const EditListingWizardTab = props => {
     onManageDisableScrolling,
     onListingTypeChange,
     onRemoveImage,
+    onSearchListings,
     updatedTab,
     updateInProgress,
     tabSubmitButtonText,
@@ -284,6 +288,14 @@ const EditListingWizardTab = props => {
         <EditListingPolicyPanel
           {...panelProps(POLICY)}
           marketplaceCurrency={config.currency}
+        />
+      );
+    }
+    case RECOMMENDS: {
+      return (
+        <EditListingRecommendsPanel
+          {...panelProps(RECOMMENDS)}
+          onSearchListings={keywords => onSearchListings(keywords, config)}
         />
       );
     }

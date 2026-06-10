@@ -1,0 +1,256 @@
+.root {
+  flex-grow: 1;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+}
+
+.title {
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: var(--colorGrey600);
+  margin-bottom: 24px;
+  font-size: 15px;
+}
+
+.searchSection {
+  margin-bottom: 24px;
+}
+
+.searchLabel {
+  display: block;
+  font-weight: var(--fontWeightSemiBold);
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+
+.searchWrapper {
+  position: relative;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--colorGrey300);
+  border-radius: 8px;
+  font-size: 15px;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease;
+}
+
+.searchInput:focus {
+  border-color: var(--marketplaceColor);
+  box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.12);
+}
+
+.searchInput:disabled {
+  background-color: var(--colorGrey50);
+  cursor: not-allowed;
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid var(--colorGrey200);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  z-index: 100;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+  border-bottom: 1px solid var(--colorGrey100);
+}
+
+.dropdownItem:last-child {
+  border-bottom: none;
+}
+
+.dropdownItem:hover {
+  background-color: var(--colorGrey50);
+}
+
+.dropdownItem.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dropdownThumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background-color: var(--colorGrey100);
+}
+
+.dropdownThumbPlaceholder {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  background-color: var(--colorGrey100);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--colorGrey400);
+  font-size: 18px;
+}
+
+.dropdownInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.dropdownTitle {
+  font-weight: var(--fontWeightMedium);
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dropdownPrice {
+  font-size: 13px;
+  color: var(--colorGrey600);
+}
+
+.addButton {
+  padding: 6px 14px;
+  background-color: var(--marketplaceColor);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: var(--fontWeightSemiBold);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color 0.15s ease;
+}
+
+.addButton:hover {
+  background-color: var(--marketplaceColorDark);
+}
+
+.addButton:disabled {
+  background-color: var(--colorGrey300);
+  cursor: not-allowed;
+}
+
+.noResults {
+  padding: 16px;
+  text-align: center;
+  color: var(--colorGrey500);
+  font-size: 14px;
+}
+
+.maxReachedNote {
+  font-size: 13px;
+  color: var(--colorAttention);
+  margin-top: 6px;
+}
+
+.selectedSection {
+  margin-bottom: 32px;
+}
+
+.selectedTitle {
+  font-weight: var(--fontWeightSemiBold);
+  font-size: 15px;
+  margin-bottom: 12px;
+  color: var(--colorGrey700);
+}
+
+.selectedList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.selectedItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: var(--colorGrey50);
+  border: 1px solid var(--colorGrey200);
+  border-radius: 8px;
+}
+
+.selectedThumb {
+  width: 48px;
+  height: 48px;
+  border-radius: 6px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background-color: var(--colorGrey200);
+}
+
+.selectedThumbPlaceholder {
+  width: 48px;
+  height: 48px;
+  border-radius: 6px;
+  background-color: var(--colorGrey200);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--colorGrey500);
+  font-size: 20px;
+}
+
+.selectedInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.selectedItemTitle {
+  font-weight: var(--fontWeightMedium);
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.selectedItemPrice {
+  font-size: 13px;
+  color: var(--colorGrey600);
+}
+
+.removeButton {
+  padding: 6px 12px;
+  background: white;
+  border: 1px solid var(--colorGrey300);
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--colorGrey700);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.removeButton:hover {
+  background: var(--colorFail);
+  border-color: var(--colorFail);
+  color: white;
+}
+
+.submitButton {
+  margin-top: auto;
+  padding-top: 24px;
+}

@@ -1,0 +1,29 @@
+.root {
+  padding: 48px 0 0;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: var(--fontWeightBold);
+  margin: 0 0 24px;
+  color: var(--colorGrey900);
+}
+
+.listingsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+@media (--viewportMedium) {
+  .listingsGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+}
+
+@media (--viewportLarge) {
+  .listingsGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

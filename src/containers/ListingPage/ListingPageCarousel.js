@@ -88,6 +88,7 @@ import SectionAuthorMaybe from './SectionAuthorMaybe';
 import SectionMapMaybe from './SectionMapMaybe';
 import SectionGallery from './SectionGallery';
 import CustomListingFields from './CustomListingFields';
+import SectionRecommendsMaybe from './SectionRecommendsMaybe';
 
 import css from './ListingPage.module.css';
 
@@ -127,6 +128,7 @@ export const ListingPageComponent = props => {
     config,
     routeConfiguration,
     showOwnListingsOnly,
+    recommendedListings = [],
     ...restOfProps
   } = props;
 
@@ -469,6 +471,11 @@ export const ListingPageComponent = props => {
               currency={config.currency}
             />
 
+            <SectionRecommendsMaybe
+              listings={recommendedListings}
+              listingImageConfig={config.layout.listingImage}
+            />
+
             <SectionReviews reviews={reviews} fetchReviewsError={fetchReviewsError} />
           </div>
           
@@ -655,6 +662,13 @@ const mapStateToProps = state => {
     return listings.length === 1 ? listings[0] : null;
   };
 
+  // Resolve recommended listing entities from Redux store
+  const recommendedListingIds = state.ListingPage.recommendedListingIds || [];
+  const recommendedListings = getMarketplaceEntities(
+    state,
+    recommendedListingIds.map(id => ({ id, type: 'listing' }))
+  ).filter(Boolean);
+
   return {
     isAuthenticated,
     currentUser,
@@ -672,6 +686,7 @@ const mapStateToProps = state => {
     fetchLineItemsError, // for OrderPanel
     sendInquiryInProgress,
     sendInquiryError,
+    recommendedListings,
   };
 };
 
