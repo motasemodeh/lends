@@ -3,7 +3,6 @@ import { Page, LayoutSingleColumn, NamedLink } from '../../components';
 import TopbarContainer from '../../containers/TopbarContainer/TopbarContainer';
 import FooterContainer from '../../containers/FooterContainer/FooterContainer';
 import { useConfiguration } from '../../context/configurationContext';
-import { sendSupportEmail } from '../../util/api';
 
 import css from './SupportPage.module.css';
 
@@ -29,11 +28,19 @@ const SupportPage = () => {
     setError(null);
 
     try {
-      await sendSupportEmail({ email, message });
+      const response = await window.fetch('/api/send-support-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, message }),
+      });
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Failed to send message.');
+      }
       setSubmitted(true);
     } catch (err) {
       console.error('Support email failed:', err);
-      setError('Failed to send your message. Please try again or email us directly.');
+      setError(err.message || 'Failed to send your message. Please try again or email us directly.');
     } finally {
       setInProgress(false);
     }

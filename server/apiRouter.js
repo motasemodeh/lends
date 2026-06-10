@@ -25,6 +25,9 @@ const { authenticateGoogle, authenticateGoogleCallback } = require('./api/auth/g
 
 const router = express.Router();
 
+// Parse JSON body
+router.use(bodyParser.json());
+
 // ================ API router middleware: ================ //
 
 // Parse Transit body first to a string
