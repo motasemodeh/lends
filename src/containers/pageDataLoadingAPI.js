@@ -21,6 +21,7 @@ import { loadData as ProfilePageLoader } from './ProfilePage/ProfilePage.duck';
 import { loadData as RequestQuotePageLoader } from './RequestQuotePage/RequestQuotePage.duck';
 import { loadData as SearchPageLoader } from './SearchPage/SearchPage.duck';
 import { loadData as StripePayoutPageLoader } from './StripePayoutPage/StripePayoutPage.duck';
+import { loadData as SupportPageLoader } from './SupportPage/SupportPage.duck';
 import { loadData as TermsOfServicePageLoader } from './TermsOfServicePage/TermsOfServicePage.duck';
 import {
   loadData as TransactionPageLoader,
@@ -88,6 +89,9 @@ const getPageDataLoadingAPI = () => {
     },
     StripePayoutPage: {
       loadData: StripePayoutPageLoader,
+    },
+    SupportPage: {
+      loadData: SupportPageLoader,
     },
     TermsOfServicePage: {
       loadData: TermsOfServicePageLoader,

@@ -48,6 +48,7 @@ const StyleguidePage = loadable(() => import(/* webpackChunkName: "StyleguidePag
 const AboutPage = loadable(() => import(/* webpackChunkName: "AboutPage" */ '../containers/AboutPage/AboutPage'));
 const BuildStorePage = loadable(() => import(/* webpackChunkName: "BuildStorePage" */ '../containers/BuildStorePage/BuildStorePage'));
 const GetOrganizedPage = loadable(() => import(/* webpackChunkName: "GetOrganizedPage" */ '../containers/GetOrganizedPage/GetOrganizedPage'));
+const SupportPage = loadable(() => import(/* webpackChunkName: "SupportPage" */ '../containers/SupportPage/SupportPage'));
 
 export const ACCOUNT_SETTINGS_PAGES = [
   'ContactDetailsPage',
@@ -105,6 +106,12 @@ const routeConfiguration = (layoutConfig, accessControlConfig) => {
       name: 'GetOrganizedPage',
       component: GetOrganizedPage,
       loadData: pageDataLoadingAPI.GetOrganizedPage.loadData,
+    },
+    {
+      path: '/support',
+      name: 'SupportPage',
+      component: SupportPage,
+      loadData: pageDataLoadingAPI.SupportPage.loadData,
     },
     {
       path: '/p/:pageId',

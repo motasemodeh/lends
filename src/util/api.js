@@ -151,3 +151,11 @@ export const createUserWithIdp = body => {
 export const deleteUserAccount = body => {
   return post('/api/delete-account', body);
 };
+
+// Send a support contact form message to help@lends.market.
+// Uses JSON (not transit) since this endpoint does not talk to Sharetribe SDK.
+export const sendSupportEmail = ({ email, message }) => {
+  return post('/api/send-support-email', JSON.stringify({ email, message }), {
+    headers: { 'Content-Type': 'application/json' },
+  });
+};
