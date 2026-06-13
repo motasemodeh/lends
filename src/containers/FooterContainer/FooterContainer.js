@@ -19,38 +19,34 @@ const FooterComponent = () => {
 
   const blocks = footer.blocks ? [...footer.blocks] : [];
   
-  // Try to find the block containing the "Privacy" or "Terms" link
+  // Find the block containing the terms/privacy links
   const targetBlockIndex = blocks.findIndex(block => 
-    block.links && block.links.some(link => link.href && (link.href.includes('terms-of-service') || link.href.includes('privacy-policy')))
+    block.text && block.text.content && (block.text.content.includes('terms-of-service') || block.text.content.includes('privacy-policy'))
   );
 
   if (targetBlockIndex > -1) {
     const block = { ...blocks[targetBlockIndex] };
-    const links = [...(block.links || [])];
+    const text = { ...block.text };
     
-    const hasContactUs = links.some(link => link.href && link.href.includes('/support'));
-    if (!hasContactUs) {
-      links.push({
-        fieldType: 'link',
-        content: 'Contact Us',
-        href: '/support'
-      });
-      block.links = links;
+    // Append Contact Us as a markdown link if it's not already there
+    if (!text.content.includes('/support')) {
+      // Remove any plain text "Contact Us" they might have typed
+      text.content = text.content.replace(/Contact Us/g, '').trim();
+      text.content = `${text.content}\n[Contact Us](/support)`;
+      block.text = text;
       blocks[targetBlockIndex] = block;
     }
   } else if (blocks.length > 0) {
-    // If we can't find it, just add it to the first column
+    // If we can't find it explicitly, just add to the first block
     const block = { ...blocks[0] };
-    const links = [...(block.links || [])];
-    const hasContactUs = links.some(link => link.href && link.href.includes('/support'));
-    if (!hasContactUs) {
-      links.push({
-        fieldType: 'link',
-        content: 'Contact Us',
-        href: '/support'
-      });
-      block.links = links;
-      blocks[0] = block;
+    if (block.text && block.text.content) {
+      const text = { ...block.text };
+      if (!text.content.includes('/support')) {
+        text.content = text.content.replace(/Contact Us/g, '').trim();
+        text.content = `${text.content}\n[Contact Us](/support)`;
+        block.text = text;
+        blocks[0] = block;
+      }
     }
   }
 
