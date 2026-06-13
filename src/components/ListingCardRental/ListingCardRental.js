@@ -70,7 +70,7 @@ const ListingCardRental = props => {
 
   return (
     <div className={classes}>
-      <div className={css.imageWrapper}>
+      <NamedLink name="ListingPage" params={{ id, slug }} className={css.imageWrapper}>
         <AspectRatioWrapper width={1.2} height={1}>
           <ResponsiveImage
             rootClassName={css.rootForImage}
@@ -86,7 +86,7 @@ const ListingCardRental = props => {
             <span>{locationLabel}</span>
           </div>
         )}
-      </div>
+      </NamedLink>
 
       <div className={css.info}>
         <div
