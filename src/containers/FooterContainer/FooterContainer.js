@@ -32,7 +32,7 @@ const FooterComponent = () => {
     if (!text.content.includes('/support')) {
       // Remove any plain text "Contact Us" they might have typed
       text.content = text.content.replace(/Contact Us/g, '').trim();
-      text.content = `${text.content}\n[Contact Us](/support)`;
+      text.content = `${text.content}\n\n[Contact Us](/support)`;
       block.text = text;
       blocks[targetBlockIndex] = block;
     }
@@ -43,7 +43,7 @@ const FooterComponent = () => {
       const text = { ...block.text };
       if (!text.content.includes('/support')) {
         text.content = text.content.replace(/Contact Us/g, '').trim();
-        text.content = `${text.content}\n[Contact Us](/support)`;
+        text.content = `${text.content}\n\n[Contact Us](/support)`;
         block.text = text;
         blocks[0] = block;
       }
