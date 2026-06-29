@@ -55,8 +55,23 @@ const ListingCardRental = props => {
   const { location, address, deliveryMethod } = publicData || {};
   const showPickup = deliveryMethod === 'pickup' || deliveryMethod === 'both';
   const showDelivery = deliveryMethod === 'delivery' || deliveryMethod === 'both';
-  const stringifyLocation = loc => (typeof loc === 'object' ? loc.address || loc.building || '' : loc);
-  const locationLabel = stringifyLocation(location) || (typeof address === 'string' ? address.split(',').slice(-2, -1)[0]?.trim() : stringifyLocation(address));
+  const getCityState = loc => {
+    let addressStr = typeof loc === 'object' ? loc?.address : loc;
+    if (typeof addressStr !== 'string' || !addressStr) return '';
+    
+    const parts = addressStr.split(',').map(s => s.trim());
+    if (parts.length >= 4) {
+      // "Street, City, State Zip, Country" -> "City, State"
+      let state = parts[parts.length - 2].replace(/\s\d{4,}.*$/, '').trim();
+      return `${parts[parts.length - 3]}, ${state}`;
+    } else if (parts.length === 3) {
+      // "City, State Zip, Country" -> "City, State"
+      let state = parts[1].replace(/\s\d{4,}.*$/, '').trim();
+      return `${parts[0]}, ${state}`;
+    }
+    return addressStr;
+  };
+  const locationLabel = getCityState(location || address);
   const id = listing.id.uuid;
   const slug = createSlug(title);
 
