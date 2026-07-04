@@ -12,7 +12,7 @@ import { types as sdkTypes } from '../../../../util/sdkLoader';
 import { FIXED, isBookingProcess } from '../../../../transactions/transaction';
 
 // Import shared components
-import { Button, Form, FieldCurrencyInput, FieldSelect } from '../../../../components';
+import { Button, Form, FieldCurrencyInput, FieldTextInput } from '../../../../components';
 
 import BookingPriceVariants from './BookingPriceVariants';
 import StartTimeInterval from './StartTimeInverval';
@@ -173,17 +173,22 @@ export const EditListingPricingForm = props => (
           )}
 
           <div className={css.input}>
-            <FieldSelect
+            <FieldTextInput
               id={`${formId}minimumRentalDuration`}
               name="minimumRentalDuration"
-              label="Minimum Rental Duration"
-            >
-              <option value="1">1 day (Default)</option>
-              <option value="3">3 days</option>
-              <option value="7">7 days</option>
-              <option value="14">14 days</option>
-              <option value="30">30 days</option>
-            </FieldSelect>
+              type="number"
+              label={intl.formatMessage({ id: 'EditListingPricingForm.minimumRentalDurationLabel' })}
+              placeholder={intl.formatMessage({ id: 'EditListingPricingForm.minimumRentalDurationPlaceholder' })}
+              min="1"
+              validate={value => {
+                const parsed = parseInt(value, 10);
+                if (!value && value !== 0)
+                  return intl.formatMessage({ id: 'EditListingPricingForm.minimumRentalDurationRequired' });
+                if (isNaN(parsed) || parsed < 1 || !Number.isInteger(parsed))
+                  return intl.formatMessage({ id: 'EditListingPricingForm.minimumRentalDurationInvalid' });
+                return undefined;
+              }}
+            />
           </div>
 
           <ListingAddOns
