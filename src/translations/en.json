@@ -59,7 +59,7 @@
   "BookingFixedDurationForm.seatsTitle": "Number of seats",
   "CookieConsent.accept": "Accept",
   "CookieConsent.privacyPolicyLink": "Privacy Policy",
-  "CookieConsent.text": "We use cookies to improve your experience and analyze our traffic. By continuing to use our site, you agree to our {privacyPolicyLink}.",
+  "CookieConsent.text": "This app uses cookies solely for essential functionality, such as keeping you logged in. We do not use cookies to track you across other apps or websites, and we do not share your data with third parties for advertising purposes. By continuing to use our site, you agree to our {privacyPolicyLink}.",
   "BookingTimeForm.bookingEndTitle": "End date",
   "BookingTimeForm.bookingStartTitle": "Pick a date",
   "BookingTimeForm.placeholder": "mm/dd/yyyy",
