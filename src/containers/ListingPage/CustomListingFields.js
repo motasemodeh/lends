@@ -35,6 +35,18 @@ const CustomListingFields = props => {
     fieldConfig => fieldConfig.showConfig?.displayOnListingPage !== false
   );
 
+  const displayableFieldConfigsWithMinDuration = [
+    ...displayableFieldConfigs,
+    {
+      key: 'minimumRentalDuration',
+      schemaType: 'enum',
+      showConfig: {
+        isDetail: true,
+        label: 'Minimum rental',
+      },
+    },
+  ];
+
   const isFieldForSelectedCategories = fieldConfig => {
     const isTargetCategory = isFieldForCategory(currentCategories, fieldConfig);
     return isTargetCategory;
@@ -50,20 +62,42 @@ const CustomListingFields = props => {
   const sectionDetailsProps = {
     ...props,
     isFieldForCategory: isFieldForSelectedCategories,
-    fieldConfigs: displayableFieldConfigs,
+    fieldConfigs: displayableFieldConfigsWithMinDuration,
     heading: 'ListingPage.detailsTitle',
   };
 
   const pickExtendedDataFields = (filteredConfigs, config) => {
     const { key, schemaType, enumOptions, showConfig = {} } = config;
-    const listingType = publicData.listingType;
-    const isTargetListingType = isFieldForListingType(listingType, config);
-    const isTargetCategory = isFieldForCategory(currentCategories, config);
-
     const { isDetail, label } = showConfig;
     const publicDataValue = publicData[key];
     const metadataValue = metadata[key];
     const value = publicDataValue != null ? publicDataValue : metadataValue;
+
+    if (key === 'minimumRentalDuration') {
+      if (typeof value !== 'undefined') {
+        const getMinimumRentalDurationLabel = (duration) => {
+          switch (String(duration)) {
+            case '1': return '1 day';
+            case '3': return '3 days';
+            case '7': return '1 week';
+            case '14': return '2 weeks';
+            case '30': return '1 month';
+            default: return `${duration} days`;
+          }
+        };
+
+        return filteredConfigs.concat({
+          key,
+          label,
+          value: getMinimumRentalDurationLabel(value),
+        });
+      }
+      return filteredConfigs;
+    }
+
+    const listingType = publicData.listingType;
+    const isTargetListingType = isFieldForListingType(listingType, config);
+    const isTargetCategory = isFieldForCategory(currentCategories, config);
 
     if (isDetail && isTargetListingType && isTargetCategory && typeof value !== 'undefined') {
       const detailValue = getDetailCustomFieldValue(

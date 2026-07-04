@@ -73,14 +73,11 @@ const ListingCardRental = props => {
   };
   
   const getDurationText = (duration) => {
-    switch(String(duration)) {
-      case '1': return 'Per day';
-      case '3': return 'Per 3 days';
-      case '7': return 'Per week';
-      case '14': return 'Per 2 weeks';
-      case '30': return 'Per month';
-      default: return 'Per day';
+    const durInt = parseInt(duration, 10);
+    if (isNaN(durInt) || durInt <= 1) {
+      return intl.formatMessage({ id: 'ListingCardRental.perDay' });
     }
+    return intl.formatMessage({ id: 'ListingCardRental.forNDays' }, { count: durInt });
   };
 
   const locationLabel = getCityState(location || address);

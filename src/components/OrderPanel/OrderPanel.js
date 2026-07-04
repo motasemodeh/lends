@@ -161,14 +161,11 @@ const PriceMaybe = props => {
     <span className={css.priceValue}>{formatMoneyIfSupportedCurrency(price, intl)}</span>
   );
   const getDurationText = (duration, defaultUnitType) => {
-    switch(String(duration)) {
-      case '1': return <FormattedMessage id="OrderPanel.perUnit" values={{ unitType: defaultUnitType }} />;
-      case '3': return 'per 3 days';
-      case '7': return 'per week';
-      case '14': return 'per 2 weeks';
-      case '30': return 'per month';
-      default: return <FormattedMessage id="OrderPanel.perUnit" values={{ unitType: defaultUnitType }} />;
+    const durInt = parseInt(duration, 10);
+    if (isNaN(durInt) || durInt <= 1) {
+      return <FormattedMessage id="OrderPanel.perUnit" values={{ unitType: defaultUnitType }} />;
     }
+    return <FormattedMessage id="OrderPanel.forNDays" values={{ count: durInt }} />;
   };
 
   const pricePerUnit = (

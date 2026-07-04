@@ -77,8 +77,12 @@ export const getListingCardTranslations = (listing, config, intl) => {
 
   const priceMessageId = 'ListingCard.price';
 
+  const minimumRentalDuration = publicData?.minimumRentalDuration ? parseInt(publicData.minimumRentalDuration, 10) : 1;
+
   const perUnitString = isBookable
-    ? intl.formatMessage({ id: 'ListingCard.perUnit' }, { unitType: publicData?.unitType })
+    ? minimumRentalDuration > 1
+      ? intl.formatMessage({ id: 'ListingCard.forNDays' }, { count: minimumRentalDuration })
+      : intl.formatMessage({ id: 'ListingCard.perUnit' }, { unitType: publicData?.unitType })
     : '';
 
   // Single formatted price line (amount + per-unit if applicable); used for both card aria and price block
