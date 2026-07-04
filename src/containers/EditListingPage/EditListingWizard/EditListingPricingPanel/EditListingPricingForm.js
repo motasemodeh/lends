@@ -180,9 +180,9 @@ export const EditListingPricingForm = props => (
             >
               <option value="1">1 day (Default)</option>
               <option value="3">3 days</option>
-              <option value="7">1 week</option>
-              <option value="14">2 weeks</option>
-              <option value="30">1 month</option>
+              <option value="7">7 days</option>
+              <option value="14">14 days</option>
+              <option value="30">30 days</option>
             </FieldSelect>
           </div>
 

@@ -76,14 +76,7 @@ const CustomListingFields = props => {
     if (key === 'minimumRentalDuration') {
       if (typeof value !== 'undefined') {
         const getMinimumRentalDurationLabel = (duration) => {
-          switch (String(duration)) {
-            case '1': return '1 day';
-            case '3': return '3 days';
-            case '7': return '1 week';
-            case '14': return '2 weeks';
-            case '30': return '1 month';
-            default: return `${duration} days`;
-          }
+          return String(duration) === '1' ? '1 day' : `${duration} days`;
         };
 
         return filteredConfigs.concat({
