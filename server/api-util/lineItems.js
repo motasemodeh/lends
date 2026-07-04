@@ -281,9 +281,18 @@ exports.transactionLineItems = (listing, orderData, providerCommission, customer
    * By default OrderBreakdown prints line items inside LineItemUnknownItemsMaybe if the lineItem code is not recognized. */
 
   const quantityOrSeats = !!units && !!seats ? { units, seats } : { quantity };
+  
+  let finalUnitPrice = unitPrice;
+  if (['day', 'night'].includes(unitType)) {
+    const minimumRentalDuration = publicData?.minimumRentalDuration ? parseInt(publicData.minimumRentalDuration, 10) : 1;
+    if (minimumRentalDuration > 1) {
+      finalUnitPrice = new Money(Math.round(unitPrice.amount / minimumRentalDuration), currency);
+    }
+  }
+
   const order = {
     code,
-    unitPrice,
+    unitPrice: finalUnitPrice,
     ...quantityOrSeats,
     includeFor: ['customer', 'provider'],
   };

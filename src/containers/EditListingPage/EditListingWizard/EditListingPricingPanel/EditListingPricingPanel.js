@@ -51,9 +51,11 @@ const getInitialValues = props => {
         ...getInitialValuesForPriceVariants(props, isPriceVariationsInUse),
         ...getInitialValuesForStartTimeInterval(props),
         ...getInitialValuesForAddOns(listing, props.marketplaceCurrency),
+        minimumRentalDuration: publicData?.minimumRentalDuration || 1,
       }
     : {
         price: listing?.attributes?.price,
+        minimumRentalDuration: publicData?.minimumRentalDuration || 1,
         ...getInitialValuesForAddOns(listing, props.marketplaceCurrency),
       };
 };
@@ -206,6 +208,7 @@ const EditListingPricingPanel = props => {
                 ...startTimeIntervalChanges,
                 publicData: {
                   ...publicDataWithAddOns,
+                  minimumRentalDuration: values.minimumRentalDuration,
                 },
               };
             } else {
@@ -227,6 +230,7 @@ const EditListingPricingPanel = props => {
                 ...priceVariationsEnabledMaybe,
                 publicData: {
                   ...publicDataWithAddOns,
+                  minimumRentalDuration: values.minimumRentalDuration,
                 },
               };
             }

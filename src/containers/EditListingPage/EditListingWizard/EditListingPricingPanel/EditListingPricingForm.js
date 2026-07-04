@@ -12,7 +12,7 @@ import { types as sdkTypes } from '../../../../util/sdkLoader';
 import { FIXED, isBookingProcess } from '../../../../transactions/transaction';
 
 // Import shared components
-import { Button, Form, FieldCurrencyInput } from '../../../../components';
+import { Button, Form, FieldCurrencyInput, FieldSelect } from '../../../../components';
 
 import BookingPriceVariants from './BookingPriceVariants';
 import StartTimeInterval from './StartTimeInverval';
@@ -171,6 +171,20 @@ export const EditListingPricingForm = props => (
               validate={priceValidators}
             />
           )}
+
+          <div className={css.input}>
+            <FieldSelect
+              id={`${formId}minimumRentalDuration`}
+              name="minimumRentalDuration"
+              label="Minimum Rental Duration"
+            >
+              <option value="1">1 day (Default)</option>
+              <option value="3">3 days</option>
+              <option value="7">1 week</option>
+              <option value="14">2 weeks</option>
+              <option value="30">1 month</option>
+            </FieldSelect>
+          </div>
 
           <ListingAddOns
             marketplaceCurrency={marketplaceCurrency}

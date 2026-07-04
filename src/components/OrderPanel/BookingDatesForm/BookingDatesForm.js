@@ -709,6 +709,9 @@ export const BookingDatesForm = props => {
 
         const isDaily = lineItemUnitType === LINE_ITEM_DAY;
         const submitDisabled = isPriceVariationsInUse && !isPublishedListing;
+        
+        const minimumRentalDuration = listing?.attributes?.publicData?.minimumRentalDuration || 1;
+        const minimumNights = Math.max(0, parseInt(minimumRentalDuration, 10) - 1);
 
         return (
           <Form onSubmit={handleSubmit} className={classes} enforcePagePreloadFor="CheckoutPage">
@@ -725,6 +728,7 @@ export const BookingDatesForm = props => {
               className={css.bookingDates}
               name="bookingDates"
               isDaily={isDaily}
+              minimumNights={minimumNights}
               startDateId={`${formId}.bookingStartDate`}
               startDateLabel={intl.formatMessage({
                 id: 'BookingDatesForm.bookingStartTitle',

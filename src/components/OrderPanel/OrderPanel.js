@@ -160,9 +160,20 @@ const PriceMaybe = props => {
   const priceValue = (
     <span className={css.priceValue}>{formatMoneyIfSupportedCurrency(price, intl)}</span>
   );
+  const getDurationText = (duration, defaultUnitType) => {
+    switch(String(duration)) {
+      case '1': return <FormattedMessage id="OrderPanel.perUnit" values={{ unitType: defaultUnitType }} />;
+      case '3': return 'per 3 days';
+      case '7': return 'per week';
+      case '14': return 'per 2 weeks';
+      case '30': return 'per month';
+      default: return <FormattedMessage id="OrderPanel.perUnit" values={{ unitType: defaultUnitType }} />;
+    }
+  };
+
   const pricePerUnit = (
     <span className={css.perUnit}>
-      <FormattedMessage id="OrderPanel.perUnit" values={{ unitType }} />
+      {getDurationText(publicData?.minimumRentalDuration || 1, unitType)}
     </span>
   );
 
@@ -177,7 +188,7 @@ const PriceMaybe = props => {
         />
       </div>
       <div className={css.perUnitInCTA}>
-        <FormattedMessage id="OrderPanel.perUnit" values={{ unitType }} />
+        {getDurationText(publicData?.minimumRentalDuration || 1, unitType)}
       </div>
     </div>
   ) : (

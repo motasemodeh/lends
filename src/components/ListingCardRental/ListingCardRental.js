@@ -71,7 +71,20 @@ const ListingCardRental = props => {
     }
     return addressStr;
   };
+  
+  const getDurationText = (duration) => {
+    switch(String(duration)) {
+      case '1': return 'Per day';
+      case '3': return 'Per 3 days';
+      case '7': return 'Per week';
+      case '14': return 'Per 2 weeks';
+      case '30': return 'Per month';
+      default: return 'Per day';
+    }
+  };
+
   const locationLabel = getCityState(location || address);
+  const durationLabel = getDurationText(publicData?.minimumRentalDuration || 1);
   const id = listing.id.uuid;
   const slug = createSlug(title);
 
@@ -132,7 +145,7 @@ const ListingCardRental = props => {
         <div className={css.priceGrid}>
           <div className={classNames(css.priceBox, css.priceBoxHighlighted)}>
             <div className={css.priceValue}>{formattedPrice}</div>
-            <div className={css.priceLabel}>Per day</div>
+            <div className={css.priceLabel}>{durationLabel}</div>
           </div>
         </div>
       </div>
