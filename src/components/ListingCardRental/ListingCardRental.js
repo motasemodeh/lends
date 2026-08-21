@@ -80,8 +80,31 @@ const ListingCardRental = props => {
     return intl.formatMessage({ id: 'ListingCardRental.forNDays' }, { count: durInt });
   };
 
+  const shortestVariant =
+    publicData?.priceVariants?.length > 0
+      ? publicData.priceVariants.reduce((shortest, curr) => {
+          const currDur =
+            curr.minimumRentalDuration != null ? parseInt(curr.minimumRentalDuration, 10) : 1;
+          const shortestDur =
+            shortest.minimumRentalDuration != null ? parseInt(shortest.minimumRentalDuration, 10) : 1;
+          if (currDur < shortestDur) return curr;
+          if (currDur === shortestDur) {
+            const currAmt = curr.priceInSubunits ?? curr.price?.amount ?? curr.price ?? Infinity;
+            const shortestAmt =
+              shortest.priceInSubunits ?? shortest.price?.amount ?? shortest.price ?? Infinity;
+            return currAmt < shortestAmt ? curr : shortest;
+          }
+          return shortest;
+        }, publicData.priceVariants[0])
+      : null;
+
+  const activeMinDuration =
+    shortestVariant?.minimumRentalDuration != null
+      ? shortestVariant.minimumRentalDuration
+      : publicData?.minimumRentalDuration || 1;
+
   const locationLabel = getCityState(location || address);
-  const durationLabel = getDurationText(publicData?.minimumRentalDuration || 1);
+  const durationLabel = getDurationText(activeMinDuration);
   const id = listing.id.uuid;
   const slug = createSlug(title);
 
@@ -91,7 +114,12 @@ const ListingCardRental = props => {
     ? Object.keys(firstImage.attributes.variants).filter(k => k.startsWith(variantPrefix))
     : [];
 
-  const formattedPrice = price instanceof Money ? formatMoney(intl, price) : '';
+  const displayPrice =
+    shortestVariant?.priceInSubunits != null
+      ? new Money(shortestVariant.priceInSubunits, config.currency)
+      : price;
+
+  const formattedPrice = displayPrice instanceof Money ? formatMoney(intl, displayPrice) : '';
 
   return (
     <div className={classes}>

@@ -208,7 +208,6 @@ const EditListingPricingPanel = props => {
                 ...startTimeIntervalChanges,
                 publicData: {
                   ...publicDataWithAddOns,
-                  minimumRentalDuration: values.minimumRentalDuration,
                 },
               };
             } else {
@@ -225,12 +224,16 @@ const EditListingPricingPanel = props => {
                 priceVariationsEnabledMaybe.publicData || publicData
               );
 
+              const parsedMinDuration = parseInt(values.minimumRentalDuration, 10);
+              const minimumRentalDuration =
+                isNaN(parsedMinDuration) || parsedMinDuration < 1 ? 1 : parsedMinDuration;
+
               updateValues = {
                 price,
                 ...priceVariationsEnabledMaybe,
                 publicData: {
                   ...publicDataWithAddOns,
-                  minimumRentalDuration: values.minimumRentalDuration,
+                  minimumRentalDuration,
                 },
               };
             }

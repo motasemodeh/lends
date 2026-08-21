@@ -101,6 +101,22 @@ const getCheapestPriceVariant = (priceVariants = []) => {
   }, priceVariants[0]);
 };
 
+const getShortestDurationPriceVariant = (priceVariants = []) => {
+  return priceVariants.reduce((shortest, current) => {
+    const currentDur =
+      current?.minimumRentalDuration != null ? parseInt(current.minimumRentalDuration, 10) : 1;
+    const shortestDur =
+      shortest?.minimumRentalDuration != null ? parseInt(shortest.minimumRentalDuration, 10) : 1;
+    if (currentDur < shortestDur) {
+      return current;
+    }
+    if (currentDur === shortestDur) {
+      return current.priceInSubunits < shortest.priceInSubunits ? current : shortest;
+    }
+    return shortest;
+  }, priceVariants[0]);
+};
+
 const formatMoneyIfSupportedCurrency = (price, intl) => {
   try {
     return formatMoney(intl, price);
@@ -157,12 +173,18 @@ const PriceMaybe = props => {
   }
 
   const { Money } = sdkTypes;
-  const cheapestVariant = isPriceVariationsInUse && hasMultiplePriceVariants
-    ? getCheapestPriceVariant(publicData.priceVariants)
-    : null;
-  const displayPriceValue = cheapestVariant
-    ? new Money(cheapestVariant.priceInSubunits, price.currency)
+  const primaryVariant =
+    isPriceVariationsInUse && hasMultiplePriceVariants
+      ? getShortestDurationPriceVariant(publicData.priceVariants)
+      : null;
+  const displayPriceValue = primaryVariant
+    ? new Money(primaryVariant.priceInSubunits, price.currency)
     : price;
+
+  const activeMinDuration =
+    primaryVariant?.minimumRentalDuration != null
+      ? primaryVariant.minimumRentalDuration
+      : publicData?.minimumRentalDuration || 1;
 
   // Get formatted price or currency code if the currency does not match with marketplace currency
   const { formattedPrice, priceTitle } = priceData(displayPriceValue, marketplaceCurrency, intl);
@@ -179,11 +201,11 @@ const PriceMaybe = props => {
 
   const pricePerUnit = (
     <span className={css.perUnit}>
-      {getDurationText(publicData?.minimumRentalDuration || 1, unitType)}
+      {getDurationText(activeMinDuration, unitType)}
     </span>
   );
 
-  const formatId = cheapestVariant ? 'OrderPanel.priceStartingFrom' : 'OrderPanel.price';
+  const formatId = primaryVariant ? 'OrderPanel.priceStartingFrom' : 'OrderPanel.price';
 
   // TODO: In CTA, we don't have space to show proper error message for a mismatch of marketplace currency
   //       Instead, we show the currency code in place of the price
@@ -191,13 +213,16 @@ const PriceMaybe = props => {
     <div className={css.priceContainerInCTA}>
       <div className={css.priceValueInCTA} title={priceTitle}>
         <FormattedMessage
-          id={cheapestVariant ? 'OrderPanel.priceStartingFrom' : 'OrderPanel.priceInMobileCTA'}
-          values={{ priceValue: formattedPrice, pricePerUnit: getDurationText(publicData?.minimumRentalDuration || 1, unitType) }}
+          id={primaryVariant ? 'OrderPanel.priceStartingFrom' : 'OrderPanel.priceInMobileCTA'}
+          values={{
+            priceValue: formattedPrice,
+            pricePerUnit: getDurationText(activeMinDuration, unitType),
+          }}
         />
       </div>
-      {!cheapestVariant && (
+      {!primaryVariant && (
         <div className={css.perUnitInCTA}>
-          {getDurationText(publicData?.minimumRentalDuration || 1, unitType)}
+          {getDurationText(activeMinDuration, unitType)}
         </div>
       )}
     </div>

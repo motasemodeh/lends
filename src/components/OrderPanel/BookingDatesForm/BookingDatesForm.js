@@ -710,7 +710,12 @@ export const BookingDatesForm = props => {
         const isDaily = lineItemUnitType === LINE_ITEM_DAY;
         const submitDisabled = isPriceVariationsInUse && !isPublishedListing;
         
-        const minimumRentalDuration = listing?.attributes?.publicData?.minimumRentalDuration || 1;
+        const selectedVariant = priceVariants?.find(pv => pv.name === priceVariantName);
+        const selectedVariantMinDuration = selectedVariant?.minimumRentalDuration;
+        const minimumRentalDuration =
+          selectedVariantMinDuration != null
+            ? parseInt(selectedVariantMinDuration, 10)
+            : listing?.attributes?.publicData?.minimumRentalDuration || 1;
         const minimumNights = Math.max(0, parseInt(minimumRentalDuration, 10) - 1);
 
         return (

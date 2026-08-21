@@ -1,5 +1,6 @@
 import { displayPrice, isPriceVariationsEnabled } from '../../util/configHelpers';
 import { formatMoney } from '../../util/currency';
+import { types as sdkTypes } from '../../util/sdkLoader';
 import { richText } from '../../util/richText';
 import { isBookingProcessAlias } from '../../transactions/transaction';
 
@@ -60,16 +61,39 @@ export const getListingCardTranslations = (listing, config, intl) => {
   const hasMultiplePriceVariants = isPriceVariationsInUse && publicData?.priceVariants?.length > 1;
   const isBookable = isBookingProcessAlias(publicData?.transactionProcessAlias);
 
+  const { Money } = sdkTypes;
   let displayPriceObject = price;
+  let activeMinimumRentalDuration = publicData?.minimumRentalDuration
+    ? parseInt(publicData.minimumRentalDuration, 10)
+    : 1;
+
   if (hasMultiplePriceVariants) {
-    const cheapest = publicData.priceVariants.reduce((min, curr) => {
-      const currAmt = curr.price?.amount ?? curr.price ?? Infinity;
-      const minAmt = min.price?.amount ?? min.price ?? Infinity;
-      return currAmt < minAmt ? curr : min;
+    const shortestVariant = publicData.priceVariants.reduce((shortest, curr) => {
+      const currDur =
+        curr.minimumRentalDuration != null ? parseInt(curr.minimumRentalDuration, 10) : 1;
+      const shortestDur =
+        shortest.minimumRentalDuration != null ? parseInt(shortest.minimumRentalDuration, 10) : 1;
+      if (currDur < shortestDur) {
+        return curr;
+      }
+      if (currDur === shortestDur) {
+        const currAmt = curr.priceInSubunits ?? curr.price?.amount ?? curr.price ?? Infinity;
+        const shortestAmt =
+          shortest.priceInSubunits ?? shortest.price?.amount ?? shortest.price ?? Infinity;
+        return currAmt < shortestAmt ? curr : shortest;
+      }
+      return shortest;
     }, publicData.priceVariants[0]);
 
-    if (cheapest && cheapest.price) {
-      displayPriceObject = cheapest.price;
+    if (shortestVariant) {
+      if (shortestVariant.priceInSubunits != null) {
+        displayPriceObject = new Money(shortestVariant.priceInSubunits, config.currency);
+      } else if (shortestVariant.price) {
+        displayPriceObject = shortestVariant.price;
+      }
+      if (shortestVariant.minimumRentalDuration != null) {
+        activeMinimumRentalDuration = parseInt(shortestVariant.minimumRentalDuration, 10);
+      }
     }
   }
 
@@ -77,11 +101,9 @@ export const getListingCardTranslations = (listing, config, intl) => {
 
   const priceMessageId = 'ListingCard.price';
 
-  const minimumRentalDuration = publicData?.minimumRentalDuration ? parseInt(publicData.minimumRentalDuration, 10) : 1;
-
   const perUnitString = isBookable
-    ? minimumRentalDuration > 1
-      ? intl.formatMessage({ id: 'ListingCard.forNDays' }, { count: minimumRentalDuration })
+    ? activeMinimumRentalDuration > 1
+      ? intl.formatMessage({ id: 'ListingCard.forNDays' }, { count: activeMinimumRentalDuration })
       : intl.formatMessage({ id: 'ListingCard.perUnit' }, { unitType: publicData?.unitType })
     : '';
 

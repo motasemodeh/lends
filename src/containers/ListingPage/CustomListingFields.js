@@ -79,10 +79,24 @@ const CustomListingFields = props => {
         return isNaN(days) ? '1 day' : days === 1 ? '1 day' : `${days} days`;
       };
 
+      let minDuration = value;
+      if (publicData?.priceVariants?.length > 0) {
+        const shortest = publicData.priceVariants.reduce((min, curr) => {
+          const currDur =
+            curr.minimumRentalDuration != null ? parseInt(curr.minimumRentalDuration, 10) : 1;
+          const minDur =
+            min.minimumRentalDuration != null ? parseInt(min.minimumRentalDuration, 10) : 1;
+          return currDur < minDur ? curr : min;
+        }, publicData.priceVariants[0]);
+        if (shortest?.minimumRentalDuration != null) {
+          minDuration = shortest.minimumRentalDuration;
+        }
+      }
+
       return filteredConfigs.concat({
         key,
         label,
-        value: getMinimumRentalDurationLabel(value || 1),
+        value: getMinimumRentalDurationLabel(minDuration || 1),
       });
     }
 

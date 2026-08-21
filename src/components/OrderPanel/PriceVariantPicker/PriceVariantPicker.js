@@ -61,9 +61,12 @@ const PriceVariantPicker = props => {
       {priceVariants.map(pv => {
         const variantPrice = new Money(pv.priceInSubunits, currency);
         const formattedPrice = formatMoney(intl, variantPrice);
+        const minDuration =
+          pv.minimumRentalDuration != null ? parseInt(pv.minimumRentalDuration, 10) : null;
+        const durationText = minDuration && minDuration > 1 ? `, min ${minDuration} days` : '';
         return (
           <option value={pv.name} key={pv.name} data-slug={createSlug(pv.name)}>
-            {pv.name} ({formattedPrice})
+            {pv.name} ({formattedPrice}{durationText})
           </option>
         );
       })}

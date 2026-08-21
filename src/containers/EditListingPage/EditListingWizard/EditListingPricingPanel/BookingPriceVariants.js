@@ -58,7 +58,7 @@ const setDefault = (value, defaultValue) => (value != null ? value : defaultValu
  * @returns {Object} An object including the priceVariants array or an empty object.
  */
 export const getInitialValuesForPriceVariants = (props, isUsingBookingPriceVariations) => {
-  const { listing } = props;
+  const { listing, marketplaceCurrency } = props;
   const { price, publicData } = listing?.attributes || {};
   const { unitType, priceVariants = [] } = publicData || {};
 
@@ -71,17 +71,30 @@ export const getInitialValuesForPriceVariants = (props, isUsingBookingPriceVaria
         const bookingLengthInMinutes = setDefault(variant.bookingLengthInMinutes, 60);
         const bookingLengthInMinutesMaybe = isFixedUnitType ? { bookingLengthInMinutes } : {};
         const priceInSubunits = setDefault(variant.priceInSubunits, null);
+        const minimumRentalDuration =
+          variant.minimumRentalDuration != null
+            ? String(variant.minimumRentalDuration)
+            : String(publicData?.minimumRentalDuration || 1);
         return {
           ...nameMaybe,
           ...bookingLengthInMinutesMaybe,
-          price: priceInSubunits ? new Money(priceInSubunits, price.currency) : null,
+          price: priceInSubunits
+            ? new Money(priceInSubunits, price?.currency || marketplaceCurrency || 'USD')
+            : null,
+          minimumRentalDuration,
         };
       })
     : isFixedUnitType
     ? [{ name: null, price: null, bookingLengthInMinutes: 60 }]
     : isUsingBookingPriceVariations && !!price
-    ? [{ name: null, price }]
-    : [{ name: null, price: null }];
+    ? [
+        {
+          name: null,
+          price,
+          minimumRentalDuration: String(publicData?.minimumRentalDuration || 1),
+        },
+      ]
+    : [{ name: null, price: null, minimumRentalDuration: '1' }];
 
   return variants ? { priceVariants: variants } : {};
 };
@@ -146,18 +159,36 @@ export const handleSubmitValuesForPriceVariants = (
   }, firstPriceInSubUnits);
   const price = new Money(lowestPrice, currency);
 
+  const shortestMinimumRentalDuration = priceVariants.reduce((shortest, variant) => {
+    const dur = parseInt(variant.minimumRentalDuration, 10);
+    const validDur = isNaN(dur) || dur < 1 ? 1 : dur;
+    return validDur < shortest ? validDur : shortest;
+  }, Infinity);
+  const fallbackMinDuration = shortestMinimumRentalDuration === Infinity ? 1 : shortestMinimumRentalDuration;
+
   return isFixedUnitType || hasPriceVariants
     ? {
         price,
         publicData: {
           ...publicData,
+          minimumRentalDuration: fallbackMinDuration,
           priceVariants: priceVariants.map(variant => {
-            const { name, bookingLengthInMinutes, price: variantPrice } = variant;
+            const {
+              name,
+              bookingLengthInMinutes,
+              price: variantPrice,
+              minimumRentalDuration: variantDuration,
+            } = variant;
             const nameMaybe = shouldIncludeName && name ? { name } : {};
             const bookingLengthInMinutesMaybe = isFixedUnitType ? { bookingLengthInMinutes } : {};
+            const parsedDuration = parseInt(variantDuration, 10);
+            const minimumRentalDuration =
+              isNaN(parsedDuration) || parsedDuration < 1 ? 1 : parsedDuration;
+            const durationMaybe = !isFixedUnitType ? { minimumRentalDuration } : {};
             return {
               ...nameMaybe,
               priceInSubunits: variantPrice.amount,
+              ...durationMaybe,
               ...bookingLengthInMinutesMaybe,
             };
           }),
@@ -350,6 +381,33 @@ const PriceVariant = props => {
         validate={priceValidators}
       />
 
+      {unitType !== FIXED ? (
+        <FieldTextInput
+          id={`${idPrefix}_minimumRentalDuration`}
+          name={`${name}.minimumRentalDuration`}
+          type="number"
+          label={intl.formatMessage({
+            id: 'EditListingPricingForm.priceVariant.minimumRentalDurationLabel',
+          })}
+          placeholder={intl.formatMessage({
+            id: 'EditListingPricingForm.priceVariant.minimumRentalDurationPlaceholder',
+          })}
+          min="1"
+          validate={value => {
+            const parsed = parseInt(value, 10);
+            if (!value && value !== 0)
+              return intl.formatMessage({
+                id: 'EditListingPricingForm.priceVariant.minimumRentalDurationRequired',
+              });
+            if (isNaN(parsed) || parsed < 1 || !Number.isInteger(parsed))
+              return intl.formatMessage({
+                id: 'EditListingPricingForm.priceVariant.minimumRentalDurationInvalid',
+              });
+            return undefined;
+          }}
+        />
+      ) : null}
+
       {unitType === FIXED ? (
         <FieldBookingLength
           name={`${name}.bookingLengthInMinutes`}
@@ -461,7 +519,7 @@ export const BookingPriceVariants = props => {
                         ? { name: null, price: null, bookingLengthInMinutes: 60 }
                         : unitType === FIXED
                         ? { price: null, bookingLengthInMinutes: 60 }
-                        : { name: null, price: null };
+                        : { name: null, price: null, minimumRentalDuration: '1' };
                     fields.push(initialPriceVariantValues);
                     addNewVariantKey(setVariantKeys); // Handle unique keys for each array item.
                   }}
@@ -515,7 +573,7 @@ export const BookingPriceVariants = props => {
                         ? { name: null, price: null, bookingLengthInMinutes: 60 }
                         : unitType === FIXED
                         ? { price: null, bookingLengthInMinutes: 60 }
-                        : { name: null, price: null };
+                        : { name: null, price: null, minimumRentalDuration: '1' };
                     fields.push(initialPriceVariantValues);
                     addNewVariantKey(setVariantKeys); // Handle unique keys for each array item.
                   }}
