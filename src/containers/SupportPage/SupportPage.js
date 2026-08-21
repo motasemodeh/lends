@@ -67,7 +67,7 @@ const SupportPage = () => {
             <h1 className={css.heroTitle}>How can we help?</h1>
             <p className={css.heroSubtitle}>
               Need help? Our team is available 24/7. Reach out to us using the form below or email us
-              directly at <a href="mailto:help@lends.market" className={css.heroEmail}>help@lends.market</a>
+              directly at <a href="mailto:support@lends.market" className={css.heroEmail}>support@lends.market</a>
             </p>
           </div>
 
@@ -130,7 +130,7 @@ const SupportPage = () => {
 
           <p className={css.directContact}>
             Having trouble with the form? Email us directly at{' '}
-            <a href="mailto:help@lends.market">help@lends.market</a>
+            <a href="mailto:support@lends.market">support@lends.market</a>
           </p>
         </div>
       </LayoutSingleColumn>

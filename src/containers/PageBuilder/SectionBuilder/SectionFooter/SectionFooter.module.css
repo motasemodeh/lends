@@ -207,3 +207,31 @@
     grid-template-columns: repeat(4, 1fr);
   }
 }
+
+.contactContainer {
+  margin-top: 24px;
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--colorGrey600);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.contactLink,
+.emailLink {
+  color: var(--colorGrey600);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.contactLink:hover,
+.emailLink:hover {
+  color: var(--marketplaceColor);
+  text-decoration: underline;
+}
+
+.separator {
+  color: var(--colorGrey300);
+}
+

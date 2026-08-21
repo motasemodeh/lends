@@ -114,6 +114,18 @@ const routeConfiguration = (layoutConfig, accessControlConfig) => {
       loadData: pageDataLoadingAPI.SupportPage.loadData,
     },
     {
+      path: '/contact',
+      name: 'ContactPage',
+      component: SupportPage,
+      loadData: pageDataLoadingAPI.SupportPage.loadData,
+    },
+    {
+      path: '/contact-us',
+      name: 'ContactUsPage',
+      component: SupportPage,
+      loadData: pageDataLoadingAPI.SupportPage.loadData,
+    },
+    {
       path: '/p/:pageId',
       name: 'CMSPage',
       component: CMSPage,

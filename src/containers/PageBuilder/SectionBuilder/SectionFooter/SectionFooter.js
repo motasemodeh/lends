@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { LinkedLogo } from '../../../../components';
+import { LinkedLogo, NamedLink } from '../../../../components';
 
 import Field from '../../Field';
 import BlockBuilder from '../../BlockBuilder';
@@ -136,6 +136,15 @@ const SectionFooter = props => {
                 <BlockBuilder blocks={linksWithBlockId} sectionId={sectionId} options={options} />
               </div>
             ) : null}
+            <div className={css.contactContainer}>
+              <NamedLink name="ContactPage" className={css.contactLink}>
+                Contact Us
+              </NamedLink>
+              <span className={css.separator}>•</span>
+              <a href="mailto:support@lends.market" className={css.emailLink}>
+                support@lends.market
+              </a>
+            </div>
             <Field data={copyright} className={css.copyright} />
           </div>
           <div className={classNames(css.grid, getGridCss(numberOfColumns))}>
