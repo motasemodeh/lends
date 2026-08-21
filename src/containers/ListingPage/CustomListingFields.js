@@ -74,19 +74,16 @@ const CustomListingFields = props => {
     const value = publicDataValue != null ? publicDataValue : metadataValue;
 
     if (key === 'minimumRentalDuration') {
-      if (typeof value !== 'undefined') {
-        const getMinimumRentalDurationLabel = (duration) => {
-          const days = parseInt(duration, 10);
-          return isNaN(days) ? '1 day' : days === 1 ? '1 day' : `${days} days`;
-        };
+      const getMinimumRentalDurationLabel = (duration) => {
+        const days = parseInt(duration, 10);
+        return isNaN(days) ? '1 day' : days === 1 ? '1 day' : `${days} days`;
+      };
 
-        return filteredConfigs.concat({
-          key,
-          label,
-          value: getMinimumRentalDurationLabel(value),
-        });
-      }
-      return filteredConfigs;
+      return filteredConfigs.concat({
+        key,
+        label,
+        value: getMinimumRentalDurationLabel(value || 1),
+      });
     }
 
     const listingType = publicData.listingType;

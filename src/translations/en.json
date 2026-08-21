@@ -795,6 +795,7 @@
   "OrderPanel.perUnit": "{unitType, select, day {per day} night {per night} hour {per hour} other {}}",
   "OrderPanel.forNDays": "for {count} days",
   "OrderPanel.price": "{priceValue} {pricePerUnit}",
+  "OrderPanel.priceStartingFrom": "From {priceValue} {pricePerUnit}",
   "OrderPanel.priceInMobileCTA": "{priceValue}",
   "OrderPanel.subTitleClosedListing": "Sorry, this listing has been closed.",
   "OrderPanel.unknownTransactionProcess": "Oops, it looks like the marketplace processes aren't up to date. Please contact the marketplace operator.",

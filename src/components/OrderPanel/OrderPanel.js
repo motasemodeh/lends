@@ -22,6 +22,7 @@ import {
   STOCK_INFINITE_MULTIPLE_ITEMS,
   LISTING_STATE_PUBLISHED,
 } from '../../util/types';
+import { types as sdkTypes } from '../../util/sdkLoader';
 import { formatMoney } from '../../util/currency';
 import { createSlug, parse, stringify } from '../../util/urlHelpers';
 import { userDisplayNameAsString } from '../../util/data';
@@ -151,14 +152,22 @@ const PriceMaybe = props => {
   const isPriceVariationsInUse = !!publicData?.priceVariationsEnabled;
   const hasMultiplePriceVariants = publicData?.priceVariants?.length > 1;
 
-  if (!showPrice || !price || (isPriceVariationsInUse && hasMultiplePriceVariants)) {
+  if (!showPrice || !price) {
     return null;
   }
 
+  const { Money } = sdkTypes;
+  const cheapestVariant = isPriceVariationsInUse && hasMultiplePriceVariants
+    ? getCheapestPriceVariant(publicData.priceVariants)
+    : null;
+  const displayPriceValue = cheapestVariant
+    ? new Money(cheapestVariant.priceInSubunits, price.currency)
+    : price;
+
   // Get formatted price or currency code if the currency does not match with marketplace currency
-  const { formattedPrice, priceTitle } = priceData(price, marketplaceCurrency, intl);
+  const { formattedPrice, priceTitle } = priceData(displayPriceValue, marketplaceCurrency, intl);
   const priceValue = (
-    <span className={css.priceValue}>{formatMoneyIfSupportedCurrency(price, intl)}</span>
+    <span className={css.priceValue}>{formatMoneyIfSupportedCurrency(displayPriceValue, intl)}</span>
   );
   const getDurationText = (duration, defaultUnitType) => {
     const durInt = parseInt(duration, 10);
@@ -174,24 +183,28 @@ const PriceMaybe = props => {
     </span>
   );
 
+  const formatId = cheapestVariant ? 'OrderPanel.priceStartingFrom' : 'OrderPanel.price';
+
   // TODO: In CTA, we don't have space to show proper error message for a mismatch of marketplace currency
   //       Instead, we show the currency code in place of the price
   return showCurrencyMismatch ? (
     <div className={css.priceContainerInCTA}>
       <div className={css.priceValueInCTA} title={priceTitle}>
         <FormattedMessage
-          id="OrderPanel.priceInMobileCTA"
-          values={{ priceValue: formattedPrice }}
+          id={cheapestVariant ? 'OrderPanel.priceStartingFrom' : 'OrderPanel.priceInMobileCTA'}
+          values={{ priceValue: formattedPrice, pricePerUnit: getDurationText(publicData?.minimumRentalDuration || 1, unitType) }}
         />
       </div>
-      <div className={css.perUnitInCTA}>
-        {getDurationText(publicData?.minimumRentalDuration || 1, unitType)}
-      </div>
+      {!cheapestVariant && (
+        <div className={css.perUnitInCTA}>
+          {getDurationText(publicData?.minimumRentalDuration || 1, unitType)}
+        </div>
+      )}
     </div>
   ) : (
     <div className={css.priceContainer}>
       <p className={css.price}>
-        <FormattedMessage id="OrderPanel.price" values={{ priceValue, pricePerUnit }} />
+        <FormattedMessage id={formatId} values={{ priceValue, pricePerUnit }} />
       </p>
     </div>
   );

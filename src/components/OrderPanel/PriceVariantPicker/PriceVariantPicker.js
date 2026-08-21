@@ -2,6 +2,9 @@ import React from 'react';
 import { Field } from 'react-final-form';
 
 import { FormattedMessage, useIntl } from '../../../util/reactIntl';
+import { useConfiguration } from '../../../context/configurationContext';
+import { types as sdkTypes } from '../../../util/sdkLoader';
+import { formatMoney } from '../../../util/currency';
 import { createSlug } from '../../../util/urlHelpers';
 
 import { FieldSelect } from '../../../components';
@@ -33,9 +36,13 @@ const FieldHidden = props => {
 
 const PriceVariantPicker = props => {
   const intl = useIntl();
+  const config = useConfiguration();
+  const currency = config?.currency || 'USD';
   const { priceVariants, onPriceVariantChange, disabled } = props;
   const hasMultiplePriceVariants = priceVariants?.length > 1;
   const hasOnePriceVariant = priceVariants?.length === 1;
+
+  const { Money } = sdkTypes;
 
   return hasMultiplePriceVariants ? (
     <FieldSelect
@@ -51,11 +58,15 @@ const PriceVariantPicker = props => {
       <option disabled value="" key="unselected">
         {intl.formatMessage({ id: 'PriceVariantPicker.priceVariantUnselected' })}
       </option>
-      {priceVariants.map(pv => (
-        <option value={pv.name} key={pv.name} data-slug={createSlug(pv.name)}>
-          {pv.name}
-        </option>
-      ))}
+      {priceVariants.map(pv => {
+        const variantPrice = new Money(pv.priceInSubunits, currency);
+        const formattedPrice = formatMoney(intl, variantPrice);
+        return (
+          <option value={pv.name} key={pv.name} data-slug={createSlug(pv.name)}>
+            {pv.name} ({formattedPrice})
+          </option>
+        );
+      })}
     </FieldSelect>
   ) : hasOnePriceVariant ? (
     <>
