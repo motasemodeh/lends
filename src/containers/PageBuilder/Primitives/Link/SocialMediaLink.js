@@ -3,6 +3,7 @@ import classNames from 'classnames';
 
 import { ExternalLink } from '../../../../components/index.js';
 import {
+  discordIcon,
   facebookIcon,
   instagramIcon,
   linkedinIcon,
@@ -15,6 +16,7 @@ import {
 import css from './SocialMediaLink.module.css';
 
 const PLATFORM_CONF = {
+  discord: { icon: discordIcon, name: 'Discord' },
   facebook: { icon: facebookIcon, name: 'Facebook' },
   instagram: { icon: instagramIcon, name: 'Instagram' },
   linkedin: { icon: linkedinIcon, name: 'LinkedIn' },
@@ -33,6 +35,7 @@ const getIconTitle = platform => {
 };
 
 export const supportedPlatforms = [
+  'discord',
   'facebook',
   'instagram',
   'linkedin',
@@ -50,7 +53,7 @@ export const supportedPlatforms = [
  * @param {string?} props.className add more style rules in addition to components own css.root
  * @param {string?} props.rootClassName overwrite components own css.root
  * @param {string?} props.title
- * @param {('facebook' | 'instagram' | 'linkedin' | 'pinterest' | 'tiktok' | 'twitter' | 'youtube')} props.platform social media service platform
+ * @param {('discord' | 'facebook' | 'instagram' | 'linkedin' | 'pinterest' | 'tiktok' | 'twitter' | 'youtube')} props.platform social media service platform
  * @param {string} props.href social media service profile
  * @returns {JSX.Element} social media link (wraps a platform-specific SVG icon)
  */

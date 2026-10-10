@@ -1,3 +1,4 @@
+export { discordIcon } from './discordIcon';
 export { facebookIcon } from './facebookIcon';
 export { instagramIcon } from './instagramIcon';
 export { linkedinIcon } from './linkedinIcon';

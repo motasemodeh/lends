@@ -18,6 +18,7 @@ import {
   Modal,
   ModalMissingInformation,
 } from '../../../components';
+import { DISCORD_PAGE_PATH } from '../../../config/discord';
 import { getSearchPageResourceLocatorStringParams } from '../../SearchPage/SearchPage.shared';
 
 import MenuIcon from './MenuIcon';
@@ -61,6 +62,22 @@ const compareGroups = (a, b) => {
   // Note: sort order is stable in JS
   return isAHigherGroupThanB ? -1 : isALesserGroupThanB ? 1 : 0;
 };
+// "Join our Discord" is added in code so it shows even if it isn't set up in Console.
+// If a Discord link already exists in the hosted top bar config, it isn't duplicated.
+const DISCORD_TOPBAR_LINK = {
+  group: 'primary',
+  text: 'Join our Discord',
+  type: 'internal',
+  href: DISCORD_PAGE_PATH,
+};
+const withDiscordLink = customLinks => {
+  const links = Array.isArray(customLinks) ? customLinks : [];
+  const hasDiscord = links.some(
+    l => l?.href === DISCORD_PAGE_PATH || (l?.href || '').includes('discord.gg')
+  );
+  return hasDiscord ? links : [...links, DISCORD_TOPBAR_LINK];
+};
+
 // Returns links in order where primary links are returned first
 const sortCustomLinks = customLinks => {
   const links = Array.isArray(customLinks) ? [...customLinks] : [];
@@ -234,7 +251,7 @@ const TopbarComponent = props => {
   });
 
   // Custom links are sorted so that group="primary" are always at the beginning of the list.
-  const sortedCustomLinks = sortCustomLinks(config.topbar?.customLinks);
+  const sortedCustomLinks = sortCustomLinks(withDiscordLink(config.topbar?.customLinks));
   const customLinks = getResolvedCustomLinks(sortedCustomLinks, routeConfiguration);
   const resolvedCurrentPage = currentPage || getResolvedCurrentPage(location, routeConfiguration);
 

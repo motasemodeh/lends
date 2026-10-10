@@ -49,6 +49,7 @@ const AboutPage = loadable(() => import(/* webpackChunkName: "AboutPage" */ '../
 const BuildStorePage = loadable(() => import(/* webpackChunkName: "BuildStorePage" */ '../containers/BuildStorePage/BuildStorePage'));
 const GetOrganizedPage = loadable(() => import(/* webpackChunkName: "GetOrganizedPage" */ '../containers/GetOrganizedPage/GetOrganizedPage'));
 const SupportPage = loadable(() => import(/* webpackChunkName: "SupportPage" */ '../containers/SupportPage/SupportPage'));
+const JoinDiscordPage = loadable(() => import(/* webpackChunkName: "JoinDiscordPage" */ '../containers/JoinDiscordPage/JoinDiscordPage'));
 
 export const ACCOUNT_SETTINGS_PAGES = [
   'ContactDetailsPage',
@@ -124,6 +125,11 @@ const routeConfiguration = (layoutConfig, accessControlConfig) => {
       name: 'ContactUsPage',
       component: SupportPage,
       loadData: pageDataLoadingAPI.SupportPage.loadData,
+    },
+    {
+      path: '/discord',
+      name: 'JoinDiscordPage',
+      component: JoinDiscordPage,
     },
     {
       path: '/p/:pageId',

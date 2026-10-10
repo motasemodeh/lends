@@ -6,6 +6,7 @@ import Field from '../../Field';
 import BlockBuilder from '../../BlockBuilder';
 
 import SectionContainer from '../SectionContainer';
+import { DISCORD_INVITE_URL } from '../../../../config/discord';
 import css from './SectionFooter.module.css';
 
 // The number of columns (numberOfColumns) affects styling
@@ -17,6 +18,17 @@ const GRID_CONFIG = [
   { contentCss: css.contentCol4, gridCss: css.gridCol4 },
 ];
 const MAX_MOBILE_SCREEN_WIDTH = 1024;
+
+// Discord is not one of the social platforms offered in Sharetribe Console,
+// so it is appended here after the hosted links (unless it's already there).
+const DISCORD_SOCIAL_LINK = {
+  blockType: 'socialMediaLink',
+  link: { fieldType: 'socialMediaLink', platform: 'discord', url: DISCORD_INVITE_URL },
+};
+const withDiscordLink = (links = []) => {
+  const hasDiscord = links.some(l => l?.link?.platform === 'discord');
+  return hasDiscord ? links : [...links, DISCORD_SOCIAL_LINK];
+};
 
 const getIndex = numberOfColumns => numberOfColumns - 1;
 
@@ -88,14 +100,15 @@ const SectionFooter = props => {
   // E.g. { h1: { component: MyAwesomeHeader } }
   const fieldComponents = options?.fieldComponents;
   const fieldOptions = { fieldComponents };
-  const linksWithBlockId = socialMediaLinks?.map(sml => {
+  const allSocialMediaLinks = withDiscordLink(socialMediaLinks || []);
+  const linksWithBlockId = allSocialMediaLinks.map(sml => {
     return {
       ...sml,
       blockId: sml.link.platform,
     };
   });
 
-  const showSocialMediaLinks = socialMediaLinks?.length > 0;
+  const showSocialMediaLinks = allSocialMediaLinks.length > 0;
   const hasMatchMedia = typeof window !== 'undefined' && window?.matchMedia;
   const isMobileLayout = hasMatchMedia
     ? window.matchMedia(`(max-width: ${MAX_MOBILE_SCREEN_WIDTH}px)`)?.matches
