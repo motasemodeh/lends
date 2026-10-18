@@ -16,6 +16,15 @@ const nodemailer = require('nodemailer');
 const SUPPORT_EMAIL = process.env.SUPPORT_EMAIL || 'help@lends.market';
 const SMTP_FROM = process.env.SMTP_FROM || 'noreply@lends.market';
 
+// Escape user input before putting it into the HTML email body
+const escapeHtml = str =>
+  String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+
 const createTransporter = () => {
   // If SMTP credentials are configured, use them
   if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
@@ -51,6 +60,9 @@ module.exports = async (req, res) => {
     return res.status(400).json({ error: 'Message is too short.' });
   }
 
+  const safeEmail = escapeHtml(email);
+  const safeMessage = escapeHtml(message);
+
   const mailOptions = {
     from: SMTP_FROM,
     to: SUPPORT_EMAIL,
@@ -60,10 +72,10 @@ module.exports = async (req, res) => {
     html: `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #ff6600;">New Support Request – Lends</h2>
-        <p><strong>From:</strong> <a href="mailto:${email}">${email}</a></p>
+        <p><strong>From:</strong> <a href="mailto:${safeEmail}">${safeEmail}</a></p>
         <hr style="border: 1px solid #eee;" />
         <h3>Message:</h3>
-        <p style="background: #f9f9f9; padding: 16px; border-radius: 8px; white-space: pre-wrap;">${message}</p>
+        <p style="background: #f9f9f9; padding: 16px; border-radius: 8px; white-space: pre-wrap;">${safeMessage}</p>
         <hr style="border: 1px solid #eee;" />
         <p style="color: #999; font-size: 12px;">Sent via lends.market/support</p>
       </div>
