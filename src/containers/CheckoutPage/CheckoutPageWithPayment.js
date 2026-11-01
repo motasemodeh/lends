@@ -118,6 +118,9 @@ const getOrderParams = (
   const seatsMaybe = seats ? { seats } : {};
   const deliveryMethod = pageData.orderData?.deliveryMethod;
   const deliveryMethodMaybe = deliveryMethod ? { deliveryMethod } : {};
+  // Selected add-ons from the listing page. Passed to the server so they're charged as line items.
+  const addOns = pageData.orderData?.addOns;
+  const addOnsMaybe = Array.isArray(addOns) && addOns.length > 0 ? { addOns } : {};
   const { listingType, unitType, priceVariants } = pageData?.listing?.attributes?.publicData || {};
 
   // price variant data for fixed duration bookings
@@ -136,6 +139,7 @@ const getOrderParams = (
       ...priceVariantMaybe,
       ...transactionFieldProtectedData,
       ...customerDefaultMessageMaybe,
+      ...addOnsMaybe,
     },
   };
 
@@ -155,6 +159,7 @@ const getOrderParams = (
     ...seatsMaybe,
     ...bookingDatesMaybe(pageData.orderData?.bookingDates),
     ...priceVariantNameMaybe,
+    ...addOnsMaybe,
     ...protectedDataMaybe,
     ...optionalPaymentParams,
   };

@@ -19,12 +19,16 @@ const initiateOrderPayloadCreator = (
   // If we already have a transaction ID, we should transition, not initiate.
   const isTransition = !!transactionId;
 
-  const { deliveryMethod, quantity, bookingDates, ...otherOrderParams } = orderParams;
+  const { deliveryMethod, quantity, bookingDates, addOns, ...otherOrderParams } = orderParams;
   const quantityMaybe = quantity ? { stockReservationQuantity: quantity } : {};
   const bookingParamsMaybe = bookingDates || {};
 
   // Parameters only for client app's server
-  const orderData = deliveryMethod ? { deliveryMethod } : {};
+  // (addOns are priced server-side in lineItems.js, they must not go to Marketplace API params)
+  const orderData = {
+    ...(deliveryMethod ? { deliveryMethod } : {}),
+    ...(addOns?.length ? { addOns } : {}),
+  };
 
   // Parameters for Marketplace API
   const transitionParams = {
@@ -264,6 +268,7 @@ const speculateTransactionPayloadCreator = (
     priceVariantName,
     quantity,
     bookingDates,
+    addOns,
     ...otherOrderParams
   } = orderParams;
   const quantityMaybe = quantity ? { stockReservationQuantity: quantity } : {};
@@ -273,6 +278,7 @@ const speculateTransactionPayloadCreator = (
   const orderData = {
     ...(deliveryMethod ? { deliveryMethod } : {}),
     ...(priceVariantName ? { priceVariantName } : {}),
+    ...(addOns?.length ? { addOns } : {}),
   };
 
   // Parameters for Marketplace API
