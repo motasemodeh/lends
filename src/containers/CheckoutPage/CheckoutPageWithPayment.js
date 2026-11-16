@@ -35,6 +35,7 @@ import {
   processCheckoutWithPayment,
   setOrderPageInitialValues,
 } from './CheckoutPageTransactionHelpers.js';
+import { withRequestedStartTime } from '../../util/startTime';
 import { getErrorMessages } from './ErrorMessages';
 
 import StripePaymentForm from './StripePaymentForm/StripePaymentForm';
@@ -129,7 +130,12 @@ const getOrderParams = (
   const priceVariant = priceVariants?.find(pv => pv.name === priceVariantName);
   const priceVariantMaybe = priceVariant ? prefixPriceVariantProperties(priceVariant) : {};
 
-  const customerDefaultMessageMaybe = customerDefaultMessage ? { customerDefaultMessage } : {};
+  // Optional start time chosen on the listing page. It's put at the top of the first message
+  // so the provider sees it right away, and saved separately for later use.
+  const requestedStartTime = pageData.orderData?.requestedStartTime;
+  const requestedStartTimeMaybe = requestedStartTime ? { requestedStartTime } : {};
+  const firstMessage = withRequestedStartTime(requestedStartTime, customerDefaultMessage);
+  const customerDefaultMessageMaybe = firstMessage ? { customerDefaultMessage: firstMessage } : {};
 
   const protectedDataMaybe = {
     protectedData: {
@@ -139,6 +145,7 @@ const getOrderParams = (
       ...priceVariantMaybe,
       ...transactionFieldProtectedData,
       ...customerDefaultMessageMaybe,
+      ...requestedStartTimeMaybe,
       ...addOnsMaybe,
     },
   };

@@ -1,0 +1,75 @@
+@import '../../../styles/customMediaQueries.css';
+
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.mobileMargins {
+  margin: 0 24px;
+
+  @media (--viewportMedium) {
+    margin: 0;
+  }
+}
+
+.label {
+  composes: h5 from global;
+  display: block;
+  margin-top: 0;
+  margin-bottom: 8px;
+  padding: 0;
+  font-weight: var(--fontWeightSemiBold);
+  color: var(--colorGrey700);
+}
+
+.labelDisabled {
+  color: var(--colorGrey500);
+}
+
+/* The calendar is shown inline, so give it a full border instead of the popup's open top. */
+.calendarFrame {
+  border: 1px solid var(--colorGrey100);
+  border-radius: var(--borderRadiusMedium, 8px);
+  padding: 4px 0 8px;
+  background-color: var(--colorWhite);
+
+  & > div {
+    border: none;
+    border-radius: 0;
+  }
+}
+
+.calendarDisabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin: 12px 0 0;
+  padding: 0;
+  font-size: 15px;
+  line-height: 24px;
+}
+
+.summaryDates {
+  font-weight: var(--fontWeightSemiBold);
+  color: var(--colorGrey700);
+}
+
+.summaryCount {
+  color: var(--colorGrey600);
+  white-space: nowrap;
+}
+
+.hint {
+  margin: 4px 0 0;
+  padding: 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--colorGrey600);
+}

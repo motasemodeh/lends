@@ -194,6 +194,11 @@ const PriceMaybe = props => {
   const getDurationText = (duration, defaultUnitType) => {
     const durInt = parseInt(duration, 10);
     if (isNaN(durInt) || durInt <= 1) {
+      // Daily listings show just the price (reads better for flat session rates).
+      // Other unit types (e.g. "per hour") keep their label.
+      if (defaultUnitType === 'day') {
+        return null;
+      }
       return <FormattedMessage id="OrderPanel.perUnit" values={{ unitType: defaultUnitType }} />;
     }
     return <FormattedMessage id="OrderPanel.forNDays" values={{ count: durInt }} />;

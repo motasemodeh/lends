@@ -22,7 +22,10 @@
   background-color: var(--colorGrey50);
 }
 
+/* The "add image" tile is a full-width bar below the thumbnails (3:1), so it never has to
+   wrap into a new row next to a thumbnail – that reflow made the grid jump on every other upload. */
 .addImageWrapper {
+  grid-column: 1 / -1;
   float: left;
   position: relative;
   width: 100%;

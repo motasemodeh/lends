@@ -93,10 +93,16 @@ const CustomListingFields = props => {
         }
       }
 
+      // A 1-day minimum doesn't tell the customer anything, so the line is only shown for 2+ days.
+      const minDays = parseInt(minDuration, 10);
+      if (isNaN(minDays) || minDays <= 1) {
+        return filteredConfigs;
+      }
+
       return filteredConfigs.concat({
         key,
         label,
-        value: getMinimumRentalDurationLabel(minDuration || 1),
+        value: getMinimumRentalDurationLabel(minDays),
       });
     }
 

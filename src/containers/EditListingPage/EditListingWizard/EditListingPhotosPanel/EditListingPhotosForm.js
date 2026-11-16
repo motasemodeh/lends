@@ -262,8 +262,8 @@ export const EditListingPhotosForm = props => {
                 disabled={state.imageUploadRequested}
                 formApi={form}
                 onImageUploadHandler={onImageUploadHandler}
-                aspectWidth={aspectWidth}
-                aspectHeight={aspectHeight}
+                aspectWidth={3}
+                aspectHeight={1}
               />
             </div>
 

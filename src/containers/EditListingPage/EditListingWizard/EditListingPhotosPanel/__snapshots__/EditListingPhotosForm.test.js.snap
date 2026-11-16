@@ -18,7 +18,7 @@ exports[`EditListingDeliveryForm matches snapshot 1`] = `
         >
           <div
             class="aspectPadding"
-            style="padding-bottom: 100%;"
+            style="padding-bottom: 33.33333333333333%;"
           >
             <div
               class="aspectBox"

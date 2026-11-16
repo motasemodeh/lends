@@ -20,8 +20,10 @@ import {
 import { LINE_ITEM_DAY, propTypes } from '../../../util/types';
 import { timeSlotsPerDate } from '../../../util/generators';
 import { BOOKING_PROCESS_NAME } from '../../../transactions/transaction';
+import { getStartTimeOptions } from '../../../util/startTime';
 
 import { Form, PrimaryButton, FieldDateRangePicker, FieldSelect, H6 } from '../../../components';
+import FieldDateRangeCalendar from '../../DatePicker/FieldDateRangeCalendar/FieldDateRangeCalendar';
 import AddOnSelector from '../../AddOnSelector/AddOnSelector';
 
 import EstimatedCustomerBreakdownMaybe from '../EstimatedCustomerBreakdownMaybe';
@@ -31,6 +33,9 @@ import FetchLineItemsError from '../FetchLineItemsError/FetchLineItemsError.js';
 import css from './BookingDatesForm.module.css';
 
 const TODAY = new Date();
+
+// Optional start time the customer can propose (e.g. for a 2-3 hour session at a flat daily rate)
+const START_TIME_OPTIONS = getStartTimeOptions(6, 22);
 
 const nextMonthFn = (currentMoment, timeZone, offset = 1) =>
   getStartOf(currentMoment, 'month', timeZone, offset, 'months');
@@ -718,6 +723,20 @@ export const BookingDatesForm = props => {
             : listing?.attributes?.publicData?.minimumRentalDuration || 1;
         const minimumNights = Math.max(0, parseInt(minimumRentalDuration, 10) - 1);
 
+        // Daily listings use one always-visible calendar (click start and end on the same calendar,
+        // or a single date for a 1-day booking). Nightly listings keep the start/end date picker.
+        const DateRangeField = isDaily ? FieldDateRangeCalendar : FieldDateRangePicker;
+        const dailyCalendarProps = isDaily
+          ? {
+              id: `${formId}.bookingDates`,
+              label: intl.formatMessage({ id: 'BookingDatesForm.selectDatesTitle' }),
+              disabledHint:
+                priceVariants.length > 0 && !priceVariantName
+                  ? intl.formatMessage({ id: 'BookingDatesForm.selectOptionFirst' })
+                  : null,
+            }
+          : {};
+
         return (
           <Form onSubmit={handleSubmit} className={classes} enforcePagePreloadFor="CheckoutPage">
             {PriceVariantFieldComponent ? (
@@ -729,9 +748,10 @@ export const BookingDatesForm = props => {
               />
             ) : null}
 
-            <FieldDateRangePicker
+            <DateRangeField
               className={css.bookingDates}
               name="bookingDates"
+              {...dailyCalendarProps}
               isDaily={isDaily}
               minimumNights={minimumNights}
               startDateId={`${formId}.bookingStartDate`}
@@ -814,6 +834,22 @@ export const BookingDatesForm = props => {
                 });
               }}
             />
+
+            <FieldSelect
+              id={`${formId}.requestedStartTime`}
+              name="requestedStartTime"
+              className={css.startTimeSelect}
+              label={intl.formatMessage({ id: 'BookingDatesForm.startTimeLabel' })}
+            >
+              <option value="">
+                {intl.formatMessage({ id: 'BookingDatesForm.startTimeNoPreference' })}
+              </option>
+              {START_TIME_OPTIONS.map(o => (
+                <option value={o.value} key={o.value}>
+                  {o.label}
+                </option>
+              ))}
+            </FieldSelect>
 
             {deliveryMethod === 'both' ? (
               <FieldSelect
